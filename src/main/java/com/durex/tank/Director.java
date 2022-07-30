@@ -1,6 +1,7 @@
 package com.durex.tank;
 
-import com.durex.tank.scene.Index;
+import com.durex.tank.scene.GameScene;
+import com.durex.tank.scene.IndexScene;
 import com.durex.tank.utils.FileUtils;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -19,6 +20,7 @@ public class Director {
     public static final int WIDTH = 960;
     public static final int HEIGHT = 640;
     private Stage stage;
+    private GameScene gameScene;
 
     private Director() {
     }
@@ -47,7 +49,7 @@ public class Director {
      * <h2>跳转首页</h2>
      */
     public void toIndex() {
-        Index.load(stage);
+        IndexScene.load(stage);
     }
 
     /**

@@ -13,9 +13,9 @@ import java.util.Objects;
  * @author liugelong
  * @date 2022/7/24 15:06
  */
-public class Index {
+public class IndexScene {
 
-    private Index() {
+    private IndexScene() {
     }
 
     /**
@@ -25,7 +25,7 @@ public class Index {
      */
     public static void load(Stage stage) {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(Index.class.getResource("/com/durex/tank/index.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(IndexScene.class.getResource("/com/durex/tank/index.fxml")));
             stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
