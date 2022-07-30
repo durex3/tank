@@ -30,20 +30,10 @@ public class Director {
     }
 
     public void init(Stage stage) {
-        this.stage = stage;
-        AnchorPane root = new AnchorPane();
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
-        stage.setTitle("坦克大战");
-        final Image logo = new Image((FileUtils.load("/logo.png")));
-        stage.getIcons().add(logo);
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.setWidth(WIDTH);
-        stage.setHeight(HEIGHT);
-        stage.show();
+        this.gameScene = new GameScene();
+        initStage(stage);
         toIndex();
     }
-
 
     /**
      * <h2>跳转首页</h2>
@@ -56,7 +46,7 @@ public class Director {
      * <h2>游戏开始</h2>
      */
     public void gameStart() {
-
+        gameScene.init(stage);
     }
 
     /**
@@ -64,5 +54,24 @@ public class Director {
      */
     public void gameOver() {
 
+    }
+
+    /**
+     * <h2>初始化窗口</h2>
+     *
+     * @param stage 窗口
+     */
+    private void initStage(Stage stage) {
+        this.stage = stage;
+        AnchorPane root = new AnchorPane();
+        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        stage.setTitle("坦克大战");
+        final Image logo = new Image("/logo.png");
+        stage.getIcons().add(logo);
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.setWidth(WIDTH);
+        stage.setHeight(HEIGHT);
+        stage.show();
     }
 }

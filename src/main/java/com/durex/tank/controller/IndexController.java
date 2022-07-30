@@ -1,5 +1,6 @@
 package com.durex.tank.controller;
 
+import com.durex.tank.Director;
 import com.durex.tank.sound.SoundEffect;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
@@ -16,6 +17,8 @@ public class IndexController {
 
     @FXML
     void mouseClickedStartGame(MouseEvent event) {
+        SoundEffect.play("/done.wav");
+        Director.getInstance().gameStart();
     }
 
     @FXML
