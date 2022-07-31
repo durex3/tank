@@ -9,9 +9,4 @@ public class Background extends Sprite {
     public Background() {
         super(new Image("/LevelsBackground.jpg"), 0.0, 0.0, (double) Director.WIDTH, (double) Director.HEIGHT);
     }
-
-    @Override
-    public void destroy() {
-
-    }
 }

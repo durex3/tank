@@ -33,11 +33,6 @@ public abstract class Sprite {
     }
 
     /**
-     * <h2>销毁</h2>
-     */
-    public abstract void destroy();
-
-    /**
      * <h2>绘制</h2>
      *
      * @param graphicsContext 画笔
@@ -68,5 +63,13 @@ public abstract class Sprite {
 
     public GameScene getGameScene() {
         return gameScene;
+    }
+
+    public Double getWidth() {
+        return width;
+    }
+
+    public Double getHeight() {
+        return height;
     }
 }
