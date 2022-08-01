@@ -4,11 +4,16 @@ import com.almasb.fxgl.app.CursorInfo;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
+import com.durex.tank.component.TankComponent;
 import com.durex.tank.config.GameConfig;
 import com.durex.tank.factory.TankEntityFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 public class TankApplication extends GameApplication {
+
+    private Entity player;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -27,7 +32,27 @@ public class TankApplication extends GameApplication {
 
         // 2. 指定创建游戏实体的工厂类
         FXGL.getGameWorld().addEntityFactory(new TankEntityFactory());
-        FXGL.spawn(GameConfig.PLAYER);
+        player = FXGL.spawn(GameConfig.PLAYER);
+    }
+
+    @Override
+    protected void initInput() {
+        FXGL.onKey(KeyCode.UP, () -> {
+            TankComponent component = player.getComponent(TankComponent.class);
+            component.moveUp();
+        });
+        FXGL.onKey(KeyCode.DOWN, () -> {
+            TankComponent component = player.getComponent(TankComponent.class);
+            component.moveDown();
+        });
+        FXGL.onKey(KeyCode.LEFT, () -> {
+            TankComponent component = player.getComponent(TankComponent.class);
+            component.moveLeft();
+        });
+        FXGL.onKey(KeyCode.RIGHT, () -> {
+            TankComponent component = player.getComponent(TankComponent.class);
+            component.moveRight();
+        });
     }
 
     public static void main(String[] args) {
