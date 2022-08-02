@@ -17,6 +17,6 @@ public class TankEntityFactory implements EntityFactory {
                 .type(GameType.PLAYER)
                 .with(new TankComponent())
                 .viewWithBBox("tank/H1U.png")
-                .build() ;
+                .build();
     }
 }

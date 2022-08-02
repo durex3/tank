@@ -56,6 +56,6 @@ public class TankApplication extends GameApplication {
     }
 
     public static void main(String[] args) {
-        TankApplication.launch(args);
+        GameApplication.launch(args);
     }
 }

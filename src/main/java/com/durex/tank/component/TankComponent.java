@@ -42,7 +42,7 @@ public class TankComponent extends Component {
             return;
         }
         isMove = true;
-        entity.setRotation(270);
+        entity.setRotation(-90);
         entity.translate(-distance, 0);
     }
 
