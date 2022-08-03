@@ -2,5 +2,10 @@ package com.durex.tank.enums;
 
 public enum GameType {
 
-    PLAYER
+    PLAYER,
+    BRICK,
+    GREENS,
+    SEA,
+    SNOW,
+    STONE
 }

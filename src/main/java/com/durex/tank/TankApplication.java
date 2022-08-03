@@ -3,11 +3,15 @@ package com.durex.tank;
 import com.almasb.fxgl.app.CursorInfo;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import com.durex.tank.component.TankComponent;
 import com.durex.tank.config.GameConfig;
 import com.durex.tank.factory.TankEntityFactory;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
@@ -32,6 +36,14 @@ public class TankApplication extends GameApplication {
 
         // 2. 指定创建游戏实体的工厂类
         FXGL.getGameWorld().addEntityFactory(new TankEntityFactory());
+
+        //3. 地图
+        FXGL.spawn(GameConfig.BRICK, new SpawnData(randomPoint()));
+        FXGL.spawn(GameConfig.GREENS, new SpawnData(randomPoint()));
+        FXGL.spawn(GameConfig.SEA, new SpawnData(randomPoint()));
+        FXGL.spawn(GameConfig.SNOW, new SpawnData(randomPoint()));
+        FXGL.spawn(GameConfig.STONE, new SpawnData(randomPoint()));
+
         player = FXGL.spawn(GameConfig.PLAYER);
     }
 
@@ -53,6 +65,11 @@ public class TankApplication extends GameApplication {
             TankComponent component = player.getComponent(TankComponent.class);
             component.moveRight();
         });
+    }
+
+
+    private Point2D randomPoint() {
+        return FXGLMath.randomPoint(new Rectangle2D(0, 0, FXGL.getAppWidth(), FXGL.getAppHeight()));
     }
 
     public static void main(String[] args) {
