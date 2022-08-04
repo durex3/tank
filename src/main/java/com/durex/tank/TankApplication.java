@@ -8,6 +8,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.durex.tank.component.TankComponent;
 import com.durex.tank.config.GameConfig;
 import com.durex.tank.factory.TankEntityFactory;
+import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
@@ -36,7 +37,8 @@ public class TankApplication extends GameApplication {
         //3. 地图
         FXGL.setLevelFromMap("level1.tmx");
 
-        // player = FXGL.spawn(GameConfig.PLAYER);
+        player = FXGL.spawn(GameConfig.PLAYER);
+        player.setPosition(new Point2D(10 * GameConfig.CELL_SIZE, 25 * GameConfig.CELL_SIZE));
     }
 
     @Override

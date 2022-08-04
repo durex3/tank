@@ -89,17 +89,22 @@ public class TankEntityFactory implements EntityFactory {
 
     @Spawns(value = GameConfig.BORDER)
     public Entity border(SpawnData data) {
+        int width = data.<Integer>get("width");
+        int height = data.<Integer>get("height");
         return FXGL.entityBuilder(data)
                 .type(GameType.BORDER)
-                .viewWithBBox(new Rectangle(GameConfig.CELL_SIZE, GameConfig.CELL_SIZE, Color.LIGHTGRAY))
+                .viewWithBBox(new Rectangle(width, height, Color.LIGHTGRAY))
                 .collidable()
                 .neverUpdated()
                 .build();
     }
 
-    @Spawns(value = "flag")
-    public Entity empty(SpawnData data) {
+    @Spawns(value = GameConfig.FLAG)
+    public Entity flag(SpawnData data) {
         return FXGL.entityBuilder(data)
+                .type(GameType.FLAG)
+                .viewWithBBox("map/flag.png")
+                .collidable()
                 .build();
     }
 }
