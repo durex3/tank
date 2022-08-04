@@ -5,11 +5,14 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
+import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.durex.tank.component.TankComponent;
 import com.durex.tank.config.GameConfig;
 import com.durex.tank.enums.GameType;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class TankEntityFactory implements EntityFactory {
@@ -29,7 +32,7 @@ public class TankEntityFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(GameType.BRICK)
                 .with(new TankComponent())
-                .viewWithBBox("map/brick.png")
+                .bbox(BoundingShape.box(GameConfig.CELL_SIZE, GameConfig.CELL_SIZE))
                 .collidable()
                 .build();
     }
@@ -78,9 +81,25 @@ public class TankEntityFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(GameType.STONE)
                 .with(new TankComponent())
-                .viewWithBBox("map/stone.png")
+                .bbox(BoundingShape.box(GameConfig.CELL_SIZE, GameConfig.CELL_SIZE))
                 .collidable()
                 .neverUpdated()
+                .build();
+    }
+
+    @Spawns(value = GameConfig.BORDER)
+    public Entity border(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(GameType.BORDER)
+                .viewWithBBox(new Rectangle(GameConfig.CELL_SIZE, GameConfig.CELL_SIZE, Color.LIGHTGRAY))
+                .collidable()
+                .neverUpdated()
+                .build();
+    }
+
+    @Spawns(value = "flag")
+    public Entity empty(SpawnData data) {
+        return FXGL.entityBuilder(data)
                 .build();
     }
 }

@@ -14,6 +14,7 @@ public class GameConfig {
     public static final String SEA = "sea";
     public static final String SNOW = "snow";
     public static final String STONE = "stone";
+    public static final String BORDER = "border";
 
     public static final int TANK_MOVE_SPEED = 150;
 }

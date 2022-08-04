@@ -7,5 +7,6 @@ public enum GameType {
     GREENS,
     SEA,
     SNOW,
-    STONE
+    STONE,
+    BORDER
 }
