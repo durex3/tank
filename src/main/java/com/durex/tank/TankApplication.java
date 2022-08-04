@@ -34,7 +34,7 @@ public class TankApplication extends GameApplication {
         // 2. 指定创建游戏实体的工厂类
         FXGL.getGameWorld().addEntityFactory(new TankEntityFactory());
 
-        //3. 地图
+        // 3. 地图
         FXGL.setLevelFromMap("level1.tmx");
 
         player = FXGL.spawn(GameConfig.PLAYER);
