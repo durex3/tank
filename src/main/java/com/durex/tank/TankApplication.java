@@ -38,7 +38,7 @@ public class TankApplication extends GameApplication {
         FXGL.setLevelFromMap("level1.tmx");
 
         player = FXGL.spawn(GameConfig.PLAYER);
-        player.setPosition(new Point2D(10 * GameConfig.CELL_SIZE, 25 * GameConfig.CELL_SIZE));
+        player.setPosition(new Point2D(10 * GameConfig.CELL_SIZE, 27 * GameConfig.CELL_SIZE - player.getWidth() - 1));
     }
 
     @Override
