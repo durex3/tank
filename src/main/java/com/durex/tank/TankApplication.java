@@ -38,6 +38,7 @@ public class TankApplication extends GameApplication {
         FXGL.setLevelFromMap("level1.tmx");
 
         player = FXGL.spawn(GameConfig.PLAYER);
+        // 4. 初始化玩家坦克的位置
         player.setPosition(new Point2D(10 * GameConfig.CELL_SIZE, 27 * GameConfig.CELL_SIZE - player.getWidth() - 1));
     }
 
