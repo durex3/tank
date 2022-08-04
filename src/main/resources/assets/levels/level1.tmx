@@ -3,7 +3,7 @@
  <tileset firstgid="1" name="maptitles" tilewidth="24" tileheight="24" tilecount="9" columns="9">
   <image source="maptitles.png" width="216" height="24"/>
  </tileset>
- <objectgroup id="2" name="对象层 1">
+ <objectgroup id="2" name="level1">
   <object id="19" type="brick" gid="1" x="288" y="624" width="24" height="24"/>
   <object id="33" type="brick" gid="1" x="72" y="600" width="24" height="24"/>
   <object id="36" type="brick" gid="1" x="72" y="576" width="24" height="24"/>
