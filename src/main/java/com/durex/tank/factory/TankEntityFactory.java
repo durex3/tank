@@ -1,6 +1,7 @@
 package com.durex.tank.factory;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -11,6 +12,7 @@ import com.almasb.fxgl.texture.AnimationChannel;
 import com.durex.tank.component.TankComponent;
 import com.durex.tank.config.GameConfig;
 import com.durex.tank.enums.GameType;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -104,6 +106,17 @@ public class TankEntityFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(GameType.FLAG)
                 .viewWithBBox("map/flag.png")
+                .collidable()
+                .build();
+    }
+
+    @Spawns(value = GameConfig.BULLET)
+    public Entity bullet(SpawnData data) {
+        final Point2D direct = data.get("direct");
+        return FXGL.entityBuilder(data)
+                .type(GameType.BULLET)
+                .viewWithBBox("bullet/normal.png")
+                .with(new ProjectileComponent(direct, GameConfig.BULLET_SPEED))
                 .collidable()
                 .build();
     }

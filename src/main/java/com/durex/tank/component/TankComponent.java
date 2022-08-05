@@ -4,7 +4,9 @@ import com.almasb.fxgl.core.util.LazyValue;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityGroup;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.time.LocalTimer;
 import com.durex.tank.config.GameConfig;
 import com.durex.tank.enums.DirectVector;
 import com.durex.tank.enums.GameType;
@@ -16,9 +18,15 @@ public class TankComponent extends Component {
     private boolean isMove = false;
     private double distance;
     private DirectVector direct = DirectVector.UP;
+    private LocalTimer timer;
+
+    @Override
+    public void onAdded() {
+        timer = FXGL.newLocalTimer();
+    }
 
     /**
-     *  可碰撞的实体集合
+     * 可碰撞的实体集合
      */
     private final LazyValue<EntityGroup> collidingEntityGroup = new LazyValue<>(() ->
             FXGL.getGameWorld().getGroup(
@@ -81,7 +89,14 @@ public class TankComponent extends Component {
     }
 
     public void shoot() {
-
+        if (timer.elapsed(GameConfig.SHOOT_DELAY)) {
+            final SpawnData data = new SpawnData(
+                    entity.getCenter().subtract(8.0 / 2, 10.0 / 2)
+            );
+            data.put("direct", direct.getVector());
+            FXGL.spawn(GameConfig.BULLET, data);
+            timer.capture();
+        }
     }
 
     private void move() {
@@ -89,7 +104,7 @@ public class TankComponent extends Component {
         for (int i = len; i > 0; i--) {
             boolean isColliding = false;
             entity.translate(direct.getVector());
-            List<Entity> entityList = collidingEntityGroup .get().getEntitiesCopy();
+            List<Entity> entityList = collidingEntityGroup.get().getEntitiesCopy();
             for (Entity e : entityList) {
                 if (entity.isColliding(e)) {
                     isColliding = true;
