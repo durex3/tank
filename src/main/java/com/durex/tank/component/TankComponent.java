@@ -1,12 +1,33 @@
 package com.durex.tank.component;
 
+import com.almasb.fxgl.core.util.LazyValue;
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.EntityGroup;
 import com.almasb.fxgl.entity.component.Component;
 import com.durex.tank.config.GameConfig;
+import com.durex.tank.enums.DirectVector;
+import com.durex.tank.enums.GameType;
+
+import java.util.List;
 
 public class TankComponent extends Component {
 
     private boolean isMove = false;
     private double distance;
+    private DirectVector direct = DirectVector.UP;
+
+    /**
+     *  可碰撞的实体集合
+     */
+    private final LazyValue<EntityGroup> collidingEntityGroup = new LazyValue<>(() ->
+            FXGL.getGameWorld().getGroup(
+                    GameType.BORDER,
+                    GameType.BRICK,
+                    GameType.SEA,
+                    GameType.STONE
+            )
+    );
 
     /**
      * <h2>每一帧都会刷新</h2>
@@ -24,8 +45,9 @@ public class TankComponent extends Component {
             return;
         }
         isMove = true;
+        direct = DirectVector.UP;
         entity.setRotation(0);
-        entity.translate(0, -distance);
+        move();
     }
 
     public void moveDown() {
@@ -33,8 +55,9 @@ public class TankComponent extends Component {
             return;
         }
         isMove = true;
+        direct = DirectVector.DOWN;
         entity.setRotation(180);
-        entity.translate(0, distance);
+        move();
     }
 
     public void moveLeft() {
@@ -42,8 +65,9 @@ public class TankComponent extends Component {
             return;
         }
         isMove = true;
+        direct = DirectVector.LEFT;
         entity.setRotation(-90);
-        entity.translate(-distance, 0);
+        move();
     }
 
     public void moveRight() {
@@ -51,11 +75,31 @@ public class TankComponent extends Component {
             return;
         }
         isMove = true;
+        direct = DirectVector.RIGHT;
         entity.setRotation(90);
-        entity.translate(distance, 0);
+        move();
     }
 
     public void shoot() {
 
+    }
+
+    private void move() {
+        int len = (int) distance;
+        for (int i = len; i > 0; i--) {
+            boolean isColliding = false;
+            entity.translate(direct.getVector());
+            List<Entity> entityList = collidingEntityGroup .get().getEntitiesCopy();
+            for (Entity e : entityList) {
+                if (entity.isColliding(e)) {
+                    isColliding = true;
+                    break;
+                }
+            }
+            if (isColliding) {
+                entity.translate(direct.getVector().multiply(-1));
+                return;
+            }
+        }
     }
 }

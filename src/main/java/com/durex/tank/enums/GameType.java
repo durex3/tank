@@ -8,5 +8,6 @@ public enum GameType {
     SEA,
     SNOW,
     STONE,
-    BORDER
+    BORDER,
+    FLAG
 }
