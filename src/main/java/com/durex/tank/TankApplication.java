@@ -5,8 +5,11 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.durex.tank.collision.*;
 import com.durex.tank.component.TankComponent;
+import com.durex.tank.component.TankLevelComponent;
 import com.durex.tank.config.GameConfig;
+import com.durex.tank.enums.GameType;
 import com.durex.tank.factory.TankEntityFactory;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
@@ -40,10 +43,27 @@ public class TankApplication extends GameApplication {
         player = FXGL.spawn(GameConfig.PLAYER);
         // 4. 初始化玩家坦克的位置
         player.setPosition(new Point2D(10 * GameConfig.CELL_SIZE, 27 * GameConfig.CELL_SIZE - player.getWidth() - 1));
+        player.getComponent(TankLevelComponent.class).upgradeFull();
 
         FXGL.spawn(GameConfig.ENEMY, new Point2D(220, 50));
         FXGL.spawn(GameConfig.ENEMY, new Point2D(130, 50));
         FXGL.spawn(GameConfig.ENEMY, new Point2D(220, 150));
+    }
+
+
+    @Override
+    protected void initPhysics() {
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletTankHandler(GameType.BULLET, GameType.ENEMY));
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletTankHandler(GameType.BULLET, GameType.PLAYER));
+
+        // 子弹与普通墙、子弹和子弹
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletBrickHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletBulletHandler());
+
+        // 子弹和边界、子弹和石头墙、子弹和草地
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletBorderHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletStoneHandler());
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletGreensHandler());
     }
 
     @Override

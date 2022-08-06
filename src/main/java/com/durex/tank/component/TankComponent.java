@@ -95,7 +95,9 @@ public class TankComponent extends Component {
             final SpawnData data = new SpawnData(
                     entity.getCenter().subtract(8.0 / 2, 10.0 / 2)
             );
-            data.put("direct", direct.getVector());
+            data.put(GameConfig.DIRECT, direct.getVector());
+            data.put(GameConfig.OWNER_TYPE, entity.getType());
+            data.put(GameConfig.LEVEL, entity.getComponent(TankLevelComponent.class).getValue());
             FXGL.spawn(GameConfig.BULLET, data);
             timer.capture();
         }

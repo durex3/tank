@@ -1,18 +1,26 @@
 package com.durex.tank.factory;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import com.almasb.fxgl.ui.Position;
+import com.almasb.fxgl.ui.ProgressBar;
 import com.durex.tank.component.EnemyComponent;
 import com.durex.tank.component.TankComponent;
+import com.durex.tank.component.TankLevelComponent;
 import com.durex.tank.config.GameConfig;
 import com.durex.tank.enums.GameType;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -22,10 +30,33 @@ public class TankEntityFactory implements EntityFactory {
 
     @Spawns(value = GameConfig.PLAYER)
     public Entity player(SpawnData data) {
+
+        HealthIntComponent health = new HealthIntComponent(GameConfig.PLAYER_MAX_HEALTH);
+        health.setValue(GameConfig.PLAYER_MAX_HEALTH);
+        ProgressBar healthBar = new ProgressBar(false);
+        healthBar.setWidth(39);
+        healthBar.setTranslateY(40);
+        healthBar.setFill(Color.LIGHTGREEN);
+        healthBar.currentValueProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue.intValue() <= GameConfig.PLAYER_MAX_HEALTH * 0.4) {
+                healthBar.setFill(Color.RED);
+            } else if (newValue.intValue() <= GameConfig.PLAYER_MAX_HEALTH * 0.8) {
+                healthBar.setFill(Color.YELLOW);
+            } else {
+                healthBar.setFill(Color.LIGHTGREEN);
+            }
+        });
+
+        healthBar.maxValueProperty().bind(health.maxValueProperty());
+        healthBar.currentValueProperty().bind(health.valueProperty());
+
         return FXGL.entityBuilder(data)
                 .type(GameType.PLAYER)
-                .with(new TankComponent())
                 .viewWithBBox("tank/H1U.png")
+                .view(healthBar)
+                .with(new TankComponent())
+                .with(new TankLevelComponent())
+                .with(health)
                 .collidable()
                 .build();
     }
@@ -113,23 +144,67 @@ public class TankEntityFactory implements EntityFactory {
 
     @Spawns(value = GameConfig.BULLET)
     public Entity bullet(SpawnData data) {
-        final Point2D direct = data.get("direct");
+        FXGL.play("normalFire.wav");
+        final Point2D direct = data.get(GameConfig.DIRECT);
+        GameType gameType = data.<GameType>get(GameConfig.OWNER_TYPE);
+
+        CollidableComponent collidableComponent = new CollidableComponent(true);
+        collidableComponent.addIgnoredType(gameType);
+
         return FXGL.entityBuilder(data)
                 .type(GameType.BULLET)
                 .viewWithBBox("bullet/normal.png")
                 .with(new ProjectileComponent(direct, GameConfig.BULLET_SPEED))
-                .collidable()
+                .with(collidableComponent)
                 .build();
     }
 
     @Spawns(value = GameConfig.ENEMY)
     public Entity enemy(SpawnData data) {
+
+        int random = FXGL.random(1, 12);
+
+        HealthIntComponent health = new HealthIntComponent(random);
+        health.setValue(random);
+        ProgressBar healthBar = new ProgressBar(false);
+        healthBar.setWidth(35);
+        healthBar.setTranslateY(41);
+        healthBar.setFill(Color.LIGHTGREEN);
+        healthBar.maxValueProperty().bind(health.maxValueProperty());
+        healthBar.currentValueProperty().bind(health.valueProperty());
+        healthBar.currentValueProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue.intValue() <= random * 0.4) {
+                healthBar.setFill(Color.RED);
+            } else if (newValue.intValue() <= random * 0.8) {
+                healthBar.setFill(Color.YELLOW);
+            } else {
+                healthBar.setFill(Color.LIGHTGREEN);
+            }
+        });
+
         return FXGL.entityBuilder(data)
                 .type(GameType.ENEMY)
                 .with(new TankComponent())
                 .with(new EnemyComponent())
-                .viewWithBBox("tank/E" + FXGL.random(1, 10) + "U.png")
+                .with(new TankLevelComponent())
+                .with(health)
+                .view(healthBar)
+                .viewWithBBox("tank/E" + random + "U.png")
                 .collidable()
+                .build();
+    }
+
+    @Spawns(value = GameConfig.EXPLODE)
+    public Entity explode(SpawnData data) {
+        FXGL.play("normalBomb.wav");
+        AnimationChannel channel = new AnimationChannel(
+                FXGL.image("explode/explode_level_1.png"),
+                GameConfig.EXPLODE_TIME,
+                5);
+        AnimatedTexture texture = new AnimatedTexture(channel);
+        return FXGL.entityBuilder(data)
+                .view(texture.play())
+                .with(new ExpireCleanComponent(GameConfig.EXPLODE_TIME))
                 .build();
     }
 }
