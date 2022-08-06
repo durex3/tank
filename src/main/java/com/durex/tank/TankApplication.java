@@ -60,6 +60,10 @@ public class TankApplication extends GameApplication {
             TankComponent component = player.getComponent(TankComponent.class);
             component.moveRight();
         });
+        FXGL.onKey(KeyCode.A, () -> {
+            TankComponent component = player.getComponent(TankComponent.class);
+            component.shoot();
+        });
     }
 
     public static void main(String[] args) {
