@@ -12,15 +12,12 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
-import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.durex.tank.component.EnemyComponent;
 import com.durex.tank.component.TankComponent;
 import com.durex.tank.component.TankLevelComponent;
 import com.durex.tank.config.GameConfig;
 import com.durex.tank.enums.GameType;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -77,7 +74,6 @@ public class TankEntityFactory implements EntityFactory {
                 .type(GameType.GREENS)
                 .with(new TankComponent())
                 .viewWithBBox("map/greens.png")
-                .collidable()
                 .neverUpdated()
                 .zIndex(1000)
                 .build();
@@ -95,7 +91,6 @@ public class TankEntityFactory implements EntityFactory {
                 .type(GameType.SEA)
                 .with(new TankComponent())
                 .viewWithBBox(texture.loop())
-                .collidable()
                 .build();
     }
 
@@ -105,7 +100,6 @@ public class TankEntityFactory implements EntityFactory {
                 .type(GameType.SNOW)
                 .with(new TankComponent())
                 .viewWithBBox("map/snow.png")
-                .collidable()
                 .neverUpdated()
                 .build();
     }

@@ -5,7 +5,10 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.durex.tank.collision.*;
+import com.durex.tank.collision.BulletBarrierHandler;
+import com.durex.tank.collision.BulletBorderHandler;
+import com.durex.tank.collision.BulletBulletHandler;
+import com.durex.tank.collision.BulletTankHandler;
 import com.durex.tank.component.TankComponent;
 import com.durex.tank.component.TankLevelComponent;
 import com.durex.tank.config.GameConfig;
@@ -53,17 +56,18 @@ public class TankApplication extends GameApplication {
 
     @Override
     protected void initPhysics() {
-        FXGL.getPhysicsWorld().addCollisionHandler(new BulletTankHandler(GameType.BULLET, GameType.ENEMY));
-        FXGL.getPhysicsWorld().addCollisionHandler(new BulletTankHandler(GameType.BULLET, GameType.PLAYER));
+        // 子弹和坦克
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletTankHandler(GameType.ENEMY));
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletTankHandler(GameType.PLAYER));
 
-        // 子弹与普通墙、子弹和子弹
-        FXGL.getPhysicsWorld().addCollisionHandler(new BulletBrickHandler());
+        // 子弹和边界、子弹和子弹
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletBorderHandler());
         FXGL.getPhysicsWorld().addCollisionHandler(new BulletBulletHandler());
 
-        // 子弹和边界、子弹和石头墙、子弹和草地
-        FXGL.getPhysicsWorld().addCollisionHandler(new BulletBorderHandler());
-        FXGL.getPhysicsWorld().addCollisionHandler(new BulletStoneHandler());
-        FXGL.getPhysicsWorld().addCollisionHandler(new BulletGreensHandler());
+        // 子弹与普通墙、子弹和石头墙、子弹和草地
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletBarrierHandler(GameType.BRICK));
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletBarrierHandler(GameType.STONE));
+        FXGL.getPhysicsWorld().addCollisionHandler(new BulletBarrierHandler(GameType.GREENS));
     }
 
     @Override

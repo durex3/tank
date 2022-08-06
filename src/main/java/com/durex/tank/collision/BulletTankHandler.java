@@ -10,8 +10,8 @@ import com.durex.tank.enums.GameType;
 
 public class BulletTankHandler extends CollisionHandler {
 
-    public BulletTankHandler(GameType bullet, GameType tank) {
-        super(bullet, tank);
+    public BulletTankHandler(GameType tank) {
+        super(GameType.BULLET, tank);
     }
 
     @Override
