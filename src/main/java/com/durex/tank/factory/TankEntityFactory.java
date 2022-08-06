@@ -9,6 +9,7 @@ import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import com.durex.tank.component.EnemyComponent;
 import com.durex.tank.component.TankComponent;
 import com.durex.tank.config.GameConfig;
 import com.durex.tank.enums.GameType;
@@ -117,6 +118,17 @@ public class TankEntityFactory implements EntityFactory {
                 .type(GameType.BULLET)
                 .viewWithBBox("bullet/normal.png")
                 .with(new ProjectileComponent(direct, GameConfig.BULLET_SPEED))
+                .collidable()
+                .build();
+    }
+
+    @Spawns(value = GameConfig.ENEMY)
+    public Entity enemy(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(GameType.ENEMY)
+                .with(new TankComponent())
+                .with(new EnemyComponent())
+                .viewWithBBox("tank/E" + FXGL.random(1, 10) + "U.png")
                 .collidable()
                 .build();
     }

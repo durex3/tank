@@ -40,6 +40,10 @@ public class TankApplication extends GameApplication {
         player = FXGL.spawn(GameConfig.PLAYER);
         // 4. 初始化玩家坦克的位置
         player.setPosition(new Point2D(10 * GameConfig.CELL_SIZE, 27 * GameConfig.CELL_SIZE - player.getWidth() - 1));
+
+        FXGL.spawn(GameConfig.ENEMY, new Point2D(220, 50));
+        FXGL.spawn(GameConfig.ENEMY, new Point2D(130, 50));
+        FXGL.spawn(GameConfig.ENEMY, new Point2D(220, 150));
     }
 
     @Override

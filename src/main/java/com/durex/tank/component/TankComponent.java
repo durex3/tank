@@ -33,7 +33,9 @@ public class TankComponent extends Component {
                     GameType.BORDER,
                     GameType.BRICK,
                     GameType.SEA,
-                    GameType.STONE
+                    GameType.STONE,
+                    GameType.PLAYER,
+                    GameType.ENEMY
             )
     );
 
@@ -102,19 +104,28 @@ public class TankComponent extends Component {
     private void move() {
         int len = (int) distance;
         for (int i = len; i > 0; i--) {
-            boolean isColliding = false;
             entity.translate(direct.getVector());
-            List<Entity> entityList = collidingEntityGroup.get().getEntitiesCopy();
-            for (Entity e : entityList) {
-                if (entity.isColliding(e)) {
-                    isColliding = true;
-                    break;
-                }
-            }
-            if (isColliding) {
+            if (isColliding()) {
                 entity.translate(direct.getVector().multiply(-1));
                 return;
             }
         }
+    }
+
+    public boolean isColliding() {
+        boolean isColliding = false;
+        List<Entity> entityList = collidingEntityGroup.get().getEntitiesCopy();
+        entityList.remove(entity);
+        for (Entity e : entityList) {
+            if (entity.isColliding(e)) {
+                isColliding = true;
+                break;
+            }
+        }
+        return isColliding;
+    }
+
+    public DirectVector getDirect() {
+        return direct;
     }
 }

@@ -4,6 +4,7 @@ import javafx.util.Duration;
 
 public class GameConfig {
 
+
     private GameConfig() {
     }
 
@@ -19,7 +20,7 @@ public class GameConfig {
     public static final String BORDER = "border";
     public static final String FLAG = "flag";
     public static final String BULLET = "bullet";
-
+    public static final String ENEMY = "enemy";
     public static final int TANK_MOVE_SPEED = 150;
     public static final int BULLET_SPEED = 400;
 

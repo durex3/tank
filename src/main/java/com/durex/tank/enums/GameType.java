@@ -10,5 +10,6 @@ public enum GameType {
     STONE,
     BORDER,
     FLAG,
-    BULLET
+    BULLET,
+    ENEMY
 }
