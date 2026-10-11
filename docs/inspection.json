@@ -1,0 +1,28 @@
+{
+  "exe": {
+    "bytes": 78127104,
+    "sha256": "43b0f0b62d78df638f6eb8ce10c44241fec28107574575ad2cd4b60b82c77e9b"
+  },
+  "pck": {
+    "bytes": 95997516,
+    "sha256": "c6a7876f146ff8b1893edbd80bd8be094aab11413455149ccf79fefa09eb4796",
+    "magic": "GDPC",
+    "format": 4,
+    "engine": "4.7.1",
+    "flags": 3,
+    "fileBase": 112,
+    "directoryOffset": 95388896,
+    "fileCount": 6545,
+    "directoryEncrypted": true,
+    "directoryPlaintextBytes": 608572
+  },
+  "status": "Encrypted directory not recovered; no gameplay claims established",
+  "checks": {
+    "dataReferencedCandidates": 3856,
+    "readOnlyReferencedCandidates": 91611
+  },
+  "sources": [
+    "https://github.com/godotengine/godot/blob/master/core/io/file_access_pack.cpp",
+    "https://github.com/godotengine/godot/blob/master/core/io/file_access_encrypted.cpp"
+  ]
+}

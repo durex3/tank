@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-11",
+  "new_generation": false,
+  "assets": [
+    {
+      "id": "muzzle",
+      "path": "assets/effects/muzzle-v1.png",
+      "event": "weapon_fired",
+      "source": "用户提供的项目现有assets，原文件未修改",
+      "provenance_record": "assets/effects/provenance.md",
+      "provenance_status": "原记录未覆盖此文件，生成工具/许可元数据未补齐",
+      "pivot": "center",
+      "collision_role": "none",
+      "approval_status": "Windows Compatibility visual checked; Android pending"
+    },
+    {
+      "id": "impact",
+      "path": "assets/effects/shockwave-v1.png",
+      "event": "projectile_hit",
+      "source": "用户提供的项目现有assets，原文件未修改",
+      "provenance_record": "assets/effects/provenance.md",
+      "provenance_status": "原记录未覆盖此文件，生成工具/许可元数据未补齐",
+      "pivot": "center",
+      "collision_role": "none",
+      "approval_status": "Windows Compatibility visual checked; Android pending"
+    },
+    {
+      "id": "explosion",
+      "path": "assets/effects/explosion-v1.png",
+      "event": "entity_died",
+      "source": "用户提供的项目现有assets，原文件未修改",
+      "provenance_record": "assets/effects/provenance.md",
+      "provenance_status": "原记录注明2026-10-11内置生图工具生成",
+      "pivot": "center",
+      "collision_role": "none",
+      "approval_status": "Windows Compatibility visual checked; Android pending"
+    }
+  ]
+}

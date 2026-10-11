@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://definitions/weapon_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"cannon"
+damage = 120
+fire_interval_s = 0.8
+range_m = 14.0
+projectile_speed = 24.0
+pellet_count = 1
+spread_deg = 0.0
+weight = 2
+ability_id = &"pierce_shot"

@@ -1,0 +1,11 @@
+.godot/
+builds/
+artifacts/
+*.tmp
+*.keystore
+*.jks
+export_credentials.cfg
+
+# Local Godot user data and GPU logs
+/Godot/
+/NVIDIA Corporation/

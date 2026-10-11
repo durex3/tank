@@ -1,0 +1,424 @@
+[gd_resource type="Resource" script_class="PartCatalogDef" load_steps=35 format=3]
+
+[ext_resource type="Script" path="res://definitions/part_catalog_def.gd" id="1"]
+[ext_resource type="Script" path="res://definitions/part_entry.gd" id="2"]
+
+[sub_resource type="Resource" id="cannon"]
+script = ExtResource("2")
+id = &"cannon"
+basic_summary = "炮塔：主战炮\n伤害：120/发\n发射间隔：0.80秒\n射程：14米\n弹匣/填弹：不限 / 不适用\n重量：2\n机制：弹速24；普通击退暂不改现有行为"
+ability_summary = "穿甲重弹：下一发180伤害，最多命中2敌人，第二目标60%；5秒内未射击失效；不穿墙"
+role_summary = "稳定点射；射击间隔可被突进利用，掩体阻挡"
+display_name = "主战炮"
+kind = 0
+rarity = 0
+unlock_rule_id = &"starter"
+starter = true
+basic_ready = true
+
+[sub_resource type="Resource" id="autocannon"]
+script = ExtResource("2")
+id = &"autocannon"
+basic_summary = "炮塔：速射机炮\n伤害：25/发\n发射间隔：0.16（实际10tick）秒\n射程：11米\n弹匣/填弹：不限 / 不适用\n重量：1\n机制：弹速28；按住连射"
+ability_summary = "过载弹链：3秒内间隔缩短为6tick，单发伤害不变；结束后0.8秒不能普攻"
+role_summary = "追踪压制；单发低，持续暴露，绕掩体断火线"
+display_name = "速射机炮"
+kind = 0
+rarity = 0
+unlock_rule_id = &"unlock_autocannon"
+starter = false
+basic_ready = true
+
+[sub_resource type="Resource" id="scatter"]
+script = ExtResource("2")
+id = &"scatter"
+basic_summary = "炮塔：短管散射炮\n伤害：32/颗×5\n发射间隔：1.00秒\n射程：7米\n弹匣/填弹：不限 / 不适用\n重量：2\n机制：弹速24；总扇形24度；全部命中160"
+ability_summary = "聚束齐射：下一发5颗各36伤害，总散布8度，射程仍7米；5秒内有效。"
+role_summary = "贴身爆发；远距命中率低，拉开距离反制"
+display_name = "短管散射炮"
+kind = 0
+rarity = 0
+unlock_rule_id = &"unlock_scatter"
+starter = false
+basic_ready = true
+
+[sub_resource type="Resource" id="bubble_cannon"]
+script = ExtResource("2")
+id = &"bubble_cannon"
+basic_summary = "炮塔：泡泡炮\n伤害：55/发\n发射间隔：0.65秒\n射程：9米\n弹匣/填弹：4 / 1.40\n重量：1\n机制：弹速10；减速15%持续1秒，同源刷新"
+ability_summary = "泡泡幕：扇形发射5个泡弹，各35伤害，最多持续3秒；同目标每次技能最多命中2个；减速仍按总上限"
+role_summary = "封路、易读；弹慢且可绕开，不设无限控制"
+display_name = "泡泡炮"
+kind = 0
+rarity = 0
+unlock_rule_id = &"unlock_bubble_cannon"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="cutting_laser"]
+script = ExtResource("2")
+id = &"cutting_laser"
+basic_summary = "炮塔：切割激光\n伤害：110/秒\n发射间隔：持续，0.10伤害周期秒\n射程：10米\n弹匣/填弹：不限 / 不适用\n重量：3\n机制：起束0.25秒；同目标连续1秒后140/秒；断视线0.2秒重置"
+ability_summary = "高能切割：预热0.6秒，持续1.5秒，伤害180/秒；施放转速不超过90度/秒，墙阻挡"
+role_summary = "持续输出；遮挡立即断束，射手需跟枪"
+display_name = "切割激光"
+kind = 0
+rarity = 2
+unlock_rule_id = &"unlock_cutting_laser"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="rocket_pod"]
+script = ExtResource("2")
+id = &"rocket_pod"
+basic_summary = "炮塔：饱和火箭\n伤害：85/枚\n发射间隔：0.40秒\n射程：15米\n弹匣/填弹：3 / 1.60\n重量：3\n机制：抛射，飞行0.8—1.3秒；爆炸半径1.3，边缘40%；击退上限0.5米"
+ability_summary = "火箭雨：半径3米预警0.8秒；6枚火箭在1.8秒内依次落下，每枚60伤害、半径1；一次提交锁定落点序列，禁止无限追随敌人"
+role_summary = "区域压制；有预警，近身空窗明显"
+display_name = "饱和火箭"
+kind = 0
+rarity = 3
+unlock_rule_id = &"unlock_rocket_pod"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="rail_sniper"]
+script = ExtResource("2")
+id = &"rail_sniper"
+basic_summary = "炮塔：磁轨狙\n伤害：230/发\n发射间隔：1.40秒\n射程：20米\n弹匣/填弹：1 / 0.60\n重量：3\n机制：蓄力0.8秒；高速扫掠弹速80，不直接实现瞬时射线；普通弹不贯穿"
+ability_summary = "贯穿狙击：预警1秒，300伤害，最多3敌人，后续50%/25%；射程22，不穿高墙"
+role_summary = "远程高精度；蓄力期间转向受限，侧翼切入"
+display_name = "磁轨狙"
+kind = 0
+rarity = 2
+unlock_rule_id = &"unlock_rail_sniper"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="tesla_coil"]
+script = ExtResource("2")
+id = &"tesla_coil"
+basic_summary = "炮塔：特斯拉线圈\n伤害：65首目标\n发射间隔：0.65秒\n射程：7米\n弹匣/填弹：4 / 1.50\n重量：2\n机制：最多额外连锁2目标；间距2.5；后续伤害50%/25%；不重复跳回"
+ability_summary = "电磁脉冲：半径3.5，预警0.6秒，60伤害并减速25%持续1.5秒；本项目首轮不采用禁火或眩晕"
+role_summary = "克制密集站位；分散、远距离反制"
+display_name = "特斯拉线圈"
+kind = 0
+rarity = 2
+unlock_rule_id = &"unlock_tesla_coil"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="mortar"]
+script = ExtResource("2")
+id = &"mortar"
+basic_summary = "炮塔：迫击炮\n伤害：120/枚\n发射间隔：1.30秒\n射程：6—18米\n弹匣/填弹：2 / 1.80\n重量：2\n机制：飞行1.1秒；爆炸半径1.8，边缘35%；最小射程6"
+ability_summary = "三段校射：0.8秒预警后沿方向三个落点，间隔0.45秒，每枚100伤害、半径1.5；同目标累计上限220"
+role_summary = "越过指定低掩体；难打快速目标，落点可见"
+display_name = "迫击炮"
+kind = 0
+rarity = 1
+unlock_rule_id = &"unlock_mortar"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="howitzer"]
+script = ExtResource("2")
+id = &"howitzer"
+basic_summary = "炮塔：重榴弹炮\n伤害：180/枚\n发射间隔：1.60秒\n射程：13米\n弹匣/填弹：2 / 2.00\n重量：3\n机制：弹速16；爆炸半径2，边缘30%；击退上限0.7米"
+ability_summary = "震荡榴弹：下一发220伤害、半径2.5、击退最多1米；中心到边缘衰减，5秒待发失效"
+role_summary = "打聚集敌人；装填慢，分散和贴掩体反制"
+display_name = "重榴弹炮"
+kind = 0
+rarity = 1
+unlock_rule_id = &"unlock_howitzer"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="ricochet_gun"]
+script = ExtResource("2")
+id = &"ricochet_gun"
+basic_summary = "炮塔：跳弹炮\n伤害：95/发\n发射间隔：0.75秒\n射程：13累计路程米\n弹匣/填弹：3 / 1.30\n重量：2\n机制：弹速24；最多反弹1次；反弹后伤害80%；总寿命不刷新"
+ability_summary = "双折弹：下一发130伤害、最多反弹2次，每次保留80%伤害，累计路程16；5秒待发失效"
+role_summary = "利用角度攻击；开阔地优势低，反射总寿命有限"
+display_name = "跳弹炮"
+kind = 0
+rarity = 1
+unlock_rule_id = &"unlock_ricochet_gun"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="flame_projector"]
+script = ExtResource("2")
+id = &"flame_projector"
+basic_summary = "炮塔：喷火器\n伤害：130/秒\n发射间隔：持续，0.10伤害周期秒\n射程：4米\n弹匣/填弹：不限 / 不适用\n重量：2\n机制：锥角40度；灼烧10/秒×2秒；同源不叠层"
+ability_summary = "燃烧地带：前方长5宽2米，预警0.4秒后持续3秒，80/秒；同源火区不叠加"
+role_summary = "近身持续压制；射程短，后撤反制"
+display_name = "喷火器"
+kind = 0
+rarity = 1
+unlock_rule_id = &"unlock_flame_projector"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="frost_projector"]
+script = ExtResource("2")
+id = &"frost_projector"
+basic_summary = "炮塔：霜冻喷射器\n伤害：75/秒\n发射间隔：持续，0.10伤害周期秒\n射程：4.5米\n弹匣/填弹：不限 / 不适用\n重量：2\n机制：锥角35度；减速20%，离开后0.5秒解除；不冻结"
+ability_summary = "冷凝爆发：半径3米，预警0.6秒，70伤害，减速30%持续1.5秒，无硬冻结"
+role_summary = "团队留人；单杀效率低，不设计连续硬冻结"
+display_name = "霜冻喷射器"
+kind = 0
+rarity = 2
+unlock_rule_id = &"unlock_frost_projector"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="corrosive_launcher"]
+script = ExtResource("2")
+id = &"corrosive_launcher"
+basic_summary = "炮塔：腐蚀投射器\n伤害：35直击＋30/秒区域\n发射间隔：1.10秒\n射程：10米\n弹匣/填弹：3 / 1.60\n重量：2\n机制：落点半径1.4持续3秒；同源区不叠伤；在场最多3区"
+ability_summary = "腐蚀云：半径2.5米，预警0.6秒，持续4秒，45/秒；与普通同源酸区取较高值"
+role_summary = "守路口；直接伤害低，绕行和转点反制"
+display_name = "腐蚀投射器"
+kind = 0
+rarity = 2
+unlock_rule_id = &"unlock_corrosive_launcher"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="mine_layer"]
+script = ExtResource("2")
+id = &"mine_layer"
+basic_summary = "炮塔：布雷器\n伤害：120/雷\n发射间隔：1.00秒\n射程：后方1.0投放米\n弹匣/填弹：3 / 2.00\n重量：1\n机制：0.7秒武装，触发半径0.9；存活12秒；最多3雷，可被攻击清除"
+ability_summary = "连锁雷阵：三处落点预警1秒，各布1雷，单雷100伤害；技能雷在场最多3，连同普通雷总数不超过6"
+role_summary = "撤退设伏；正面对射弱，雷可被攻击清除"
+display_name = "布雷器"
+kind = 0
+rarity = 2
+unlock_rule_id = &"unlock_mine_layer"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="guided_missile"]
+script = ExtResource("2")
+id = &"guided_missile"
+basic_summary = "炮塔：制导导弹\n伤害：150/枚\n发射间隔：1.40秒\n射程：16米\n弹匣/填弹：2 / 1.80\n重量：3\n机制：视线锁定0.7秒；速度14，最大转速90度/秒；遮挡0.25秒失锁"
+ability_summary = "追猎齐射：锁定0.8秒后发射3枚各70伤害导弹，间隔0.25秒；仍可被墙阻挡与转向躲避"
+role_summary = "追击低机动；掩体断锁、急转可躲，禁止穿墙追踪"
+display_name = "制导导弹"
+kind = 0
+rarity = 3
+unlock_rule_id = &"unlock_guided_missile"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="boomerang_disc"]
+script = ExtResource("2")
+id = &"boomerang_disc"
+basic_summary = "炮塔：回旋锯盘\n伤害：65/段\n发射间隔：1.50秒\n射程：9去程米\n弹匣/填弹：不限 / 不适用\n重量：2\n机制：速度18；每目标去返各最多1次；最多1盘；返程追向发射者不伤友军"
+ability_summary = "扩展回旋：下一盘每段90伤害、去程11米，回程判定宽度提高50%；仍每目标每段一次"
+role_summary = "通过走位安排回程；攻击周期长、路径可读"
+display_name = "回旋锯盘"
+kind = 0
+rarity = 3
+unlock_rule_id = &"unlock_boomerang_disc"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="burst_cannon"]
+script = ExtResource("2")
+id = &"burst_cannon"
+basic_summary = "炮塔：三连发炮\n伤害：40/发×3\n发射间隔：整组0.95秒\n射程：12米\n弹匣/填弹：3组 / 1.80\n重量：2\n机制：组内0.10秒；弹速26；整组预留预算，取消未发部分不退已消耗组"
+ability_summary = "同步齐射：准备0.4秒后三发并排，各65伤害，扇形10度；不再追加普通三连"
+role_summary = "节奏爆发；后两发需预测走位，整组有预算"
+display_name = "三连发炮"
+kind = 0
+rarity = 1
+unlock_rule_id = &"unlock_burst_cannon"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="pulse_cannon"]
+script = ExtResource("2")
+id = &"pulse_cannon"
+basic_summary = "炮塔：脉冲炮\n伤害：100/发\n发射间隔：0.85秒\n射程：11米\n弹匣/填弹：3 / 1.50\n重量：2\n机制：弹速20；命中击退0.4米，不穿墙；连续击退位移设上限"
+ability_summary = "冲击波：准备0.5秒后前方60度扇形、距离6米，90伤害，击退最多1米；墙阻挡"
+role_summary = "打断阵形；伤害中等，不能无限推人"
+display_name = "脉冲炮"
+kind = 0
+rarity = 2
+unlock_rule_id = &"unlock_pulse_cannon"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="repair_emitter"]
+script = ExtResource("2")
+id = &"repair_emitter"
+basic_summary = "炮塔：维修发射器\n伤害：敌25 / 友修复35\n发射间隔：0.50秒\n射程：9米\n弹匣/填弹：5 / 1.60\n重量：1\n机制：弹速20；同一弹只结算一次敌伤或友疗；过量治疗不计收益"
+ability_summary = "应急维修场：半径3米持续3秒，每名友军40HP/秒，不修复自己；可移动离开，过量不计收益"
+role_summary = "团队续航；单挑弱，集火和切后排反制"
+display_name = "维修发射器"
+kind = 0
+rarity = 1
+unlock_rule_id = &"unlock_repair_emitter"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="harpoon_launcher"]
+script = ExtResource("2")
+id = &"harpoon_launcher"
+basic_summary = "炮塔：牵引炮\n伤害：65/发\n发射间隔：1.40秒\n射程：8米\n弹匣/填弹：1 / 0.80\n重量：2\n机制：弹速24；命中牵引最多1.2米，墙阻止；不穿越其他实体"
+ability_summary = "重型牵引：0.5秒预警直线钩，90伤害，牵引最多2米；被墙挡住即停止，不造成挤压额外伤害"
+role_summary = "打破站位；空钩空窗大，墙阻挡、距离有上限"
+display_name = "牵引炮"
+kind = 0
+rarity = 2
+unlock_rule_id = &"unlock_harpoon_launcher"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="drone_launcher"]
+script = ExtResource("2")
+id = &"drone_launcher"
+basic_summary = "炮塔：无人机发射器\n伤害：每机12/次\n发射间隔：投放2.50秒\n射程：投放8 / 追击6米\n弹匣/填弹：2 / 3.00\n重量：3\n机制：机体50HP，寿命6秒，射击间隔0.6秒；普通最多2机，目标不共享重复命中豁免"
+ability_summary = "编队突击：额外投放2机，各50HP、寿命4秒、输出同普攻；总机数不超过4；死亡停止后续投放，已有机体死亡时清理"
+role_summary = "绕位持续施压；单机脆弱、发射者本体输出低"
+display_name = "无人机发射器"
+kind = 0
+rarity = 3
+unlock_rule_id = &"unlock_drone_launcher"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="light_tracks"]
+script = ExtResource("2")
+id = &"light_tracks"
+basic_summary = "耐久 / 速度 / 承载：500 / 6.0 / 2，现有\n加速 / 制动：18 / 24"
+ability_summary = "持续驱动：连续有效移动3秒后最高速＋10%；停下或受阻0.2秒后重置\n不叠层；最多6.6米/秒；通过实际位移判定，不靠按住方向刷增益"
+role_summary = "均衡入门；没有极端耐久或速度"
+display_name = "轻型履带"
+kind = 1
+rarity = 0
+unlock_rule_id = &"starter"
+starter = true
+basic_ready = true
+
+[sub_resource type="Resource" id="scout_wheels"]
+script = ExtResource("2")
+id = &"scout_wheels"
+basic_summary = "耐久 / 速度 / 承载：400 / 7.2 / 2，现有\n加速 / 制动：22 / 20"
+ability_summary = "转向保速：超过基础最高速60%时转向，持续0.6秒内保留90%原速度大小，仍受制动与碰撞约束\n不额外提高最高速；新增惯性仅在移动模型验收后启用"
+role_summary = "侧翼、追击；低血量，路线选择要求高"
+display_name = "侦察轮式"
+kind = 1
+rarity = 0
+unlock_rule_id = &"unlock_scout_wheels"
+starter = false
+basic_ready = true
+
+[sub_resource type="Resource" id="heavy_tracks"]
+script = ExtResource("2")
+id = &"heavy_tracks"
+basic_summary = "耐久 / 速度 / 承载：700 / 4.8 / 3，现有\n加速 / 制动：12 / 24"
+ability_summary = "稳定底座：敌方击退位移减少35%\n不减伤，不免疫牵引与减速；不改变主动移动"
+role_summary = "承载重武器、守点；转场慢"
+display_name = "重型履带"
+kind = 1
+rarity = 1
+unlock_rule_id = &"unlock_heavy_tracks"
+starter = false
+basic_ready = true
+
+[sub_resource type="Resource" id="assault_tracks"]
+script = ExtResource("2")
+id = &"assault_tracks"
+basic_summary = "耐久 / 速度 / 承载：550 / 6.2 / 2，提案\n加速 / 制动：22 / 22"
+ability_summary = "推进余势：连续同方向移动1秒后加速提高25%；转向超过60度或停下重置\n最高速度仍6.2；没有额外伤害或冲撞判定"
+role_summary = "抢位；倒车脱战效率低"
+display_name = "突击履带"
+kind = 1
+rarity = 1
+unlock_rule_id = &"unlock_assault_tracks"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="fortress_tracks"]
+script = ExtResource("2")
+id = &"fortress_tracks"
+basic_summary = "耐久 / 速度 / 承载：850 / 3.8 / 3，提案\n加速 / 制动：9 / 28"
+ability_summary = "架势稳定：静止1秒后获得正面90度范围15%减伤；移动或被位移解除\n范围/DOT不减免；至少承受1伤害；不叠加其他方向减伤"
+role_summary = "阵地防守；绕后和区域伤害反制，不能全向减伤"
+display_name = "堡垒履带"
+kind = 1
+rarity = 2
+unlock_rule_id = &"unlock_fortress_tracks"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="drift_wheels"]
+script = ExtResource("2")
+id = &"drift_wheels"
+basic_summary = "耐久 / 速度 / 承载：380 / 7.6 / 1，提案\n加速 / 制动：26 / 14"
+ability_summary = "惯性漂移：高速转向时侧向速度0.5秒衰减至零，操控仍可制动\n最高速7.6，承载1；低HP与刹停距离构成代价"
+role_summary = "极轻武器绕行；低承载、操控难"
+display_name = "漂移轮式"
+kind = 1
+rarity = 2
+unlock_rule_id = &"unlock_drift_wheels"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="all_terrain"]
+script = ExtResource("2")
+id = &"all_terrain"
+basic_summary = "耐久 / 速度 / 承载：520 / 5.8 / 2，提案\n加速 / 制动：18 / 24"
+ability_summary = "地形适应：地面减速惩罚减少50%\n仅作用地形标签，不影响敌方技能；不穿墙、不自动跳跃"
+role_summary = "复杂地图稳定移动；平地无速度优势"
+display_name = "越野轮履"
+kind = 1
+rarity = 1
+unlock_rule_id = &"unlock_all_terrain"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="hover_skirt"]
+script = ExtResource("2")
+id = &"hover_skirt"
+basic_summary = "耐久 / 速度 / 承载：450 / 6.6 / 2，提案\n加速 / 制动：14 / 12"
+ability_summary = "平滑滑移：地形阻力减少25%，松手滑行最长0.6秒\n不免疫地雷，不跨越墙或悬崖；减速技能仍正常作用"
+role_summary = "横向闪避；刹停差，不能飞越墙和地图边界"
+display_name = "气垫悬浮"
+kind = 1
+rarity = 2
+unlock_rule_id = &"unlock_hover_skirt"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="support_carrier"]
+script = ExtResource("2")
+id = &"support_carrier"
+basic_summary = "耐久 / 速度 / 承载：600 / 5.2 / 2，提案\n加速 / 制动：14 / 24"
+ability_summary = "维护回路：连续5秒未造成伤害、未受伤、未治疗后，每秒回复最大HP的1%，累计最多最大HP的15%；进入交火打断并重置等待\n每条生命只可恢复该15%额度，不刷技能能量"
+role_summary = "持久支援；缺少爆发机动，不能边抗伤无限回血"
+display_name = "支援运输"
+kind = 1
+rarity = 3
+unlock_rule_id = &"unlock_support_carrier"
+starter = false
+basic_ready = false
+
+[sub_resource type="Resource" id="siege_platform"]
+script = ExtResource("2")
+id = &"siege_platform"
+basic_summary = "耐久 / 速度 / 承载：650 / 4.4 / 3，提案\n加速 / 制动：10 / 28"
+ability_summary = "射击支撑：静止0.8秒后散布降低20%；移动或受强制位移解除\n仅对具有散布的武器；不增伤、不增程，精准武器不获额外收益"
+role_summary = "远程架炮；预警明显，侧翼切入反制；精准武器不额外叠增伤"
+display_name = "攻城平台"
+kind = 1
+rarity = 3
+unlock_rule_id = &"unlock_siege_platform"
+starter = false
+basic_ready = false
+
+[resource]
+script = ExtResource("1")
+entries = Array[ExtResource("2")]([SubResource("cannon"), SubResource("autocannon"), SubResource("scatter"), SubResource("bubble_cannon"), SubResource("cutting_laser"), SubResource("rocket_pod"), SubResource("rail_sniper"), SubResource("tesla_coil"), SubResource("mortar"), SubResource("howitzer"), SubResource("ricochet_gun"), SubResource("flame_projector"), SubResource("frost_projector"), SubResource("corrosive_launcher"), SubResource("mine_layer"), SubResource("guided_missile"), SubResource("boomerang_disc"), SubResource("burst_cannon"), SubResource("pulse_cannon"), SubResource("repair_emitter"), SubResource("harpoon_launcher"), SubResource("drone_launcher"), SubResource("light_tracks"), SubResource("scout_wheels"), SubResource("heavy_tracks"), SubResource("assault_tracks"), SubResource("fortress_tracks"), SubResource("drift_wheels"), SubResource("all_terrain"), SubResource("hover_skirt"), SubResource("support_carrier"), SubResource("siege_platform")])

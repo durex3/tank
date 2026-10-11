@@ -1,0 +1,543 @@
+[gd_scene load_steps=21 format=3]
+
+[sub_resource type="StandardMaterial3D" id="armor"]
+albedo_color = Color(0.89, 0.9, 0.83, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="dark"]
+albedo_color = Color(0.045, 0.065, 0.075, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="metal"]
+albedo_color = Color(0.26, 0.32, 0.34, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="gold"]
+albedo_color = Color(0.91, 0.6, 0.13, 1)
+roughness = 0.32
+metallic = 0.55
+
+[sub_resource type="StandardMaterial3D" id="green"]
+albedo_color = Color(0.31, 0.92, 0.28, 1)
+roughness = 0.65
+emission_enabled = true
+emission = Color(0.2, 0.7, 0.1, 1)
+emission_energy_multiplier = 0.5
+
+[sub_resource type="SphereMesh" id="mesh0"]
+material = SubResource("armor")
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="BoxMesh" id="mesh1"]
+material = SubResource("metal")
+size = Vector3(0.76, 0.28, 1.05)
+
+[sub_resource type="SphereMesh" id="mesh2"]
+material = SubResource("armor")
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="CylinderMesh" id="mesh3"]
+material = SubResource("metal")
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.09
+radial_segments = 16
+
+[sub_resource type="BoxMesh" id="mesh4"]
+material = SubResource("dark")
+size = Vector3(0.32, 0.18, 0.035)
+
+[sub_resource type="BoxMesh" id="mesh5"]
+material = SubResource("metal")
+size = Vector3(0.02, 0.15, 0.04)
+
+[sub_resource type="SphereMesh" id="mesh6"]
+material = SubResource("armor")
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="BoxMesh" id="mesh7"]
+material = SubResource("metal")
+size = Vector3(0.15, 0.14, 0.065)
+
+[sub_resource type="SphereMesh" id="mesh8"]
+material = SubResource("green")
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="CylinderMesh" id="mesh9"]
+material = SubResource("gold")
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.1
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="mesh10"]
+material = SubResource("dark")
+top_radius = 0.29
+bottom_radius = 0.29
+height = 0.26
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="mesh11"]
+material = SubResource("gold")
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.28
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="mesh12"]
+material = SubResource("armor")
+top_radius = 0.12
+bottom_radius = 0.12
+height = 0.29
+radial_segments = 16
+
+[sub_resource type="BoxMesh" id="mesh13"]
+material = SubResource("metal")
+size = Vector3(0.29, 0.055, 0.11)
+
+[sub_resource type="BoxMesh" id="mesh14"]
+material = SubResource("dark")
+size = Vector3(0.42, 0.12, 0.06)
+
+[node name="scout_wheels" type="Node3D"]
+
+[node name="Hull" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.4, 0)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 0.48, 1.25)
+mesh = SubResource("mesh0")
+
+[node name="LowerHull" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.31, 0)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh1")
+
+[node name="Deck" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.61, 0)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(0.88, 0.22, 1.08)
+mesh = SubResource("mesh2")
+
+[node name="TurretRing" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.7, 0)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh3")
+
+[node name="FrontGrille" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.43, -0.61)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh4")
+
+[node name="GrilleSlat0" type="MeshInstance3D" parent="."]
+position = Vector3(-0.12, 0.43, -0.635)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh5")
+
+[node name="GrilleSlat1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.06, 0.43, -0.635)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh5")
+
+[node name="GrilleSlat2" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.43, -0.635)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh5")
+
+[node name="GrilleSlat3" type="MeshInstance3D" parent="."]
+position = Vector3(0.06, 0.43, -0.635)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh5")
+
+[node name="GrilleSlat4" type="MeshInstance3D" parent="."]
+position = Vector3(0.12, 0.43, -0.635)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh5")
+
+[node name="FenderL" type="MeshInstance3D" parent="."]
+position = Vector3(-0.5, 0.58, 0)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(0.34, 0.16, 1.18)
+mesh = SubResource("mesh6")
+
+[node name="LampHousingL" type="MeshInstance3D" parent="."]
+position = Vector3(-0.32, 0.48, -0.59)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh7")
+
+[node name="LampL" type="MeshInstance3D" parent="."]
+position = Vector3(-0.32, 0.49, -0.63)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(0.08, 0.08, 0.035)
+mesh = SubResource("mesh8")
+
+[node name="TowLoopL" type="MeshInstance3D" parent="."]
+position = Vector3(-0.28, 0.58, -0.48)
+rotation = Vector3(1.5707963267948966, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh9")
+
+[node name="TyreL-1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.29, -0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh10")
+
+[node name="RimL-1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.59, 0.29, -0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh11")
+
+[node name="HubL-1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.6, 0.29, -0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh12")
+
+[node name="GripL-10" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.565, -0.43)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL-11" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.5124796734531105, -0.26835905561956985)
+rotation = Vector3(0.6283185307179586, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL-12" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.37497967345311056, -0.16845945801883278)
+rotation = Vector3(1.2566370614359172, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL-13" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.20502032654688945, -0.16845945801883272)
+rotation = Vector3(1.8849555921538759, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL-14" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.06752032654688944, -0.26835905561956985)
+rotation = Vector3(2.5132741228718345, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL-15" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.014999999999999958, -0.42999999999999994)
+rotation = Vector3(3.141592653589793, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL-16" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.06752032654688941, -0.59164094438043)
+rotation = Vector3(3.7699111843077517, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL-17" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.2050203265468894, -0.6915405419811672)
+rotation = Vector3(4.39822971502571, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL-18" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.37497967345311045, -0.6915405419811673)
+rotation = Vector3(5.026548245743669, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL-19" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.5124796734531105, -0.5916409443804302)
+rotation = Vector3(5.654866776461628, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="TyreL1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.29, 0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh10")
+
+[node name="RimL1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.59, 0.29, 0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh11")
+
+[node name="HubL1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.6, 0.29, 0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh12")
+
+[node name="GripL10" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.565, 0.43)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL11" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.5124796734531105, 0.5916409443804301)
+rotation = Vector3(0.6283185307179586, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL12" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.37497967345311056, 0.6915405419811672)
+rotation = Vector3(1.2566370614359172, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL13" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.20502032654688945, 0.6915405419811673)
+rotation = Vector3(1.8849555921538759, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL14" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.06752032654688944, 0.5916409443804301)
+rotation = Vector3(2.5132741228718345, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL15" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.014999999999999958, 0.43000000000000005)
+rotation = Vector3(3.141592653589793, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL16" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.06752032654688941, 0.2683590556195699)
+rotation = Vector3(3.7699111843077517, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL17" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.2050203265468894, 0.16845945801883278)
+rotation = Vector3(4.39822971502571, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL18" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.37497967345311045, 0.16845945801883272)
+rotation = Vector3(5.026548245743669, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripL19" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.5124796734531105, 0.2683590556195698)
+rotation = Vector3(5.654866776461628, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="FenderR" type="MeshInstance3D" parent="."]
+position = Vector3(0.5, 0.58, 0)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(0.34, 0.16, 1.18)
+mesh = SubResource("mesh6")
+
+[node name="LampHousingR" type="MeshInstance3D" parent="."]
+position = Vector3(0.32, 0.48, -0.59)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh7")
+
+[node name="LampR" type="MeshInstance3D" parent="."]
+position = Vector3(0.32, 0.49, -0.63)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(0.08, 0.08, 0.035)
+mesh = SubResource("mesh8")
+
+[node name="TowLoopR" type="MeshInstance3D" parent="."]
+position = Vector3(0.28, 0.58, -0.48)
+rotation = Vector3(1.5707963267948966, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh9")
+
+[node name="TyreR-1" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.29, -0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh10")
+
+[node name="RimR-1" type="MeshInstance3D" parent="."]
+position = Vector3(0.59, 0.29, -0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh11")
+
+[node name="HubR-1" type="MeshInstance3D" parent="."]
+position = Vector3(0.6, 0.29, -0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh12")
+
+[node name="GripR-10" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.565, -0.43)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR-11" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.5124796734531105, -0.26835905561956985)
+rotation = Vector3(0.6283185307179586, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR-12" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.37497967345311056, -0.16845945801883278)
+rotation = Vector3(1.2566370614359172, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR-13" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.20502032654688945, -0.16845945801883272)
+rotation = Vector3(1.8849555921538759, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR-14" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.06752032654688944, -0.26835905561956985)
+rotation = Vector3(2.5132741228718345, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR-15" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.014999999999999958, -0.42999999999999994)
+rotation = Vector3(3.141592653589793, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR-16" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.06752032654688941, -0.59164094438043)
+rotation = Vector3(3.7699111843077517, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR-17" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.2050203265468894, -0.6915405419811672)
+rotation = Vector3(4.39822971502571, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR-18" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.37497967345311045, -0.6915405419811673)
+rotation = Vector3(5.026548245743669, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR-19" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.5124796734531105, -0.5916409443804302)
+rotation = Vector3(5.654866776461628, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="TyreR1" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.29, 0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh10")
+
+[node name="RimR1" type="MeshInstance3D" parent="."]
+position = Vector3(0.59, 0.29, 0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh11")
+
+[node name="HubR1" type="MeshInstance3D" parent="."]
+position = Vector3(0.6, 0.29, 0.43)
+rotation = Vector3(0, 0, 1.5707963267948966)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh12")
+
+[node name="GripR10" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.565, 0.43)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR11" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.5124796734531105, 0.5916409443804301)
+rotation = Vector3(0.6283185307179586, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR12" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.37497967345311056, 0.6915405419811672)
+rotation = Vector3(1.2566370614359172, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR13" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.20502032654688945, 0.6915405419811673)
+rotation = Vector3(1.8849555921538759, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR14" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.06752032654688944, 0.5916409443804301)
+rotation = Vector3(2.5132741228718345, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR15" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.014999999999999958, 0.43000000000000005)
+rotation = Vector3(3.141592653589793, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR16" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.06752032654688941, 0.2683590556195699)
+rotation = Vector3(3.7699111843077517, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR17" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.2050203265468894, 0.16845945801883278)
+rotation = Vector3(4.39822971502571, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR18" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.37497967345311045, 0.16845945801883272)
+rotation = Vector3(5.026548245743669, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="GripR19" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.5124796734531105, 0.2683590556195698)
+rotation = Vector3(5.654866776461628, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh13")
+
+[node name="RearExhaust" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.4, 0.64)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh14")
+
+[node name="TurretSocket" type="Marker3D" parent="."]
+position = Vector3(0, 0.76, 0)

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://definitions/weapon_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"autocannon"
+damage = 25
+fire_interval_s = 0.16
+range_m = 11.0
+projectile_speed = 28.0
+pellet_count = 1
+spread_deg = 0.0
+weight = 1
+ability_id = &"overdrive"
+continuous_fire = true

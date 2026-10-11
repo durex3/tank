@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "date": "2026-10-11",
+  "role": "static_hangar_illustration_not_3d",
+  "desktop_review": "passed",
+  "android_review": "pending",
+  "assets": [
+    {
+      "weapon": "cannon",
+      "chassis": "light_tracks",
+      "path": "assets/tanks/cannon-hero-v1.png",
+      "origin": "user-provided existing asset; original provenance retained, other origin details unverified"
+    },
+    {
+      "weapon": "autocannon",
+      "chassis": "light_tracks",
+      "path": "assets/tanks/rapid-hero-v1.png",
+      "origin": "user-provided existing asset; original provenance retained, other origin details unverified"
+    },
+    {
+      "weapon": "scatter",
+      "chassis": "light_tracks",
+      "path": "assets/tanks/scatter-hero-v1.png",
+      "origin": "user-provided existing asset; original provenance retained, other origin details unverified"
+    },
+    {
+      "weapon": "cannon",
+      "chassis": "heavy_tracks",
+      "path": "assets/tanks/heavy-hero-v1.png",
+      "origin": "user-provided existing asset; original provenance retained, other origin details unverified"
+    },
+    {
+      "weapon": "autocannon",
+      "chassis": "heavy_tracks",
+      "path": "assets/tanks/rapid-heavy-hero-v1.png",
+      "origin": "user-provided existing asset; original provenance retained, other origin details unverified"
+    },
+    {
+      "weapon": "scatter",
+      "chassis": "heavy_tracks",
+      "path": "assets/tanks/scatter-heavy-hero-v1.png",
+      "origin": "user-provided existing asset; original provenance retained, other origin details unverified"
+    },
+    {
+      "weapon": "cannon",
+      "chassis": "scout_wheels",
+      "path": "assets/generated/hangar/cannon-scout-hero-v1.png",
+      "origin": "built-in image_gen; prompts in assets/generated/hangar/provenance.json"
+    },
+    {
+      "weapon": "autocannon",
+      "chassis": "scout_wheels",
+      "path": "assets/generated/hangar/autocannon-scout-hero-v1.png",
+      "origin": "built-in image_gen; prompts in assets/generated/hangar/provenance.json"
+    },
+    {
+      "weapon": "scatter",
+      "chassis": "scout_wheels",
+      "path": "assets/generated/hangar/scatter-scout-hero-v1.png",
+      "origin": "built-in image_gen; prompts in assets/generated/hangar/provenance.json"
+    }
+  ]
+}

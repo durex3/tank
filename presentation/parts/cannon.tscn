@@ -1,0 +1,200 @@
+[gd_scene load_steps=17 format=3]
+
+[sub_resource type="StandardMaterial3D" id="armor"]
+albedo_color = Color(0.89, 0.9, 0.83, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="dark"]
+albedo_color = Color(0.045, 0.065, 0.075, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="metal"]
+albedo_color = Color(0.26, 0.32, 0.34, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="gold"]
+albedo_color = Color(0.91, 0.6, 0.13, 1)
+roughness = 0.32
+metallic = 0.55
+
+[sub_resource type="StandardMaterial3D" id="green"]
+albedo_color = Color(0.31, 0.92, 0.28, 1)
+roughness = 0.65
+emission_enabled = true
+emission = Color(0.2, 0.7, 0.1, 1)
+emission_energy_multiplier = 0.5
+
+[sub_resource type="SphereMesh" id="mesh0"]
+material = SubResource("armor")
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="CylinderMesh" id="mesh1"]
+material = SubResource("metal")
+top_radius = 0.23
+bottom_radius = 0.23
+height = 0.15
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="mesh2"]
+material = SubResource("gold")
+top_radius = 0.18
+bottom_radius = 0.18
+height = 0.055
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="mesh3"]
+material = SubResource("armor")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 0.055
+radial_segments = 16
+
+[sub_resource type="SphereMesh" id="mesh4"]
+material = SubResource("gold")
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="mesh5"]
+material = SubResource("green")
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="BoxMesh" id="mesh6"]
+material = SubResource("metal")
+size = Vector3(0.025, 0.06, 0.12)
+
+[sub_resource type="CylinderMesh" id="mesh7"]
+material = SubResource("metal")
+top_radius = 0.115
+bottom_radius = 0.115
+height = 0.63
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="mesh8"]
+material = SubResource("armor")
+top_radius = 0.14950000000000002
+bottom_radius = 0.14950000000000002
+height = 0.24
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="mesh9"]
+material = SubResource("gold")
+top_radius = 0.161
+bottom_radius = 0.161
+height = 0.13
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="mesh10"]
+material = SubResource("dark")
+top_radius = 0.10005
+bottom_radius = 0.10005
+height = 0.006
+radial_segments = 16
+
+[node name="cannon" type="Node3D"]
+
+[node name="Housing" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.025, 0.04)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(0.82, 0.43, 0.78)
+mesh = SubResource("mesh0")
+
+[node name="Mantlet" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.02, -0.32)
+rotation = Vector3(1.5707963267948966, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh1")
+
+[node name="Hatch" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.25, 0.1)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh2")
+
+[node name="HatchLid" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.275, 0.1)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh3")
+
+[node name="OpticBase" type="MeshInstance3D" parent="."]
+position = Vector3(0.27, 0.18, -0.08)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(0.17, 0.17, 0.2)
+mesh = SubResource("mesh4")
+
+[node name="Optic" type="MeshInstance3D" parent="."]
+position = Vector3(0.27, 0.18, -0.18)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(0.1, 0.1, 0.08)
+mesh = SubResource("mesh5")
+
+[node name="SideVent-10" type="MeshInstance3D" parent="."]
+position = Vector3(-0.39, -0.02, 0.16)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh6")
+
+[node name="SideVent-11" type="MeshInstance3D" parent="."]
+position = Vector3(-0.39, -0.02, 0.03)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh6")
+
+[node name="SideVent-12" type="MeshInstance3D" parent="."]
+position = Vector3(-0.39, -0.02, -0.1)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh6")
+
+[node name="SideVent10" type="MeshInstance3D" parent="."]
+position = Vector3(0.39, -0.02, 0.16)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh6")
+
+[node name="SideVent11" type="MeshInstance3D" parent="."]
+position = Vector3(0.39, -0.02, 0.03)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh6")
+
+[node name="SideVent12" type="MeshInstance3D" parent="."]
+position = Vector3(0.39, -0.02, -0.1)
+rotation = Vector3(0, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh6")
+
+[node name="Barrel0" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.02, -0.63)
+rotation = Vector3(1.5707963267948966, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh7")
+
+[node name="BarrelSleeve0" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.02, -0.44)
+rotation = Vector3(1.5707963267948966, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh8")
+
+[node name="MuzzleRing0" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.02, -0.96)
+rotation = Vector3(1.5707963267948966, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh9")
+
+[node name="Bore0" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.02, -1.028)
+rotation = Vector3(1.5707963267948966, 0, 0)
+scale = Vector3(1, 1, 1)
+mesh = SubResource("mesh10")
+
+[node name="Muzzle" type="Marker3D" parent="."]
+position = Vector3(0, 0.02, -1.05)

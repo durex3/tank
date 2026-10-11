@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChassisDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://definitions/chassis_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"scout_wheels"
+max_hp = 400
+move_speed = 7.2
+capacity = 2
+passive_id = &"turn_retention"

@@ -1,0 +1,28 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-10-11",
+  "purpose": "Transparent static hangar illustration; not a 3D model",
+  "references": [
+	"assets/tanks/roller-hero-v1.png",
+	"assets/tanks/cannon-hero-v1.png",
+	"assets/tanks/rapid-hero-v1.png",
+    "assets/tanks/scatter-hero-v1.png"
+  ],
+  "images": [
+	{
+	  "id": "cannon",
+	  "prompt": "Use case: precise-object-edit. Production asset: transparent hangar illustration for a four-wheel scout tank. Image 1 is the exact turret, identity, material, lighting and three-quarter camera reference. Image 2 is the four-wheel chassis reference ONLY. Preserve image 1's single large white cannon barrel with a gold circular muzzle, rounded ivory ceramic armor, gold brass fittings, charcoal rubber, green lenses, and clean high quality stylized 3D render. Replace ONLY the tracked chassis with a compact agile four-wheel scout chassis: four large separate chunky black rubber off-road tires with ivory and gold hubs, two on each side, visibly separated, no continuous tracks. Remove the bulldozer blade/plow entirely; use a compact ivory sloped front armor plate with two green headlights. No wings, no thrusters, no new weapons. Whole assembled tank, same camera as image 1, facing front-right, all wheels and gun completely inside the frame with generous 8% transparent margin. Soft upper-left studio lighting, crisp silhouette. Truly transparent background, no ground plane, no platform, no scene, no text, no labels, no watermark. Match the existing artwork family rather than changing its styling.",
+	  "file": "assets/generated/hangar/cannon-scout-hero-v1.png"
+	},
+	{
+	  "id": "autocannon",
+	  "prompt": "Use case: precise-object-edit. Production asset: transparent hangar illustration for a four-wheel scout tank. Image 1 is the exact turret, identity, material, lighting and three-quarter camera reference. Image 2 is the four-wheel chassis reference ONLY. Preserve image 1's two thin parallel charcoal autocannon barrels with gold perforated muzzle brakes, and the existing ammunition belt, rounded ivory ceramic armor, gold brass fittings, charcoal rubber, green lenses, and clean high quality stylized 3D render. Replace ONLY the tracked chassis with a compact agile four-wheel scout chassis: four large separate chunky black rubber off-road tires with ivory and gold hubs, two on each side, visibly separated, no continuous tracks. Remove the bulldozer blade/plow entirely; use a compact ivory sloped front armor plate with two green headlights. No wings, no thrusters, no new weapons. Whole assembled tank, same camera as image 1, facing front-right, all wheels and gun completely inside the frame with generous 8% transparent margin. Soft upper-left studio lighting, crisp silhouette. Truly transparent background, no ground plane, no platform, no scene, no text, no labels, no watermark. Match the existing artwork family rather than changing its styling.",
+	  "file": "assets/generated/hangar/autocannon-scout-hero-v1.png"
+	},
+	{
+	  "id": "scatter",
+	  "prompt": "Use case: precise-object-edit. Production asset: transparent hangar illustration for a four-wheel scout tank. Image 1 is the exact turret, identity, material, lighting and three-quarter camera reference. Image 2 is the four-wheel chassis reference ONLY. Preserve image 1's two short thick white shotgun barrels with wide gold circular muzzles, rounded ivory ceramic armor, gold brass fittings, charcoal rubber, green lenses, and clean high quality stylized 3D render. Replace ONLY the tracked chassis with a compact agile four-wheel scout chassis: four large separate chunky black rubber off-road tires with ivory and gold hubs, two on each side, visibly separated, no continuous tracks. Remove the bulldozer blade/plow entirely; use a compact ivory sloped front armor plate with two green headlights. No wings, no thrusters, no new weapons. Whole assembled tank, same camera as image 1, facing front-right, all wheels and gun completely inside the frame with generous 8% transparent margin. Soft upper-left studio lighting, crisp silhouette. Truly transparent background, no ground plane, no platform, no scene, no text, no labels, no watermark. Match the existing artwork family rather than changing its styling.",
+	  "file": "assets/generated/hangar/scatter-scout-hero-v1.png"
+	}
+  ]
+}

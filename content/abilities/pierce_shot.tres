@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AbilityDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://definitions/ability_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"pierce_shot"
+damage = 180
+duration_s = 0
