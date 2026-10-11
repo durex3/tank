@@ -45,3 +45,9 @@
 - tests/、tools/check.mjs：自动回归；tools/capture_hangar_workbench.gd：实际机库截图。
 
 本次只更新交接与提交现有实现，不声称026已开发完成。新增实现完成后创建026功能记录并同步索引/计划。
+
+## 本次交付的同步状态
+
+本地已建立main分支并提交。推送origin（https://github.com/durex3/tank.git）时，当前执行环境连接GitHub 443失败，因此不能假定公司已能从远程拉取本次代码。网络可用后运行git push -u origin main；如远端存在其他历史，先fetch核对并合并，禁止强推覆盖。
+
+另备份完整Git历史到artifacts/tank-handoff.bundle。可携带此文件至公司后运行git clone tank-handoff.bundle tank，再在克隆目录设置origin为上述GitHub地址并正常同步。bundle包含代码、素材和文档，不含个人存档及Godot缓存。
