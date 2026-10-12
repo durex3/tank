@@ -80,3 +80,5 @@ Android触控、安全区、字体、透明过绘制、热稳定及真机导出�
 ## 提交与跨机器同步
 
 本次按用户要求提交041—053全部现有实现及文档。不提交.godot、artifacts、个人存档、密钥、构建包。Git提交与远程推送是独立步骤；本交接不将本地提交冒充已推送。回家从远端获取前，确认本次提交已同步；网络失败时保留本地提交，禁止强推覆盖远端历史。
+
+本次实际同步结果：实现提交3947792已创建，git push origin main失败：当前终端无法读取GitHub HTTPS用户名（could not read Username / Device not configured）。尚未推送。可在已登录GitHub的终端运行git push origin main；或携带artifacts/tank-handoff.bundle至家中，使用git clone tank-handoff.bundle tank-home恢复完整仓库历史。bundle不含个人存档/截图/缓存。
