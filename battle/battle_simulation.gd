@@ -15,6 +15,7 @@ var rival: TankActor
 var rival_weapon: WeaponDef = preload("res://content/weapons/cannon.tres")
 var rival_controller := WeaponController.new()
 var lives := TrainingLives.new()
+var abilities := AbilitySystem.new()
 var _rival_command := PlayerCommand.new()
 var _rival_sequence: int = -1
 var _rival_input_tick: int = -100
@@ -57,8 +58,8 @@ func step() -> void:
 	if rival != null:
 		if tick - _rival_input_tick > INPUT_TIMEOUT_TICKS:
 			_rival_command = PlayerCommand.new()
-		rival.step(_rival_command, 1.0 / BattleClock.TICKS_PER_SECOND)
-	actor.step(_command, 1.0 / BattleClock.TICKS_PER_SECOND)
+		_move_actor(rival,_rival_command,1)
+	_move_actor(actor,_command,session_epoch)
 	_step_combat()
 	snapshot_ready.emit(actor.state)
 	if rival != null:
@@ -82,9 +83,11 @@ func _step_targets() -> void:
 		target.step_motion()
 
 func _step_combat() -> void:
-	WeaponAttack.execute(actor, weapon, weapon_controller, _command, tick, projectiles, events)
+	if not abilities.attack(actor,weapon_controller,tick,projectiles,events,targets):
+		WeaponAttack.execute(actor, weapon, weapon_controller, _command, tick, projectiles, events,abilities.interval(actor),actor.ability.phase == &"storm")
 	if rival != null:
-		WeaponAttack.execute(rival, rival_weapon, rival_controller, _rival_command, tick, projectiles, events)
+		if not abilities.attack(rival,rival_controller,tick,projectiles,events,targets):
+			WeaponAttack.execute(rival, rival_weapon, rival_controller, _rival_command, tick, projectiles, events,abilities.interval(rival),rival.ability.phase == &"storm")
 	var space := actor.get_world_3d().direct_space_state
 	projectiles.step(space, tick)
 	var results := damage_resolver.resolve_batch(projectiles.hits)
@@ -105,12 +108,13 @@ func _step_combat() -> void:
 			for target: TrainingTarget in targets:
 				if target.state.entity_id == result.target_id:
 					target.state.respawn_tick = tick + training_rules.rebuild_ticks
+	abilities.after_damage(results,tick,projectiles,events)
 	if match_runtime != null:
 		match_runtime.commit_tick(tick, results, events)
 	var remaining := maxi(0, weapon_controller.next_fire_tick - tick)
 	if remaining != _last_cooldown_remaining:
 		_last_cooldown_remaining = remaining
-		events.publish(&"cooldown_changed", tick, {"remaining_ticks": remaining, "interval_ticks": actor.stats.interval_ticks})
+		events.publish(&"cooldown_changed", tick, {"remaining_ticks": remaining, "interval_ticks": abilities.interval(actor)})
 
 func replace_controller() -> int:
 	session_epoch += 1
@@ -138,7 +142,7 @@ func enqueue_rival_command(command: PlayerCommand) -> bool:
 	if not command.is_valid() or command.sequence <= _rival_sequence or command.client_tick != tick + 1:
 		return false
 	_rival_command = PlayerCommand.new()
-	for field: String in ["sequence", "client_tick", "move_x", "move_z", "aim_yaw", "fire_held", "fire_request_id"]:
+	for field: String in ["sequence", "client_tick", "move_x", "move_z", "aim_yaw", "fire_held", "fire_request_id", "ability_request_id"]:
 		_rival_command.set(field, command.get(field))
 	_rival_sequence = command.sequence
 	_rival_input_tick = tick
@@ -146,3 +150,9 @@ func enqueue_rival_command(command: PlayerCommand) -> bool:
 
 func _match_finished() -> bool:
 	return match_runtime != null and match_runtime.phase == MatchRuntime.Phase.FINISHED
+
+func _move_actor(tank: TankActor, command: PlayerCommand, epoch: int) -> void:
+	var before: Vector3 = tank.position
+	var forced: bool = abilities.before_move(tank,command,tick,epoch,projectiles,events)
+	tank.step(command,1.0/BattleClock.TICKS_PER_SECOND)
+	abilities.after_move(tank,command,before,forced)

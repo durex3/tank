@@ -14,7 +14,7 @@ func _initialize() -> void:
 	var weapons: Array[WeaponDef] = []
 	var chassis_defs: Array[ChassisDef] = []
 	var abilities: Array[AbilityDef] = []
-	for id: String in ["pierce_shot", "overdrive", "ram"]:
+	for id: String in ["breach_shot", "bullet_storm", "shockwave_blast"]:
 		abilities.append(load("res://content/abilities/" + id + ".tres") as AbilityDef)
 	for id: String in ["cannon", "autocannon", "scatter"]:
 		weapons.append(load("res://content/weapons/" + id + ".tres") as WeaponDef)

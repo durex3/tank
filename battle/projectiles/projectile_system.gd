@@ -9,9 +9,10 @@ var active: Array[ProjectileState] = []
 var hits: Array[HitEvent] = []
 var impacts: Array[Dictionary] = []
 var _next_id: int = 0
+var reservations: Dictionary = {}
 
 func spawn(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, weapon: WeaponDef, owner_id: int, request_id: int, tick: int, muzzle_yaw: float = NAN, team_id: int = 0) -> ProjectileState:
-	if active.size() >= MAX_PROJECTILES:
+	if active.size() + reservations.size() >= MAX_PROJECTILES:
 		return null
 	_next_id += 1
 	var shot := ProjectileState.new()
@@ -37,7 +38,7 @@ func spawn(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, weapon
 
 func spawn_volley(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, offsets: PackedFloat32Array, weapon: WeaponDef, owner_id: int, request_id: int, tick: int, team_id: int = 0) -> Array[ProjectileState]:
 	var shots: Array[ProjectileState] = []
-	if offsets.is_empty() or active.size() + offsets.size() > MAX_PROJECTILES:
+	if offsets.is_empty() or active.size() + reservations.size() + offsets.size() > MAX_PROJECTILES:
 		return shots
 	for offset: float in offsets:
 		if not is_finite(offset):
@@ -60,14 +61,15 @@ func _sweep(space: PhysicsDirectSpaceState3D, shot: ProjectileState, destination
 	var query := PhysicsRayQueryParameters3D.create(shot.position, destination, 5)
 	query.collide_with_areas = true
 	query.hit_from_inside = true
+	query.exclude = shot.excluded
 	# Ignore friendly/corpse hurtboxes and continue to the next real obstruction.
 	for iteration: int in range(128):
-		var collision := space.intersect_ray(query)
+		var collision: Dictionary = _collision(space,query,shot.radius)
 		if collision.is_empty():
 			shot.position = destination
 			return
 		var hurtbox := collision.collider as Damageable
-		if hurtbox != null and (hurtbox.state.team_id == shot.team_id or hurtbox.state.hp <= 0):
+		if hurtbox != null and (hurtbox.state.team_id == shot.team_id or hurtbox.state.hp <= 0 or shot.hit_lives.has("%d:%d" % [hurtbox.state.entity_id,hurtbox.state.life_index])):
 			var excluded: Array[RID] = query.exclude
 			excluded.append(hurtbox.get_rid())
 			query.exclude = excluded
@@ -79,12 +81,80 @@ func _sweep(space: PhysicsDirectSpaceState3D, shot: ProjectileState, destination
 			var hit := HitEvent.new()
 			hit.projectile_id = shot.projectile_id
 			hit.source_id = shot.owner_id
+			hit.source_life = shot.owner_life
 			hit.team_id = shot.team_id
 			hit.target = hurtbox.state
 			hit.target_life = hurtbox.state.life_index
 			hit.damage = shot.damage
 			hit.position = shot.position
+			hit.direction = shot.direction
+			hit.ability_damage = shot.ability_damage
+			hit.travel_order = shot.hit_lives.size()
 			hits.append(hit)
+			if not shot.pierce_damage.is_empty():
+				shot.hit_lives["%d:%d" % [hurtbox.state.entity_id,hurtbox.state.life_index]] = true
+				shot.excluded.append(hurtbox.get_rid())
+				if shot.hit_lives.size() < shot.pierce_damage.size():
+					shot.damage = shot.pierce_damage[shot.hit_lives.size()]
+					shot.active = true
+					query.exclude = shot.excluded
+					continue
 		return
 	# Exhausted overlap budget: stop, never tunnel silently.
 	shot.active = false
+
+func allocate_id() -> int:
+	_next_id += 1
+	return _next_id
+
+func reserve(owner_id: int) -> bool:
+	if reservations.has(owner_id) or active.size()+reservations.size() >= MAX_PROJECTILES: return false
+	reservations[owner_id] = true
+	return true
+
+func release_reservation(owner_id: int) -> void:
+	reservations.erase(owner_id)
+
+func spawn_breach(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, owner_id: int, team_id: int, tick: int, rules: BasicAbilityRules, owner_life: int = 0) -> ProjectileState:
+	if active.size()+reservations.size() >= MAX_PROJECTILES: return null
+	var shot := ProjectileState.new()
+	shot.projectile_id = allocate_id()
+	shot.owner_id = owner_id
+	shot.owner_life = owner_life
+	shot.team_id = team_id
+	shot.spawn_tick = tick
+	shot.speed = rules.breach_speed
+	shot.remaining_range = maxf(0.0,rules.breach_range-MUZZLE_OFFSET)
+	shot.lifetime_ticks = BattleClock.seconds_to_ticks(rules.breach_range/rules.breach_speed)+1
+	shot.damage = rules.breach_damage[0]
+	shot.pierce_damage = rules.breach_damage.duplicate()
+	shot.ability_damage = true
+	shot.radius = rules.breach_radius
+	shot.direction = Vector3(sin(yaw),0,-cos(yaw))
+	shot.position = origin+Vector3.UP*SHOT_HEIGHT
+	shot.previous_position = shot.position
+	_sweep(space,shot,shot.position+shot.direction*MUZZLE_OFFSET)
+	if shot.active: active.append(shot)
+	return shot
+
+func _collision(space: PhysicsDirectSpaceState3D, ray: PhysicsRayQueryParameters3D, radius: float) -> Dictionary:
+	if radius <= 0.0: return space.intersect_ray(ray)
+	var query := PhysicsShapeQueryParameters3D.new()
+	var sphere := SphereShape3D.new()
+	sphere.radius = radius
+	query.shape = sphere
+	query.transform.origin = ray.from
+	query.motion = ray.to-ray.from
+	query.collision_mask = ray.collision_mask
+	query.collide_with_areas = true
+	query.exclude = ray.exclude
+	var initial: Dictionary = space.get_rest_info(query)
+	if not initial.is_empty():
+		return {"collider":instance_from_id(initial.collider_id),"position":initial.point}
+	var fractions: PackedFloat32Array = space.cast_motion(query)
+	if fractions.is_empty() or fractions[0] >= 1.0: return {}
+	query.transform.origin += query.motion*minf(1.0,fractions[1]+0.0001)
+	query.motion = Vector3.ZERO
+	var rest: Dictionary = space.get_rest_info(query)
+	if rest.is_empty(): return {}
+	return {"collider":instance_from_id(rest.collider_id),"position":rest.point}

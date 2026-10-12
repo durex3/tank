@@ -1,84 +1,82 @@
-# 开发交接（2026-10-12）
+# 开发交接（2026-10-12 晚间续开发）
 
-## 当前状态
+## 当前版本
 
-代码实现至032。32项部件目录、稀有度、独立炮塔/底盘分页、六种基础部件解锁与1—10级成长、配装草稿/撤销/应用及存档已实现。已有3炮塔×3底盘的普通攻击和基础移动；炮塔大招、底盘被动仍未实现，不能移除待实现标记。
+实现至053，下一独立功能编号054。当前批次041—053包含六能力设计/实现、训练场清晰度与界面、技能特效及独立部件展示比例修复。历史过程和失败记录查对应功能文档，不使用旧交接中的033能力提案。
 
-中间操作：已拥有显示升级，资格不足置灰；未拥有可解锁显示解锁，否则未解锁。右侧装配操作：尚未拥有/已应用/应用改装，超出领域承载限制时无法装配。金币不足单独说明。
+32项部件目录可浏览；已有三炮塔×三底盘支持成长、载重、草稿/撤销/应用、持久化、普通攻击及六能力训练。其他26项部件不代表实战已实现，轮到开发时重新设计能力。九种组合不代表完整3v3已完成。
 
-最近执行 node tools/check.mjs，21项全部PASS。Windows Compatibility截图已审阅；Android真机未验收。运行缓存、个人存档和截图不提交。
+现有模型映射presentation/parts/card_finished，用户已确认本轮模型作为收尾版。静态整车使用同源部件图拼装，真实3D入口独立；053只归一化卡片/升级窗口展示，未改变整车比例。PNG不是3D。
 
-## 明天启动
+## 今晚启动步骤
 
-1. 从 https://github.com/durex3/tank.git 获取代码，打开 project.godot（Godot 4.7.2 Compatibility）。
-2. 先读 AGENTS.md、docs/rules/architecture.md、docs/rules/code-style.md、docs/development-plan.md、本交接文档。
-3. 安装Node.js；Godot路径不同，设置环境变量 GODOT_BIN 为本机console可执行文件，再运行 node tools/check.mjs。
-4. F5进入机库，检查炮塔/底盘、解锁/升级、撤销/应用。新机器没有旧个人存档，首轮补给300金币；不要复制测试存档当正式数据。
+1. 使用Godot 4.7.2 Compatibility打开project.godot；仓库origin为https://github.com/durex3/tank.git。
+2. 先读AGENTS.md、docs/rules/architecture.md、docs/rules/code-style.md、docs/development-plan.md及相关功能记录。
+3. 设置本机Godot路径再运行检查；toolchain.lock的默认路径为Windows，macOS不能直接使用该默认路径。
+4. F5进入机库。新机器个人存档不会随Git同步，首轮补给300金币；不要将测试存档当正式数据。选择已就绪配装进入试炼。
+5. 试炼用Q或右下技能按钮释放；训练补能按钮只补能，不刷新8秒最短释放间隔。暂停/失焦冻结模拟，恢复须显式继续。
 
-## 下一批033：被动与大招（用户已同意，尚未实现）
+macOS验收命令：
 
-先实现已开放六部件，覆盖九种组合，再扩展其他武器和3v3。以《炮塔与底盘类型设计》第13.3—13.4节为起点，落地前核对现有Resource引用。
+```sh
+GODOT_BIN=/Applications/Godot.app/Contents/MacOS/Godot node tools/check.mjs
+```
 
-|来源|能力|首轮设计边界|
+Windows PowerShell示例（替换本机路径）：
+
+```powershell
+$env:GODOT_BIN = 'C:\Tools\Godot_v4.7.2-stable_win64_console.exe'
+node tools/check.mjs
+```
+
+## 六能力当前行为
+
+最终参数由definitions/basic_ability_rules.gd及content/rules/basic_abilities.tres提供，设计依据docs/design/041-基础六能力重设计.md；本表帮助定位，不另建数值实现。
+
+|部件|能力|当前关键行为|
 |---|---|---|
-|cannon|穿甲重弹|下一合法攻击180伤害，最多2敌人、第二个60%，5秒待发，不穿墙|
-|autocannon|过载弹链|3秒内6tick间隔，随后0.8秒禁止普攻|
-|scatter|聚束齐射|下一发5颗各36伤害、总散布8度、原射程，5秒待发；迁移旧ram引用|
-|light_tracks|持续驱动|实际有效移动3秒后最高速+10%，停下或受阻0.2秒重置|
-|scout_wheels|转向保速|达到基础最高速60%后转向，0.6秒保留90%原速度；碰撞/制动继续有效，不额外提高最高速|
-|heavy_tracks|稳定底座|敌方击退位移减35%，不减伤，不免疫牵引/减速；须先有真实击退通路才能标已实现|
+|轻型履带|巡航推进|实际自主移动达基础速度50%，持续90tick后速度×1.25；停止/受阻12tick清除|
+|重型履带|迎击装甲|静止36tick展开，正面±60°直击减伤30%；移动意图立即解除，不防范围伤害|
+|侦察轮式|脱险烟幕|非致命敌方受伤后向后释放烟区，半径1.6m、150tick、敌方速度×0.65、冷却600tick；不隐身|
+|主战炮|破阵重炮|27tick蓄力、移速×0.6，射程16m，最多三目标240/144/86伤害，墙体阻挡|
+|速射机炮|火力风暴|180tick强化，按住普攻每5tick射击，松手停火；结束后36tick散热|
+|短管散射炮|震荡清场|15tick准备，锁定方向，前方70°/4.5m造成150伤害，存活坦克击退1.2m；墙遮挡|
 
-上述参数是实现起点，不是已验收行为。大招能量按原设计提案落地：100槽、成功扣除，失败不扣；正式对局被动3/秒、有效伤害10点换1、有效治疗20点换1、每tick最多5、最低释放间隔8秒；训练独立调试充能且无经济收益。若实施需调整，记录原因和最终参数，避免UI与实际规则不一致。
+模拟60Hz；能量100、成功释放扣满，最短间隔480tick。正式初始0、每tick恢复0.05，并按普通有效伤害充能，技能伤害不充能；训练初始100。技能数值不擅自跟随普通攻击成长。载重超重1降速20%，超重2起禁止应用/训练。
 
-能力状态每实体独立，定义只读；由battle验证命令与执行，session注入配装等级快照，UI展示状态，presentation消费已提交事件。所有计时使用模拟tick；暂停冻结、死亡清除待发/持续效果、结束不能继续触发。复用统一弹丸/批量伤害，不新增UI扣血或独立技能伤害通路。
+## 验收及已知限制
 
-成长只采用显式表字段；现有等级表未定义技能成长时保持技能基准，不擅自随普攻倍率缩放。载重采用029确认的新规则：超重1降速20%、超重2起禁止应用，统一读取LoadoutRules。
+053最新完整tools/check.mjs：23/23 PASS，git diff --check PASS。已审阅六能力及真实格挡/弹丸飞行/散热共9张实拍，机库炮塔/底盘页及升级窗口实际渲染。首次未指定GODOT_BIN时ENOENT失败已记入053，改路径后通过。
 
-验收：六能力触发/失效/冷却、重复请求、目标上限与墙遮挡、卡墙不能刷移动被动、暂停/死亡/重建/结束清理、九种组合、等级快照与超重互动；补充能量/冷却HUD和操作提示，实际试炼截图与回归全部通过才逐项去掉待实现标记。GLB正式美术由后续准备，设定PNG不充当可旋转模型。
+训练靶使用真实模型外观，但仍保留原训练靶碰撞及350/670/1445血量。震荡击退需用“开始对练”的真实TankActor测试，静态伤害靶不作为击退验证。Bot目前普通攻击，不自动决策大招。
 
-## 主要代码入口
+截图和check-report在忽略的artifacts/，不随提交同步；可重新生成：
 
-- ui/screens/hangar_screen.gd、ui/widgets/hangar_action_state.gd：机库与按钮呈现。
-- profile/：拥有等级、成长事务与存档；content/growth/：六种显式等级表。
-- battle/、session/、input/：权威模拟、会话组装和命令输入。
-- presentation/parts/：真实基础模型；assets/generated/：已生成美术，来源记录随资源保存。
-- tests/、tools/check.mjs：自动回归；tools/capture_hangar_workbench.gd：实际机库截图。
+```sh
+Godot --path . --script tools/capture_abilities.gd
+Godot --path . --script tools/capture_training_redesign.gd
+Godot --path . --script tools/capture_hangar_workbench.gd
+```
 
-本次只更新交接与提交现有实现，不声称被动与大招已开发完成。新增实现完成后创建033功能记录并同步索引/计划。
+上述Godot替换为本机可执行文件。美术贴图及提示词/来源已在assets/generated/vfx/abilities-v1提交范围内；原素材只读。
 
-## 本次交付的同步状态
+Android触控、安全区、字体、透明过绘制、热稳定及真机导出未验收。桌面规则回归不证明玩法平衡；技能音效、镜头震动、模型后坐尚未增加。M0/M1出口仍有真机门槛，不能宣称M3整体交付。
 
-本地已建立main分支并提交。推送origin（https://github.com/durex3/tank.git）时，当前执行环境连接GitHub 443失败，因此不能假定公司已能从远程拉取本次代码。网络可用后运行git push -u origin main；如远端存在其他历史，先fetch核对并合并，禁止强推覆盖。
+## 下一步优先事项
 
-另备份完整Git历史到artifacts/tank-handoff.bundle。可携带此文件至公司后运行git clone tank-handoff.bundle tank，再在克隆目录设置origin为上述GitHub地址并正常同步。bundle包含代码、素材和文档，不含个人存档及Godot缓存。
+先连续试玩九种组合，记录触发是否直观、能量循环、烟区减速、装甲正侧面差异及震荡击退；关注火力风暴散热提示是否足够。以试玩证据决定调参或反馈改动，不继续无依据叠特效。随后做Android真机验收；其他部件/3v3后置。新功能用054开始，新增记录并同步计划和索引。
 
-## 026后本机状态
+## 代码入口
 
-已增加独立升级确认弹窗，显示数值变化和费用，确认后才调用保存事务。实际截图已审阅。macOS完整检查20/21通过，既有机库目录预览尺寸断言失败，开发前已复现，不能沿用此前全PASS结论。下一批能力实现使用033编号。
+- battle/abilities/：独立能力状态、底盘被动及震荡策略；battle/battle_simulation.gd负责固定tick提交顺序。
+- session/movement_session.gd、sparring_session.gd：会话调度、训练补能、生命周期。
+- input/desktop_input_source.gd、touch_input_source.gd：命令采样，UI不直接执行业务。
+- presentation/ability_effects.gd、ability_sprite_effects.gd、shaders/shock_sector.gdshader：提交事件驱动特效；definitions/ability_effect_style.gd配置表现预算。
+- presentation/training_view_style.gd、arena_dressing.gd、ui/widgets/training_hud.gd、training_touch_overlay.gd：训练画面与HUD。
+- presentation/hangar_part_art_catalog.gd：texture用于拼装源图，display_texture用于单独展示，勿混用。
+- tests/battle/ability_tests.gd、tests/presentation/ability_vfx_tests.gd、tools/check.mjs：规则/反馈回归。
+- profile/、content/growth/：成长及持久化；没有训练收益或个人存档提交。
 
-027已将升级界面改为部件图、等级与四列属性对照；正负变化分别着色，实际截图和升级回归通过。完整检查仍20/21通过，既有预览尺寸回归待处理。
+## 提交与跨机器同步
 
-028修正升级确认按钮各交互状态文字为深色，初始焦点截图已审阅；载重仍为15%/最多超重2规则。
-
-029已接入20%载重规则；前述028阶段的15%记述为历史状态。规则与7级升级断点已回归，下一编号030。
-
-030修复macOS中文字体及原机库预览尺寸断言；Windows字体优先级保留，Android字体待验收。此前20/21失败记录为历史状态。下一编号031。
-
-030最终macOS Godot 4.7.2完整检查21/21全部PASS，包含字体覆盖与原预览尺寸断言；已审阅实际渲染。Android仍待验收。
-
-031整理返回/标题、卡片标记与三操作区，费用独立，按钮等宽等高；实际截图已审阅。下一编号032。
-
-032将卡片状态图标缩至24像素并采用细线圆形样式，语义不变，实际截图已审阅。下一编号033。
-
-
-034—035已完成桌面验收：机库模型提高渲染清晰度；静态外观改为直接拼装卡片炮塔与底盘，固定画布和部件尺寸，炮塔最终缩至420像素并下调安装位置。六个原生3D部件首轮对齐卡片轮廓，切换仅替换变化的部件。最终tools/check.mjs 21/21 PASS，九组合实际截图已审阅；精细模型与Android验收仍待推进。下一独立功能编号036。
-
-036调整静态拼装连接：炮塔下沿遮罩统一处理，履带安装点y0.30、轮式y0.33，安装点附近已有像素加软接触阴影。炮塔仍固定420宽；真实模型未改。下一编号037，验收结果见036记录。
-
-037已接入aligned-v2三炮塔静态图，卡片与整车共用，新生成提示词与来源在同目录provenance.json。底盘仍原图，炮塔固定420宽，安装点与下沿按新图测量。源码图在sources/.gdignore，不导入运行。实际九组合已审阅，完整检查见037。下一编号038。
-
-038真实模型细化版本在presentation/parts/card_detailed，TankPartCatalog已映射，原card_aligned保留。生成器tools/build_detailed_parts.gd复用旧打包工具的可覆盖输出/细分接口；自定义网格必须先建索引，避免合并后几何不可见（已加回归）。7材质/部件、14表面/整车，约5.4万—7.9万三角形，Android仍待验收。HangarPreview增加独立主/补/轮廓光与天空反射，静态外观和挂点不变。最终验收见038，下一编号039。
-
-039目录映射现为card_refined，生成工具build_refined_parts.gd复用038并在打包前修改轮廓。炮塔7/底盘6材质表面，每整车13，约5.4万—8.3万三角形。挂点不变，camera_position/initial_yaw归HangarPreviewStyle。21/21检查通过，实际截图与失败重跑记录见039。下一编号040。
-
-040模型收尾：tools/build_finished_parts.gd生成presentation/parts/card_finished六场景，TankPartCatalog已映射。复用039接口与生成器，旧场景不覆盖；实际渲染与验收详见040记录。用户要求本轮作为最后一版，后续保留当前美术，基础系统/Android验收优先。
+本次按用户要求提交041—053全部现有实现及文档。不提交.godot、artifacts、个人存档、密钥、构建包。Git提交与远程推送是独立步骤；本交接不将本地提交冒充已推送。回家从远端获取前，确认本次提交已同步；网络失败时保留本地提交，禁止强推覆盖远端历史。

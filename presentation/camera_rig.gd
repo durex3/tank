@@ -13,9 +13,12 @@ func _ready() -> void:
 	camera.position = tuning.offset
 	camera.look_at(Vector3.ZERO)
 	camera.current = true
+	_focus = tuning.focus_offset
+	position = _focus
 
 func follow(target: Vector3, delta: float) -> void:
-	var desired := Vector3(clampf(target.x, -tuning.focus_bounds.x, tuning.focus_bounds.x), 0, clampf(target.z, -tuning.focus_bounds.y, tuning.focus_bounds.y))
+	var framed := target + tuning.focus_offset
+	var desired := Vector3(clampf(framed.x, -tuning.focus_bounds.x, tuning.focus_bounds.x), 0, clampf(framed.z, -tuning.focus_bounds.y, tuning.focus_bounds.y))
 	var overflow := desired - _focus
 	if overflow.length() > tuning.cut_distance:
 		_focus = desired

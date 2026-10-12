@@ -2,11 +2,11 @@ extends RefCounted
 class_name WeaponAttack
 ## Shared attack execution for every controller; emits facts only after spawning.
 
-static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController, command: PlayerCommand, tick: int, projectiles: ProjectileSystem, events: BattleEvents) -> void:
+static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController, command: PlayerCommand, tick: int, projectiles: ProjectileSystem, events: BattleEvents, interval: int = 0, ability_damage: bool = false) -> void:
 	if actor.health.hp <= 0 or actor.health.protected:
 		gate.cancel_pending()
 		return
-	var fire := gate.poll(command, tick, actor.stats.interval_ticks, weapon.continuous_fire)
+	var fire := gate.poll(command, tick, actor.stats.interval_ticks if interval <= 0 else interval, weapon.continuous_fire)
 	if fire.has("rejected"):
 		events.publish(&"fire_rejected", tick, {"source_id": actor.state.entity_id, "reason": fire.rejected})
 	if not fire.has("request_id"):
@@ -19,9 +19,16 @@ static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController,
 	muzzle += Vector3(sin(actor.state.aim_yaw), 0, -cos(actor.state.aim_yaw)) * ProjectileSystem.MUZZLE_OFFSET
 	var space := actor.get_world_3d().direct_space_state
 	var shots := projectiles.spawn_volley(space, actor.position, actor.state.aim_yaw, pattern.offsets(weapon), weapon, actor.state.entity_id, fire.request_id, tick, actor.health.team_id)
+	for shot: ProjectileState in shots:
+		shot.ability_damage = ability_damage
+		shot.owner_life = actor.health.life_index
+	for hit: HitEvent in projectiles.hits:
+		if hit.source_id == actor.state.entity_id and hit.projectile_id in shots.map(func(shot: ProjectileState) -> int: return shot.projectile_id):
+			hit.ability_damage = ability_damage
+			hit.source_life = actor.health.life_index
 	if shots.is_empty():
 		events.publish(&"fire_rejected", tick, {"source_id": actor.state.entity_id, "reason": &"projectile_budget"})
 		return
 	events.publish(&"weapon_fired", tick, {"source_id": actor.state.entity_id,
 		"position": muzzle, "projectile_id": shots[0].projectile_id,
-		"pellet_count": shots.size(), "next_fire_tick": gate.next_fire_tick})
+		"interval_ticks": actor.stats.interval_ticks if interval <= 0 else interval, "pellet_count": shots.size(), "next_fire_tick": gate.next_fire_tick})

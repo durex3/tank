@@ -125,6 +125,8 @@ func _build_skill(parent: VBoxContainer, content: RichTextLabel, heading: String
 	tag.add_theme_font_size_override("font_size", 10)
 	tag.add_theme_color_override("font_color", Color("64dce4"))
 	column.add_child(tag)
+	content.set_meta("status_label",tag)
+	content.set_meta("heading",heading)
 	content.custom_minimum_size.y = 0
 	content.fit_content = true
 	content.scroll_active = false
@@ -147,8 +149,8 @@ func show_part(id: StringName, profile: EquipmentProfile, weapon: WeaponDef, cha
 	if not entry.basic_ready:
 		comparison.text = "待开发"
 		summary.text = "设计预览 · 暂不可装配"
-		_set_skill(passive, entry.ability_summary if entry.kind == 1 else PartCatalog.find(chassis.id).ability_summary)
-		_set_skill(ultimate, entry.ability_summary if entry.kind == 0 else PartCatalog.find(weapon.id).ability_summary)
+		_set_skill(passive, entry.ability_summary if entry.kind == 1 else PartCatalog.find(chassis.id).ability_summary,entry.passive_ready if entry.kind == 1 else PartCatalog.find(chassis.id).passive_ready)
+		_set_skill(ultimate, entry.ability_summary if entry.kind == 0 else PartCatalog.find(weapon.id).ability_summary,entry.ultimate_ready if entry.kind == 0 else PartCatalog.find(weapon.id).ultimate_ready)
 		return
 	var current_w := PartGrowth.weapon(profile.weapon_id, profile.level_of(profile.weapon_id))
 	var current_c := PartGrowth.chassis(profile.chassis_id, profile.level_of(profile.chassis_id))
@@ -167,10 +169,12 @@ func show_part(id: StringName, profile: EquipmentProfile, weapon: WeaponDef, cha
 		rows[2].show_stat("▤ 承载", chassis.capacity, current_c.capacity, 5)
 		rows[3].show_stat("⚓ 载重", stats.weight, current.weight, chassis.capacity)
 		rows[4].show_stat("！ 超重", stats.overload, current.overload, 3, 0, true)
-	_set_skill(passive, PartCatalog.find(chassis.id).ability_summary)
-	_set_skill(ultimate, PartCatalog.find(weapon.id).ability_summary)
+	_set_skill(passive, PartCatalog.find(chassis.id).ability_summary,PartCatalog.find(chassis.id).passive_ready)
+	_set_skill(ultimate, PartCatalog.find(weapon.id).ability_summary,PartCatalog.find(weapon.id).ultimate_ready)
 
-func _set_skill(target: RichTextLabel, summary: String) -> void:
+func _set_skill(target: RichTextLabel, summary: String, ready: bool = false) -> void:
+	target.set_meta("ready",ready)
+	(target.get_meta("status_label") as Label).text = str(target.get_meta("heading"))+(" · 训练可用" if ready else " · 待实现")
 	target.tooltip_text = summary
 	var parts := summary.split("：", true, 1)
 	var name_text: String = parts[0]
@@ -224,6 +228,8 @@ func _show_dialog() -> void:
 		content.custom_minimum_size = Vector2(650, 64)
 		content.add_theme_font_size_override("normal_font_size", 14)
 		content.add_theme_font_size_override("bold_font_size", 18)
+		var source: RichTextLabel = passive if item[0] == "底盘被动 · 待实现" else ultimate
+		(content.get_meta("status_label") as Label).text = str(content.get_meta("heading"))+(" · 训练可用" if source.get_meta("ready",false) else " · 待实现")
 		var parts := str(item[1]).split("：", true, 1)
 		content.text = "[b]" + parts[0] + "[/b]\n" + (parts[1] if parts.size() > 1 else "")
 	var resources := Label.new()

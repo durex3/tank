@@ -1,51 +1,50 @@
 extends Node3D
 class_name TrainingTargetView
+## Training mockup uses catalog parts; collision and lifecycle stay in TrainingTarget.
 
+var target_id: int
+var chassis_id: StringName = &"light_tracks"
+var caption: String = "训练靶"
 var _moving: bool = false
 var _hp: int
 var _maximum: int
-var target_id: int
 var _bar := WorldHealthBar.new()
-var _body := MeshInstance3D.new()
-var _material := StandardMaterial3D.new()
+var _tank := TankView.new()
 
 func _ready() -> void:
-	var cylinder := CylinderMesh.new()
-	cylinder.top_radius = 0.65
-	cylinder.bottom_radius = 0.65
-	cylinder.height = 1.4
-	_material.albedo_color = Color("e1dfcf")
-	cylinder.material = _material
-	_body.mesh = cylinder
-	_body.position.y = 0.7
-	add_child(_body)
-	_bar.position.y = 1.75
+	_tank.chassis_id = chassis_id
+	# Fit the existing 1.3m training footprint. This is a dummy, not a loadout actor.
+	_tank.scale = Vector3.ONE * 0.65
+	_tank.rotation.y = PI * 0.5
+	add_child(_tank)
+	_bar.position.y = 1.4
 	add_child(_bar)
-	var marker := MeshInstance3D.new()
-	var ring := CylinderMesh.new()
-	ring.top_radius = 0.38
-	ring.bottom_radius = 0.38
-	ring.height = 0.04
-	var accent := StandardMaterial3D.new()
-	accent.albedo_color = Color("e36b54")
-	ring.material = accent
-	marker.mesh = ring
-	marker.position = Vector3(0, 0.8, 0.63)
-	marker.rotation.x = PI * 0.5
-	add_child(marker)
+	var ring := MeshInstance3D.new()
+	var mesh := TorusMesh.new()
+	mesh.inner_radius = 0.70
+	mesh.outer_radius = 0.77
+	mesh.rings = 32
+	mesh.ring_segments = 6
+	var material := StandardMaterial3D.new()
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.albedo_color = Color("d95c63")
+	mesh.material = material
+	ring.mesh = mesh
+	ring.position.y = 0.055
+	ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(ring)
 
 func show_health(hp: int, maximum: int) -> void:
 	_hp = hp
 	_maximum = maximum
-	_bar.show_health(hp, maximum, "MOVING" if _moving else "TARGET")
-	_material.albedo_color = Color("e1dfcf") if hp > 0 else Color("444c51")
+	_bar.show_health(hp,maximum,caption+(" · 移动" if _moving else ""))
+	_tank.visible = hp > 0
 
 func on_event(event: Dictionary) -> void:
-	if event.target_id != target_id:
-		return
+	if event.get("target_id",-1) != target_id: return
 	if event.kind == &"damage_applied" or event.kind == &"entity_respawned":
-		show_health(event.hp, event.max_hp)
+		show_health(event.hp,event.max_hp)
 
 func set_moving(value: bool) -> void:
 	_moving = value
-	show_health(_hp, _maximum)
+	show_health(_hp,_maximum)

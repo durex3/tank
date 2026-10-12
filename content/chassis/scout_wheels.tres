@@ -8,4 +8,4 @@ id = &"scout_wheels"
 max_hp = 400
 move_speed = 7.2
 capacity = 2
-passive_id = &"turn_retention"
+passive_id = &"escape_smoke"

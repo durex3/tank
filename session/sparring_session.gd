@@ -28,6 +28,7 @@ func _ready() -> void:
 	health.show_health(rival.health.hp, rival.health.max_hp)
 	simulation.events.published.connect(health.on_event)
 	simulation.rival = rival
+	simulation.abilities.register(rival,simulation.rival_weapon.id,chassis.id)
 	simulation.rival_snapshot_ready.connect(_view.present)
 	simulation.lives.tuning = rules
 	simulation.lives.track(player, Vector3.ZERO)

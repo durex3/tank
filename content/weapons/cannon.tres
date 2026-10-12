@@ -12,4 +12,4 @@ projectile_speed = 24.0
 pellet_count = 1
 spread_deg = 0.0
 weight = 2
-ability_id = &"pierce_shot"
+ability_id = &"breach_shot"

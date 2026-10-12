@@ -11,6 +11,7 @@ var comparison := GridContainer.new()
 var fee := Label.new()
 var wallet := Label.new()
 var _body := VBoxContainer.new()
+var _skill_note := Label.new()
 
 func _ready() -> void:
 	title = "升级部件"
@@ -41,7 +42,7 @@ func _ready() -> void:
 	comparison.add_theme_constant_override("h_separation", 18)
 	comparison.add_theme_constant_override("v_separation", 14)
 	table.add_child(comparison)
-	var note := Label.new()
+	var note: Label = _skill_note
 	note.text = "大招 / 被动本级不变 · 超重1降速%d%%，超重%d起禁止装配" % [roundi(LoadoutResolver.RULES.speed_penalty_per_overload * 100), LoadoutResolver.RULES.maximum_overload + 1]
 	note.add_theme_font_size_override("font_size", 14)
 	note.add_theme_color_override("font_color", HangarStyle.MUTED)
@@ -69,10 +70,11 @@ func _ready() -> void:
 
 func show_upgrade(id: StringName, level: int, ids: Array[StringName], profile: EquipmentProfile) -> void:
 	var entry := PartCatalog.find(id)
+	_skill_note.text = "火力风暴单发随普攻成长；其余技能参数不变" if id == &"autocannon" else "大招 / 被动数值本级不变"
 	var data := PartGrowth.table(id)
 	heading.text = entry.display_name + " · 升级"
 	levels.text = "Lv.%d    →    Lv.%d" % [level, level + 1]
-	icon.texture = HangarPartArtCatalog.texture(id)
+	icon.texture = HangarPartArtCatalog.display_texture(id)
 	for child: Node in comparison.get_children():
 		comparison.remove_child(child)
 		child.queue_free()

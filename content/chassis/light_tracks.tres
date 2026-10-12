@@ -8,4 +8,4 @@ id = &"light_tracks"
 max_hp = 500
 move_speed = 6
 capacity = 2
-passive_id = &"sustained_drive"
+passive_id = &"cruise_boost"

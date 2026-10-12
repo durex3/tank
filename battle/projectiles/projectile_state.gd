@@ -15,3 +15,9 @@ var speed: float
 var remaining_range: float
 var damage: int
 var active: bool = true
+
+var radius: float = 0.0
+var pierce_damage: PackedInt32Array = PackedInt32Array()
+var hit_lives: Dictionary = {}
+var excluded: Array[RID] = []
+var ability_damage: bool = false

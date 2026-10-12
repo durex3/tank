@@ -7,7 +7,7 @@
 script = ExtResource("2")
 id = &"cannon"
 basic_summary = "炮塔：主战炮\n伤害：120/发\n发射间隔：0.80秒\n射程：14米\n弹匣/填弹：不限 / 不适用\n重量：2\n机制：弹速24；普通击退暂不改现有行为"
-ability_summary = "穿甲重弹：下一发180伤害，最多命中2敌人，第二目标60%；5秒内未射击失效；不穿墙"
+ability_summary = "破阵重炮：贯穿3敌，240/144/86伤害；100能量，蓄力0.45秒，射程16米，蓄力移速60%，墙体阻挡"
 role_summary = "稳定点射；射击间隔可被突进利用，掩体阻挡"
 display_name = "主战炮"
 kind = 0
@@ -15,12 +15,13 @@ rarity = 0
 unlock_rule_id = &"starter"
 starter = true
 basic_ready = true
+ultimate_ready = true
 
 [sub_resource type="Resource" id="autocannon"]
 script = ExtResource("2")
 id = &"autocannon"
 basic_summary = "炮塔：速射机炮\n伤害：25/发\n发射间隔：0.16（实际10tick）秒\n射程：11米\n弹匣/填弹：不限 / 不适用\n重量：1\n机制：弹速28；按住连射"
-ability_summary = "过载弹链：3秒内间隔缩短为6tick，单发伤害不变；结束后0.8秒不能普攻"
+ability_summary = "火力风暴：3秒极速连射，结束散热0.6秒；100能量，按住普攻5tick间隔，单发沿用普攻伤害，松手停火"
 role_summary = "追踪压制；单发低，持续暴露，绕掩体断火线"
 display_name = "速射机炮"
 kind = 0
@@ -28,12 +29,13 @@ rarity = 0
 unlock_rule_id = &"unlock_autocannon"
 starter = false
 basic_ready = true
+ultimate_ready = true
 
 [sub_resource type="Resource" id="scatter"]
 script = ExtResource("2")
 id = &"scatter"
 basic_summary = "炮塔：短管散射炮\n伤害：32/颗×5\n发射间隔：1.00秒\n射程：7米\n弹匣/填弹：不限 / 不适用\n重量：2\n机制：弹速24；总扇形24度；全部命中160"
-ability_summary = "聚束齐射：下一发5颗各36伤害，总散布8度，射程仍7米；5秒内有效。"
+ability_summary = "震荡清场：扇形150伤害，击退1.2米；100能量，准备0.25秒，前方70度、4.5米，墙体阻挡"
 role_summary = "贴身爆发；远距命中率低，拉开距离反制"
 display_name = "短管散射炮"
 kind = 0
@@ -41,6 +43,7 @@ rarity = 0
 unlock_rule_id = &"unlock_scatter"
 starter = false
 basic_ready = true
+ultimate_ready = true
 
 [sub_resource type="Resource" id="bubble_cannon"]
 script = ExtResource("2")
@@ -293,7 +296,7 @@ basic_ready = false
 script = ExtResource("2")
 id = &"light_tracks"
 basic_summary = "耐久 / 速度 / 承载：500 / 6.0 / 2，现有\n加速 / 制动：18 / 24"
-ability_summary = "持续驱动：连续有效移动3秒后最高速＋10%；停下或受阻0.2秒后重置\n不叠层；最多6.6米/秒；通过实际位移判定，不靠按住方向刷增益"
+ability_summary = "巡航推进：持续有效移动1.5秒后最高速提高25%；停下或受阻0.2秒重置，击退不蓄积，不叠层"
 role_summary = "均衡入门；没有极端耐久或速度"
 display_name = "轻型履带"
 kind = 1
@@ -301,12 +304,13 @@ rarity = 0
 unlock_rule_id = &"starter"
 starter = true
 basic_ready = true
+passive_ready = true
 
 [sub_resource type="Resource" id="scout_wheels"]
 script = ExtResource("2")
 id = &"scout_wheels"
 basic_summary = "耐久 / 速度 / 承载：400 / 7.2 / 2，现有\n加速 / 制动：22 / 20"
-ability_summary = "转向保速：超过基础最高速60%时转向，持续0.6秒内保留90%原速度大小，仍受制动与碰撞约束\n不额外提高最高速；新增惯性仅在移动模型验收后启用"
+ability_summary = "脱险烟幕：受击留烟区，敌人减速35%；非致死受击，身后半径1.6米，持续2.5秒，冷却10秒，不隐身、不伤友军"
 role_summary = "侧翼、追击；低血量，路线选择要求高"
 display_name = "侦察轮式"
 kind = 1
@@ -314,12 +318,13 @@ rarity = 0
 unlock_rule_id = &"unlock_scout_wheels"
 starter = false
 basic_ready = true
+passive_ready = true
 
 [sub_resource type="Resource" id="heavy_tracks"]
 script = ExtResource("2")
 id = &"heavy_tracks"
 basic_summary = "耐久 / 速度 / 承载：700 / 4.8 / 3，现有\n加速 / 制动：12 / 24"
-ability_summary = "稳定底座：敌方击退位移减少35%\n不减伤，不免疫牵引与减速；不改变主动移动"
+ability_summary = "迎击装甲：停稳后正面减伤30%；停稳0.6秒，正面120度，仅直接弹丸有效，移动解除，侧后及范围伤害不减"
 role_summary = "承载重武器、守点；转场慢"
 display_name = "重型履带"
 kind = 1
@@ -327,6 +332,7 @@ rarity = 1
 unlock_rule_id = &"unlock_heavy_tracks"
 starter = false
 basic_ready = true
+passive_ready = true
 
 [sub_resource type="Resource" id="assault_tracks"]
 script = ExtResource("2")

@@ -1,6 +1,6 @@
 {
-  "date": "2026-10-11",
-  "new_generation": false,
+  "date": "2026-10-12",
+  "new_generation": true,
   "assets": [
     {
       "id": "muzzle",
@@ -34,6 +34,50 @@
       "pivot": "center",
       "collision_role": "none",
       "approval_status": "Windows Compatibility visual checked; Android pending"
+    },
+    {
+      "id": "ability_smoke_v1",
+      "path": "assets/generated/vfx/abilities-v1/smoke.png",
+      "event": "ability_zones",
+      "source": "built-in image_gen; generated atlas and padding edit",
+      "provenance_record": "assets/generated/vfx/abilities-v1/provenance.json",
+      "pivot": "center",
+      "collision_role": "none",
+      "size": "512x512 RGBA, isolated sprite, mipmaps",
+      "approval_status": "desktop actual training render reviewed; Android pending"
+    },
+    {
+      "id": "ability_muzzle_v1",
+      "path": "assets/generated/vfx/abilities-v1/muzzle.png",
+      "event": "weapon_fired/ability_fired",
+      "source": "built-in image_gen; generated atlas and padding edit",
+      "provenance_record": "assets/generated/vfx/abilities-v1/provenance.json",
+      "pivot": "center",
+      "collision_role": "none",
+      "size": "512x512 RGBA, isolated sprite, mipmaps",
+      "approval_status": "desktop actual training render reviewed; Android pending"
+    },
+    {
+      "id": "ability_impact_v1",
+      "path": "assets/generated/vfx/abilities-v1/impact.png",
+      "event": "projectile_hit",
+      "source": "built-in image_gen; generated atlas and padding edit",
+      "provenance_record": "assets/generated/vfx/abilities-v1/provenance.json",
+      "pivot": "center",
+      "collision_role": "none",
+      "size": "512x512 RGBA, isolated sprite, mipmaps",
+      "approval_status": "desktop actual training render reviewed; Android pending"
+    },
+    {
+      "id": "ability_shockwave_v1",
+      "path": "assets/generated/vfx/abilities-v1/shockwave.png",
+      "event": "ability_fired:shock",
+      "source": "built-in image_gen; generated atlas and padding edit",
+      "provenance_record": "assets/generated/vfx/abilities-v1/provenance.json",
+      "pivot": "center",
+      "collision_role": "none",
+      "size": "512x512 RGBA, isolated sprite, mipmaps",
+      "approval_status": "desktop actual training render reviewed; Android pending"
     }
   ]
 }

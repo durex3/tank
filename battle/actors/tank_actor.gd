@@ -5,6 +5,11 @@ class_name TankActor
 var state := TankState.new()
 var health := DamageableState.new()
 var hurtbox := Damageable.new()
+var ability := AbilityState.new()
+var weapon_id: StringName
+var chassis_id: StringName
+var speed_multiplier: float = 1.0
+var forced_velocity: Vector3 = Vector3.ZERO
 var stats: ResolvedStats
 @onready var motor: TankMotor = $Motor
 
@@ -37,7 +42,7 @@ func step(command: PlayerCommand, delta: float) -> void:
 		halt()
 		return
 	state.aim_yaw = float(command.aim_yaw) / 65536.0 * TAU
-	motor.step(self, state, Vector2(command.move_x, command.move_z) / 127.0, stats.move_speed, delta)
+	motor.step(self, state, Vector2(command.move_x, command.move_z) / 127.0, stats.move_speed * speed_multiplier, delta, forced_velocity)
 	force_update_transform()
 	hurtbox.force_update_transform()
 

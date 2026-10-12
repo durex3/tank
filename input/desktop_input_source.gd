@@ -13,6 +13,8 @@ var _sequence: int = 0
 var _request_id: int = 0
 var _pending_fire: int = 0
 var _pressed: bool = false
+var _ability_id: int = 0
+var _pending_ability: int = 0
 
 func sample(tick: int) -> PlayerCommand:
 	_sequence += 1
@@ -27,6 +29,8 @@ func sample(tick: int) -> PlayerCommand:
 	command.move_z = roundi(move.y * 127.0)
 	command.aim_yaw = roundi(fposmod(atan2(aim_direction.x, -aim_direction.y), TAU) / TAU * 65536.0) % 65536
 	command.fire_held = continuous_fire and not _fire_contacts.is_empty()
+	command.ability_request_id = _pending_ability
+	_pending_ability = 0
 	command.fire_request_id = _pending_fire
 	_pending_fire = 0
 	return command
@@ -36,6 +40,8 @@ func handle_event(event: InputEvent) -> void:
 		return
 	if event is InputEventMouseButton and event.device == -1:
 		return
+	if event is InputEventKey and ((event as InputEventKey).physical_keycode == KEY_Q or (event as InputEventKey).keycode == KEY_Q) and event.is_pressed():
+		request_ability()
 	var contact := _fire_contact(event)
 	if event.is_action_pressed("fire"):
 		_fire_contacts[contact] = true
@@ -71,6 +77,7 @@ func _notification(what: int) -> void:
 		_block_held_movement()
 
 func cancel_pending() -> void:
+	_pending_ability = 0
 	_fire_contacts.clear()
 	_pending_fire = 0
 	_pressed = false
@@ -87,3 +94,8 @@ func _strength(action: StringName) -> float:
 			_blocked_actions.erase(action)
 		return 0.0
 	return Input.get_action_strength(action)
+
+func request_ability() -> void:
+	if _enabled and _focused:
+		_ability_id += 1
+		_pending_ability = _ability_id

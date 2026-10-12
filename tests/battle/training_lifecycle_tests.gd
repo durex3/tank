@@ -88,16 +88,18 @@ func _test_pause() -> void:
 	var shot_before := shot.position
 	var range_before := shot.remaining_range
 	var ready_before := sim.weapon_controller.next_fire_tick
-	session.combat_view.on_event({"kind": &"projectile_hit", "position": Vector3.ZERO})
-	var flash := session.combat_view.get_child(session.combat_view.get_child_count() - 1) as Node3D
+	session.simulation.events.publish(&"projectile_hit",sim.tick,{"position":Vector3.ZERO})
+	var art: AbilitySpriteEffects = session.ability_effects._art
+	var flash := art.get_child(art.get_child_count()-1) as Sprite3D
 	var flash_scale := flash.scale
+	var flash_alpha: float = flash.modulate.a
 	session.pause()
 	check(_screen.pause_overlay.visible, "pause modal visible")
 	check(session.actor.velocity.is_zero_approx(), "pause clears momentum")
 	for frame: int in range(15):
 		sim.step()
 		await physics_frame
-	check(is_instance_valid(flash) and flash.scale == flash_scale, "pause freezes transient visual Tween")
+	check(is_instance_valid(flash) and flash.scale == flash_scale and flash.modulate.a == flash_alpha, "pause freezes tick-aged imported effect")
 	check(sim.tick == tick_before, "both manual and scheduled stepping freeze")
 	check(session.actor.position == actor_before, "player position frozen")
 	check(sim.targets[1].position == moving_before, "moving target frozen")

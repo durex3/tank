@@ -18,6 +18,7 @@ var rig := CameraRig.new()
 var actor: TankActor
 var _view := TankView.new()
 var combat_view := CombatView.new()
+var ability_effects := AbilityEffects.new()
 var sparring: SparringSession
 var use_touch: bool = false
 var mouse_viewport_position: Vector2 = Vector2.ZERO
@@ -41,6 +42,8 @@ func _ready() -> void:
 	_view.weapon_id = weapon.id
 	_view.chassis_id = chassis.id
 	simulation.weapon = weapon
+	simulation.abilities.training = match_rules == null
+	simulation.abilities.register(actor,weapon.id,chassis.id)
 	touch.set_continuous_fire(weapon.continuous_fire)
 	desktop.continuous_fire = weapon.continuous_fire
 	actor.add_child(_view)
@@ -53,7 +56,10 @@ func _ready() -> void:
 	desktop.set_enabled(not use_touch)
 	add_child(rig)
 	add_child(combat_view)
+	add_child(ability_effects)
+	simulation.events.published.connect(ability_effects.on_event)
 	combat_view.projectiles = simulation.projectiles
+	combat_view.ability_art_enabled = true
 	simulation.events.published.connect(combat_view.on_event)
 	if match_rules == null:
 		_create_targets()
@@ -64,19 +70,20 @@ func _ready() -> void:
 		_start_match()
 
 func _create_lighting() -> void:
+	var style := TrainingViewStyle.new()
 	var light := DirectionalLight3D.new()
 	light.rotation_degrees = Vector3(-55, -25, 0)
-	light.light_energy = 0.7
+	light.light_energy = style.key_energy
 	light.shadow_enabled = true
 	light.directional_shadow_max_distance = 60.0
 	add_child(light)
 	var environment := WorldEnvironment.new()
 	environment.environment = Environment.new()
 	environment.environment.background_mode = Environment.BG_COLOR
-	environment.environment.background_color = Color("88a8bd")
+	environment.environment.background_color = style.background_color
 	environment.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	environment.environment.ambient_light_color = Color("d5e2eb")
-	environment.environment.ambient_light_energy = 0.35
+	environment.environment.ambient_light_color = style.ambient_color
+	environment.environment.ambient_light_energy = style.ambient_energy
 	add_child(environment)
 
 func _physics_process(delta: float) -> void:
@@ -102,6 +109,8 @@ func _physics_process(delta: float) -> void:
 func stop() -> void:
 	phase = Phase.STOPPED
 	_suspend_inputs()
+	simulation.abilities.clear(simulation.projectiles)
+	ability_effects.clear()
 	simulation.set_paused(true)
 	combat_view.set_paused(true)
 	phase_changed.emit(phase, &"exit")
@@ -123,6 +132,7 @@ func set_touch_mode(value: bool) -> void:
 
 func _create_targets() -> void:
 	var rules := simulation.training_rules
+	var style := TrainingViewStyle.new()
 	var errors := rules.validate()
 	if not errors.is_empty():
 		push_error("Invalid training content: " + "; ".join(errors))
@@ -138,6 +148,8 @@ func _create_targets() -> void:
 		simulation.targets.append(target)
 		var view := TrainingTargetView.new()
 		view.target_id = target.state.entity_id
+		view.chassis_id = style.target_chassis[index % style.target_chassis.size()]
+		view.caption = style.target_captions[index % style.target_captions.size()]
 		target.add_child(view)
 		simulation.events.published.connect(view.on_event)
 		view.show_health(target.state.hp, target.state.max_hp)
@@ -259,6 +271,8 @@ func _start_match() -> void:
 func _on_match_event(event: Dictionary) -> void:
 	if event.kind != &"match_finished":
 		return
+	simulation.abilities.clear(simulation.projectiles)
+	ability_effects.clear()
 	phase = Phase.FINISHED
 	_suspend_inputs()
 	var epoch := simulation.replace_controller()
@@ -267,3 +281,11 @@ func _on_match_event(event: Dictionary) -> void:
 	simulation.set_paused(true)
 	combat_view.set_paused(true)
 	phase_changed.emit(phase, &"match_finished")
+
+func refill_training_ability() -> bool:
+	return enabled and match_rules == null and simulation.abilities.refill(actor)
+
+func request_ability() -> void:
+	if not can_control: return
+	if use_touch: touch.request_ability()
+	else: desktop.request_ability()

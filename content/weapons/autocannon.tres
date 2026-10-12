@@ -12,5 +12,5 @@ projectile_speed = 28.0
 pellet_count = 1
 spread_deg = 0.0
 weight = 1
-ability_id = &"overdrive"
+ability_id = &"bullet_storm"
 continuous_fire = true

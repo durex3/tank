@@ -7,6 +7,8 @@ signal state_changed
 var state := TouchInputState.new()
 var viewport_to_logical: Transform2D = Transform2D.IDENTITY
 var session_epoch: int = 0
+var _button_request: int = 0
+var _button_pending: bool = false
 
 func _input(event: InputEvent) -> void:
 	handle_event(event)
@@ -38,9 +40,15 @@ func handle_event(event: InputEvent) -> bool:
 	return handled
 
 func sample(tick: int) -> PlayerCommand:
-	return state.sample(tick, session_epoch)
+	var command: PlayerCommand = state.sample(tick,session_epoch)
+	if command.ability_request_id > 0 or _button_pending:
+		_button_request += 1
+		command.ability_request_id = _button_request
+	_button_pending = false
+	return command
 
 func cancel_pending() -> void:
+	_button_pending = false
 	state.cancel_pending()
 	state_changed.emit()
 
@@ -51,3 +59,6 @@ func set_enabled(value: bool) -> void:
 func set_continuous_fire(value: bool) -> void:
 	cancel_pending()
 	state.continuous_fire = value
+
+func request_ability() -> void:
+	_button_pending = true

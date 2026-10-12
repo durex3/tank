@@ -9,3 +9,7 @@ var hp: int = 350
 var protected: bool = false
 var is_training: bool = true
 var respawn_tick: int = -1
+
+var guard_reduction: float = 0.0
+var guard_yaw: float = 0.0
+var guard_half_angle: float = 60.0

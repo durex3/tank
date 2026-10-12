@@ -8,4 +8,4 @@ id = &"heavy_tracks"
 max_hp = 700
 move_speed = 4.8
 capacity = 3
-passive_id = &"knockback_resistance"
+passive_id = &"frontal_guard"

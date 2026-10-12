@@ -3,9 +3,11 @@ class_name CombatView
 ## Disposable visual nodes track authoritative projectile data.
 
 @export var style: CombatEffectStyle = preload("res://content/presentation/default_vfx.tres")
+var ability_style: AbilityEffectStyle = preload("res://content/presentation/ability_effects.tres")
 var projectiles: ProjectileSystem
 var _visuals: Dictionary = {}
 var _paused: bool = false
+var ability_art_enabled: bool = false
 var _effects: Array[Tween] = []
 
 func _process(_delta: float) -> void:
@@ -16,7 +18,11 @@ func _process(_delta: float) -> void:
 		alive[shot.projectile_id] = true
 		if not _visuals.has(shot.projectile_id):
 			var color := Color("ffdc73") if shot.team_id == 0 else Color("ff6b64")
-			var visual := _sphere(0.13, color)
+			var visual: Node3D = _sphere(0.13,color)
+			if shot.ability_damage and not shot.pierce_damage.is_empty():
+				visual.free()
+				visual = _breach_projectile(color)
+				visual.rotation.y = -atan2(shot.direction.x,-shot.direction.z)
 			add_child(visual)
 			_visuals[shot.projectile_id] = visual
 		_visuals[shot.projectile_id].position = shot.position
@@ -31,8 +37,10 @@ func on_event(event: Dictionary) -> void:
 		return
 	match event.kind:
 		&"weapon_fired":
+			if ability_art_enabled: return
 			_flash(style.muzzle, event.position, style.muzzle_width_m, style.muzzle_duration_s)
 		&"projectile_hit":
+			if ability_art_enabled: return
 			_flash(style.impact, event.position, style.impact_width_m, style.impact_duration_s)
 		&"entity_died":
 			_flash(style.explosion, event.position, style.explosion_width_m, style.explosion_duration_s)
@@ -87,3 +95,25 @@ func set_paused(value: bool) -> void:
 				tween.pause()
 			else:
 				tween.play()
+
+func _breach_projectile(color: Color) -> Node3D:
+	var root := Node3D.new()
+	var core := _sphere(ability_style.breach_core_width_m,color.lightened(0.65))
+	core.scale = Vector3(1,1,3)
+	root.add_child(core)
+	var tail := MeshInstance3D.new()
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = ability_style.breach_core_width_m*0.7
+	mesh.bottom_radius = 0.01
+	mesh.height = ability_style.breach_trail_m
+	mesh.radial_segments = 8
+	var material := StandardMaterial3D.new()
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.albedo_color = color
+	mesh.material = material
+	tail.mesh = mesh
+	tail.rotation.x = -PI/2
+	tail.position.z = ability_style.breach_trail_m*0.5
+	tail.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.add_child(tail)
+	return root

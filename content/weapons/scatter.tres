@@ -12,4 +12,4 @@ projectile_speed = 24.0
 pellet_count = 5
 spread_deg = 24.0
 weight = 2
-ability_id = &"ram"
+ability_id = &"shockwave_blast"

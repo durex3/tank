@@ -20,11 +20,11 @@ func show_health(hp: int, maximum: int, protected: bool = false) -> void:
 	_hp = hp
 	_maximum = maximum
 	_protected = protected
-	var caption := "PLAYER" if friendly else "RIVAL"
+	var caption := "你的战车" if friendly else "对练坦克"
 	if _protected:
-		caption += " SHIELD"
+		caption += " · 保护"
 	if hp <= 0:
-		caption += " REBUILD"
+		caption += " · 重建"
 	_bar.show_health(hp, maximum, caption)
 	if visual != null:
 		visual.visible = hp > 0

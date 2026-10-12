@@ -10,7 +10,7 @@ const TEXT: Dictionary = {
 	"hangar.art": "外观设定图", "hangar.model": "装配模型预览", "hangar.show_model": "查看装配模型",
 	"hangar.show_art": "返回外观展示", "hangar.train": "进入试炼场", "hangar.load": "载重  %d / %d",
 	"hangar.ready": "承载符合 · 可进入训练", "hangar.overload": "超载 %d · 移速已调整",
-	"hangar.note": "已开放 9 种配装训练 · 技能与底盘被动暂未开放",
+	"hangar.note": "已开放 9 种配装训练 · 三大招与三底盘被动可试炼",
 	"hangar.hp": "耐久", "hangar.speed": "移速", "hangar.damage": "单弹伤害",
 	"hangar.pellets": "每次弹数", "hangar.cooldown": "攻击间隔", "hangar.weight": "炮塔重量",
 	"hangar.series": "白瓷系列  /  当前配装", "hangar.selected": "已选择",

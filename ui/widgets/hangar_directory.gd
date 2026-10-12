@@ -120,7 +120,7 @@ func refresh() -> void:
 		card.rarity.text = entry.rarity_name()
 		card.rarity.add_theme_color_override("font_color", [Color("b5b6c5"), Color("74acff"), Color("c38dff"), Color("ffc869")][entry.rarity])
 		card.tooltip_text = "点击预览，应用后才装备" if entry.basic_ready else "设计预览 · 待实现，不可装配"
-		card.artwork.texture = HangarPartArtCatalog.texture(entry.id)
+		card.artwork.texture = HangarPartArtCatalog.display_texture(entry.id)
 	count.text = "%s %d / %d" % ["炮塔" if tabs.current_tab == 0 else "底盘", shown, total]
 
 func _select(id: StringName) -> void:

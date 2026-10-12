@@ -3,13 +3,13 @@ extends Node3D
 
 func _ready() -> void:
 	_box(Vector3(0, -0.15, 0), Vector3(32, 0.3, 24), Color("687c85"))
-	_box(Vector3(-16, 1, 0), Vector3(0.6, 2, 24), Color("d0d5cd"))
-	_box(Vector3(16, 1, 0), Vector3(0.6, 2, 24), Color("d0d5cd"))
-	_box(Vector3(0, 1, -12), Vector3(32, 2, 0.6), Color("d0d5cd"))
-	_box(Vector3(0, 1, 12), Vector3(32, 2, 0.6), Color("d0d5cd"))
+	_box(Vector3(-16, 1, 0), Vector3(0.6, 2, 24), Color("737f80"))
+	_box(Vector3(16, 1, 0), Vector3(0.6, 2, 24), Color("737f80"))
+	_box(Vector3(0, 1, -12), Vector3(32, 2, 0.6), Color("737f80"))
+	_box(Vector3(0, 1, 12), Vector3(32, 2, 0.6), Color("737f80"))
 	for x: float in [-6.0, 6.0]:
 		for z: float in [-4.0, 4.0]:
-			_box(Vector3(x, 0.75, z), Vector3(3.5, 1.5, 2.0), Color("d2cebc"))
+			_box(Vector3(x, 0.75, z), Vector3(3.5, 1.5, 2.0), Color("947443"))
 	add_child(ArenaDressing.new())
 
 func _box(center: Vector3, size: Vector3, color: Color) -> void:

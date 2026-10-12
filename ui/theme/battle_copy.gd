@@ -3,6 +3,14 @@ class_name BattleCopy
 ## Centralized desktop training HUD text. Gameplay values remain session-owned.
 
 const TEXT: Dictionary = {
+	&"statistics": "训练统计",
+	&"training_title": "试炼场 · 试用配装不保存",
+	&"match_title": "离线对局 · 1v1",
+	&"skill_preparing": "技能准备中",
+	&"ability_release_touch": "释放大招",
+	&"ability_release": "释放大招 · Q",
+	&"ability_refill": "训练补能",
+	&"chassis_passive": "底盘被动",
 	&"back": "返回",
 	&"touch": "触控模式",
 	&"pause": "暂停 · Esc",

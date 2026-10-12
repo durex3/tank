@@ -8,3 +8,12 @@ var target: DamageableState
 var target_life: int
 var damage: int
 var position: Vector3
+
+var direction: Vector3 = Vector3.ZERO
+var direct_projectile: bool = true
+var ability_damage: bool = false
+var push: Vector3 = Vector3.ZERO
+
+var travel_order: int = 0
+
+var source_life: int = 0

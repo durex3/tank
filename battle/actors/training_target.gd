@@ -55,3 +55,6 @@ func _sync_collision() -> void:
 	# Flush both body and child Area transforms before this tick's projectile query.
 	force_update_transform()
 	_hurtbox.force_update_transform()
+
+func hurtbox() -> Damageable:
+	return _hurtbox
