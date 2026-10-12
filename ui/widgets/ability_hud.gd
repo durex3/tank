@@ -66,7 +66,7 @@ func _ready() -> void:
 func on_event(event: Dictionary) -> void:
 	if event.kind != &"ability_state" or event.source_id != 1: return
 	var names: Dictionary = {&"cannon":"破阵重炮",&"autocannon":"火力风暴",&"scatter":"震荡清场"}
-	var phases: Dictionary = {&"idle":"就绪" if event.ready else event.reason,&"breach":"蓄力中",&"shock":"准备中",&"storm":"火力强化",&"cooling":"散热中"}
+	var phases: Dictionary = {&"idle":"就绪" if event.ready else event.reason,&"breach":"蓄力中",&"shock":"准备中",&"storm":"强化 %.1fs" % (event.remaining/60.0),&"cooling":"红温禁火 %.1fs" % (event.remaining/60.0)}
 	_status.text = "%s · %s" % [names.get(event.weapon,"未开放"),phases.get(event.phase,"")]
 	_amount.text = "%d/%d" % [event.energy,event.energy_max]
 	_energy.max_value = event.energy_max
@@ -76,7 +76,11 @@ func on_event(event: Dictionary) -> void:
 	match event.chassis:
 		&"light_tracks": _passive.text = "巡航推进 · 推进中" if event.cruise else "巡航推进 · %d%%" % event.passive_progress
 		&"heavy_tracks": _passive.text = "迎击装甲 · 防御中" if event.guard else "迎击装甲 · %d%%" % event.passive_progress
-		&"scout_wheels": _passive.text = "脱险烟幕 · 就绪" if event.smoke_in == 0 else "脱险烟幕 · %.1f秒" % (event.smoke_in/60.0)
+		&"scout_wheels":
+			if event.get("escape_active",false):
+				_passive.text = "脱险加速 +25%% · %.1f秒" % (event.escape_remaining/60.0)
+			else:
+				_passive.text = "脱险烟幕 · 就绪" if event.smoke_in == 0 else "脱险烟幕 · 冷却 %.1f秒" % (event.smoke_in/60.0)
 
 func set_touch_mode(value: bool) -> void:
 	release.text = BattleCopy.text(&"ability_release_touch" if value else &"ability_release")

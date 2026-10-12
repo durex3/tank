@@ -70,7 +70,7 @@ func _ready() -> void:
 
 func show_upgrade(id: StringName, level: int, ids: Array[StringName], profile: EquipmentProfile) -> void:
 	var entry := PartCatalog.find(id)
-	_skill_note.text = "火力风暴单发随普攻成长；其余技能参数不变" if id == &"autocannon" else "大招 / 被动数值本级不变"
+	_skill_note.text = "火力风暴单发为普攻60%，随等级成长；20发/秒，结束红温1.5秒" if id == &"autocannon" else "大招 / 被动数值本级不变"
 	var data := PartGrowth.table(id)
 	heading.text = entry.display_name + " · 升级"
 	levels.text = "Lv.%d    →    Lv.%d" % [level, level + 1]

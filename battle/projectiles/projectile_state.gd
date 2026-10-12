@@ -21,3 +21,5 @@ var pierce_damage: PackedInt32Array = PackedInt32Array()
 var hit_lives: Dictionary = {}
 var excluded: Array[RID] = []
 var ability_damage: bool = false
+
+var storm_round: bool = false

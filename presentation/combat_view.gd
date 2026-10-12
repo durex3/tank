@@ -23,6 +23,10 @@ func _process(_delta: float) -> void:
 				visual.free()
 				visual = _breach_projectile(color)
 				visual.rotation.y = -atan2(shot.direction.x,-shot.direction.z)
+			elif shot.storm_round:
+				visual.free()
+				visual = _storm_projectile(color)
+				visual.rotation.y = -atan2(shot.direction.x,-shot.direction.z)
 			add_child(visual)
 			_visuals[shot.projectile_id] = visual
 		_visuals[shot.projectile_id].position = shot.position
@@ -116,4 +120,18 @@ func _breach_projectile(color: Color) -> Node3D:
 	tail.position.z = ability_style.breach_trail_m*0.5
 	tail.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	root.add_child(tail)
+	return root
+
+func _storm_projectile(team_color: Color) -> Node3D:
+	var root := Node3D.new()
+	var core := _sphere(ability_style.storm_core_width_m,Color("fff1cb"))
+	core.scale.z = 3.0
+	root.add_child(core)
+	var tail := _sphere(ability_style.storm_core_width_m,ability_style.storm_color)
+	tail.scale = Vector3(0.7,0.7,ability_style.storm_trail_m/ability_style.storm_core_width_m)
+	tail.position.z = ability_style.storm_trail_m*0.5
+	root.add_child(tail)
+	var marker := _sphere(ability_style.storm_core_width_m*0.65,team_color)
+	marker.position.z = ability_style.storm_trail_m
+	root.add_child(marker)
 	return root

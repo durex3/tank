@@ -9,6 +9,7 @@ var _effects: Array[Dictionary] = []
 var _smoke: Dictionary = {}
 var _charge: Dictionary = {}
 var _phases: Dictionary = {}
+var _heat: Dictionary = {}
 var _messages: Array[Dictionary] = []
 
 func on_event(event: Dictionary) -> void:
@@ -18,6 +19,7 @@ func on_event(event: Dictionary) -> void:
 		&"ability_state":
 			_phases[event.source_id] = event.phase if event.alive else &"idle"
 			_update_charge(event)
+			_update_heat(event)
 		&"weapon_fired":
 			var storm: bool = _phases.get(event.source_id,&"idle") == &"storm"
 			_flash(style.muzzle,event.position,style.storm_muzzle_width_m if storm else style.muzzle_width_m,event.tick,style.storm_muzzle_ticks if storm else style.muzzle_ticks)
@@ -172,5 +174,33 @@ func clear() -> void:
 	_effects.clear()
 	_smoke.clear()
 	_charge.clear()
+	for plumes: Array in _heat.values():
+		for plume: Sprite3D in plumes: plume.queue_free()
+	_heat.clear()
 	_phases.clear()
 	_messages.clear()
+
+func _update_heat(event: Dictionary) -> void:
+	var id: int = event.source_id
+	if not event.alive or event.phase != &"cooling":
+		if _heat.has(id):
+			for plume: Sprite3D in _heat[id]: plume.queue_free()
+			_heat.erase(id)
+		return
+	if not _heat.has(id):
+		var plumes: Array[Sprite3D] = []
+		for i: int in range(2):
+			var plume := _sprite(style.smoke,style.heat_smoke_width_m)
+			add_child(plume)
+			plumes.append(plume)
+		_heat[id] = plumes
+	var aim := Vector3(sin(event.yaw),0,-cos(event.yaw))
+	var right := Vector3(-aim.z,0,aim.x)
+	for i: int in range(2):
+		var phase: float = float((event.tick+i*12)%24)/24.0
+		var plume: Sprite3D = _heat[id][i]
+		plume.position = event.position+right*(i*2-1)*style.storm_rail_offset_m+Vector3.UP*(style.vent_height_m+phase*style.heat_smoke_rise_m)
+		var camera := get_viewport().get_camera_3d()
+		if camera != null: plume.position += camera.global_basis.z*style.art_camera_offset_m
+		plume.modulate = Color(0.65,0.69,0.72,style.heat_smoke_opacity*(1.0-phase))
+		plume.scale = Vector3.ONE*(0.6+phase*0.6)

@@ -66,6 +66,13 @@ func _draw_actor(state: Dictionary) -> void:
 				var p: Vector3 = origin-front*(0.9+(i+phase)*0.38)
 				_line(mesh,p+right*0.16-front*0.15,p,style.cruise_color)
 				_line(mesh,p-right*0.16-front*0.15,p,style.cruise_color)
+		if state.get("escape_active",false):
+			for side: int in [-1,1]:
+				for i: int in range(3):
+					var phase: float = float(_tick%18)/18.0
+					var p: Vector3 = origin+right*side*style.escape_arrow_span_m-front*(i+phase)*style.escape_arrow_spacing_m
+					_line(mesh,p-front*0.22+right*0.12,p,style.escape_color)
+					_line(mesh,p-front*0.22-right*0.12,p,style.escape_color)
 		if state.guard:
 			var guard_color: Color = Color.WHITE if _tick < int(_guard_hits.get(state.source_id,0)) else style.guard_color
 			_arc(mesh,origin,style.guard_radius_m,state.body_yaw,deg_to_rad(rules.guard_half_angle),guard_color,style.guard_height_m)
@@ -87,15 +94,8 @@ func _draw_actor(state: Dictionary) -> void:
 		elif state.phase == &"shock":
 			_sector(mesh,origin,rules.shock_range,state.locked_yaw,deg_to_rad(rules.shock_half_angle),Color(style.shock_color,0.17))
 		elif state.phase in [&"storm",&"cooling"]:
-			var color: Color = style.storm_color if state.phase == &"storm" else Color("8694a1")
-			_ring(mesh,origin,style.storm_ring_radius_m,color)
-			var aim := Vector3(sin(state.yaw),0,-cos(state.yaw))
-			for side: int in [-1,1]:
-				var p: Vector3 = state.position+aim*0.5+right*side*0.25+Vector3.UP*style.vent_height_m
-				var drift: float = float((_tick+side*4) % 24)/24.0
-				var middle: Vector3 = p+Vector3.UP*style.vent_length_m*0.5+right*side*0.08
-				_line(mesh,p,middle,Color(color,0.8))
-				_line(mesh,middle,middle+Vector3.UP*style.vent_length_m*(0.4+drift)+right*side*0.08,Color(color,0.6))
+			_draw_storm(mesh,state)
+
 	_bursts = _bursts.filter(func(burst: Dictionary) -> bool: return _tick < burst.until)
 	for burst: Dictionary in _bursts:
 		if state.source_id != burst.source_id: continue
@@ -151,3 +151,34 @@ func _triangle(mesh: ImmediateMesh, a: Vector3, b: Vector3, c: Vector3, color: C
 	mesh.surface_add_vertex(a)
 	mesh.surface_add_vertex(b)
 	mesh.surface_add_vertex(c)
+
+func _draw_storm(mesh: ImmediateMesh, state: Dictionary) -> void:
+	var active: bool = state.phase == &"storm"
+	var color: Color = style.storm_color if active else style.cooling_color
+	var center: Vector3 = state.position+Vector3.UP*style.storm_ring_height_m
+	var duration: int = rules.storm_ticks if active else rules.storm_cooldown
+	var fraction: float = clampf(float(state.remaining)/maxi(1,duration),0,1)
+	var segments: int = style.storm_segments
+	for i: int in range(segments):
+		var angle: float = TAU*i/segments
+		var radial := Vector3(sin(angle),0,-cos(angle))
+		var tangent := Vector3(cos(angle),0,sin(angle))
+		var p: Vector3 = center+radial*style.storm_ring_radius_m
+		var lit: Color = color if float(i)/segments < fraction else Color(color,0.16)
+		var inner: Vector3 = p-radial*style.storm_ring_width_m
+		_triangle(mesh,inner-tangent*0.12,inner+tangent*0.12,p+tangent*0.12,lit)
+		_triangle(mesh,inner-tangent*0.12,p+tangent*0.12,p-tangent*0.12,lit)
+	var aim := Vector3(sin(state.yaw),0,-cos(state.yaw))
+	var right := Vector3(-aim.z,0,aim.x)
+	for side: int in [-1,1]:
+		var p: Vector3 = state.position+right*side*style.storm_rail_offset_m+Vector3.UP*style.vent_height_m
+		if active:
+			var tip: Vector3 = p+aim*style.storm_rail_length_m
+			_triangle(mesh,p-right*0.07,p+right*0.07,tip+right*0.07,color)
+			_triangle(mesh,p-right*0.07,tip+right*0.07,tip-right*0.07,color)
+		else:
+			_line(mesh,p,p+aim*style.storm_rail_length_m,color)
+			for i: int in range(3):
+				var drift: float = float((_tick+i*8)%24)/24.0
+				var start: Vector3 = p-aim*i*0.18+Vector3.UP*drift*style.vent_length_m
+				_line(mesh,start,start+Vector3.UP*style.vent_length_m*0.5+right*side*0.18,Color(color,1.0-drift))

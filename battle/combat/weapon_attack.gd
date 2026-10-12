@@ -2,7 +2,7 @@ extends RefCounted
 class_name WeaponAttack
 ## Shared attack execution for every controller; emits facts only after spawning.
 
-static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController, command: PlayerCommand, tick: int, projectiles: ProjectileSystem, events: BattleEvents, interval: int = 0, ability_damage: bool = false) -> void:
+static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController, command: PlayerCommand, tick: int, projectiles: ProjectileSystem, events: BattleEvents, interval: int = 0, ability_damage: bool = false, damage_multiplier: float = 1.0) -> void:
 	if actor.health.hp <= 0 or actor.health.protected:
 		gate.cancel_pending()
 		return
@@ -18,8 +18,14 @@ static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController,
 	var muzzle := actor.position + Vector3.UP * ProjectileSystem.SHOT_HEIGHT
 	muzzle += Vector3(sin(actor.state.aim_yaw), 0, -cos(actor.state.aim_yaw)) * ProjectileSystem.MUZZLE_OFFSET
 	var space := actor.get_world_3d().direct_space_state
-	var shots := projectiles.spawn_volley(space, actor.position, actor.state.aim_yaw, pattern.offsets(weapon), weapon, actor.state.entity_id, fire.request_id, tick, actor.health.team_id)
+	# Copy before spawn so muzzle-overlap hits use the same scaled damage as flight hits.
+	var attack_weapon: WeaponDef = weapon
+	if damage_multiplier != 1.0:
+		attack_weapon = weapon.duplicate() as WeaponDef
+		attack_weapon.damage = maxi(1,roundi(weapon.damage*damage_multiplier))
+	var shots := projectiles.spawn_volley(space, actor.position, actor.state.aim_yaw, pattern.offsets(weapon), attack_weapon, actor.state.entity_id, fire.request_id, tick, actor.health.team_id)
 	for shot: ProjectileState in shots:
+		shot.storm_round = ability_damage and weapon.id == &"autocannon"
 		shot.ability_damage = ability_damage
 		shot.owner_life = actor.health.life_index
 	for hit: HitEvent in projectiles.hits:

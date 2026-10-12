@@ -40,12 +40,11 @@ func before_move(actor: TankActor, command: PlayerCommand, tick: int, epoch: int
 		var reason := _activate(actor,command,tick,projectiles)
 		events.publish(&"ability_rejected" if not reason.is_empty() else &"ability_started",tick,{"source_id":actor.state.entity_id,"reason":reason,"phase":state.phase})
 	actor.speed_multiplier = (rules.cruise_multiplier if state.cruise_active else 1.0)
+	if tick >= state.escape_start_tick and tick < state.escape_until_tick:
+		actor.speed_multiplier *= rules.escape_multiplier
 	if state.phase == &"breach": actor.speed_multiplier *= rules.breach_speed_multiplier
 	zones = zones.filter(func(zone: Dictionary) -> bool: return tick < zone.until_tick and _owner_alive(zone.owner_id))
-	for zone: Dictionary in zones:
-		if zone.team_id != actor.health.team_id and actor.position.distance_to(zone.position) <= rules.smoke_radius:
-			actor.speed_multiplier *= rules.smoke_multiplier
-			break
+	actor.speed_multiplier *= smoke_multiplier_at(actor.position,actor.health.team_id,tick)
 	var forced: bool = _pushes.has(actor.state.entity_id)
 	actor.forced_velocity = Vector3.ZERO
 	if forced:
@@ -145,6 +144,8 @@ func _smoke(actor: TankActor, tick: int) -> void:
 	if not space.intersect_ray(ray).is_empty(): desired = actor.position
 	zones.append({"owner_id":actor.state.entity_id,"team_id":actor.health.team_id,"position":desired,"until_tick":tick+1+rules.smoke_ticks})
 	actor.ability.smoke_ready_tick = tick+rules.smoke_cooldown
+	actor.ability.escape_start_tick = tick+1
+	actor.ability.escape_until_tick = tick+1+rules.escape_ticks
 
 func refill(actor: TankActor) -> bool:
 	if not training or not actors.has(actor) or actor.health.hp <= 0: return false
@@ -179,4 +180,16 @@ func _snapshot(actor: TankActor, tick: int, events: BattleEvents) -> void:
 	var ready: bool = actor.health.hp > 0 and not actor.health.protected and state.phase == &"idle" and state.energy >= rules.energy_max and tick >= state.next_use_tick
 	var reason: String = "出生保护" if actor.health.protected else ("等待重建" if actor.health.hp <= 0 else ("能量不足" if state.energy < rules.energy_max else "间隔 %.1f秒" % (maxi(0,state.next_use_tick-tick)/60.0)))
 	var progress: int = roundi(100.0*state.charge_ticks/(rules.cruise_charge if actor.chassis_id == &"light_tracks" else rules.guard_charge))
-	events.publish(&"ability_state",tick,{"ready":ready,"reason":reason,"passive_progress":progress,"source_id":actor.state.entity_id,"position":actor.position,"yaw":actor.state.aim_yaw,"body_yaw":actor.state.body_yaw,"energy":state.energy,"energy_max":rules.energy_max,"phase":state.phase,"remaining":maxi(0,state.until_tick-tick),"ready_in":maxi(0,state.next_use_tick-tick),"cruise":state.cruise_active,"guard":state.guard_active,"charge":state.charge_ticks,"chassis":actor.chassis_id,"weapon":actor.weapon_id,"locked_yaw":state.locked_yaw,"alive":actor.health.hp>0,"smoke_in":maxi(0,state.smoke_ready_tick-tick)})
+	events.publish(&"ability_state",tick,{"ready":ready,"reason":reason,"passive_progress":progress,"source_id":actor.state.entity_id,"position":actor.position,"yaw":actor.state.aim_yaw,"body_yaw":actor.state.body_yaw,"energy":state.energy,"energy_max":rules.energy_max,"phase":state.phase,"remaining":maxi(0,state.until_tick-tick),"ready_in":maxi(0,state.next_use_tick-tick),"cruise":state.cruise_active,"guard":state.guard_active,"charge":state.charge_ticks,"chassis":actor.chassis_id,"weapon":actor.weapon_id,"locked_yaw":state.locked_yaw,"alive":actor.health.hp>0,"smoke_in":maxi(0,state.smoke_ready_tick-tick),"escape_remaining":maxi(0,state.escape_until_tick-maxi(tick,state.escape_start_tick)),"escape_active":state.escape_until_tick > tick and state.escape_until_tick > 0})
+
+func damage_multiplier(actor: TankActor) -> float:
+	return rules.storm_damage_multiplier if actors.has(actor) and actor.ability.phase == &"storm" else 1.0
+
+func smoke_multiplier_at(position: Vector3, team_id: int, tick: int) -> float:
+	for zone: Dictionary in zones:
+		if tick >= zone.until_tick or not _owner_alive(zone.owner_id) or zone.team_id == team_id: continue
+		var difference: Vector3 = position-zone.position
+		difference.y = 0.0
+		if difference.length_squared() <= rules.smoke_radius*rules.smoke_radius+0.000001:
+			return rules.smoke_multiplier
+	return 1.0

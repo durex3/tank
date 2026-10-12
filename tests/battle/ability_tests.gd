@@ -39,7 +39,9 @@ func _run() -> void:
 	_test_passive()
 	await _test_casts()
 	await _test_smoke()
+	await _test_escape_integration()
 	await _test_storm_and_push()
+	await _test_target_push()
 	await _test_nine()
 	await _test_ui()
 	print("ABILITY TESTS: "+("PASS" if failures == 0 else "FAIL"))
@@ -190,13 +192,23 @@ func _test_smoke() -> void:
 	system.before_move(enemy,PlayerCommand.new(),2,0,projectiles,events)
 	check(is_equal_approx(enemy.speed_multiplier,0.65),"enemy inside smoke slows")
 	system.before_move(actor,PlayerCommand.new(),2,0,projectiles,events)
-	check(is_equal_approx(actor.speed_multiplier,1),"owner is not slowed")
+	check(is_equal_approx(actor.speed_multiplier,1.25),"owner gains escape speed without friendly smoke slow")
 	enemy.position = Vector3(10,0,0)
 	system.before_move(enemy,PlayerCommand.new(),3,0,projectiles,events)
 	check(is_equal_approx(enemy.speed_multiplier,1),"leaving zone clears slow immediately")
+	check(actor.ability.escape_until_tick == 92,"repeat damage cannot refresh escape boost")
+	actor.ability.phase = &"breach"
+	actor.ability.until_tick = 1000
+	system.before_move(actor,PlayerCommand.new(),4,0,projectiles,events)
+	check(is_equal_approx(actor.speed_multiplier,0.75),"escape combines with breach movement restriction instead of bypassing it")
+	actor.ability.phase = &"idle"
+	system.before_move(actor,PlayerCommand.new(),91,0,projectiles,events)
+	check(is_equal_approx(actor.speed_multiplier,1.25),"escape boost includes its final active tick")
+	system.before_move(actor,PlayerCommand.new(),92,0,projectiles,events)
+	check(is_equal_approx(actor.speed_multiplier,1.0),"escape boost ends after exactly 90 movement ticks")
 	actor.health.hp = 0
 	system.after_damage(damage,3,projectiles,events)
-	check(system.zones.is_empty() and actor.ability.energy == 0,"death removes smoke/energy")
+	check(system.zones.is_empty() and actor.ability.energy == 0 and actor.ability.escape_until_tick == 0,"death removes smoke/energy/escape boost")
 	system.training = false
 	check(not system.refill(enemy),"formal battle rejects training refill")
 	enemy.ability.energy = 0
@@ -232,7 +244,7 @@ func _test_nine() -> void:
 			session.resume()
 			check(not sim.enqueue_command(command),"old controller epoch cannot replay ability")
 			check(session.refill_training_ability(),"training refill succeeds")
-			for i: int in range(235):
+			for i: int in range(300):
 				command = _command(sim,0,weapon == &"autocannon")
 				sim.enqueue_command(command)
 				sim.step()
@@ -273,17 +285,24 @@ func _test_storm_and_push() -> void:
 	command.ability_request_id = 1
 	command.fire_held = true
 	system.before_move(actor,command,1,0,shots,events)
-	WeaponAttack.execute(actor,weapon,gate,command,1,shots,events,system.interval(actor),true)
+	WeaponAttack.execute(actor,weapon,gate,command,1,shots,events,system.interval(actor),true,system.damage_multiplier(actor))
 	check(shots.active.is_empty() and gate.next_fire_tick == 20,"storm activation preserves ordinary cooldown")
-	WeaponAttack.execute(actor,weapon,gate,command,20,shots,events,system.interval(actor),true)
-	check(shots.active.size() == 1 and gate.next_fire_tick == 25,"storm uses five tick intervals")
+	WeaponAttack.execute(actor,weapon,gate,command,20,shots,events,system.interval(actor),true,system.damage_multiplier(actor))
+	check(shots.active.size() == 1 and gate.next_fire_tick == 23,"storm uses three tick intervals")
+	check(shots.active[0].damage == 15 and shots.active[0].storm_round and weapon.damage == 25,"storm uses 60 percent damage with independent tracer identity and immutable base")
+	WeaponAttack.execute(actor,weapon,gate,command,22,shots,events,system.interval(actor),true,system.damage_multiplier(actor))
+	check(shots.active.size() == 1,"storm cannot fire before third tick")
+	WeaponAttack.execute(actor,weapon,gate,command,23,shots,events,system.interval(actor),true,system.damage_multiplier(actor))
+	check(shots.active.size() == 2 and gate.next_fire_tick == 26,"storm fires at exact third tick boundary")
 	command.fire_held = false
-	WeaponAttack.execute(actor,weapon,gate,command,25,shots,events,system.interval(actor),true)
-	check(shots.active.size() == 1,"releasing held fire stops storm shots")
+	WeaponAttack.execute(actor,weapon,gate,command,25,shots,events,system.interval(actor),true,system.damage_multiplier(actor))
+	check(shots.active.size() == 2,"releasing held fire stops storm shots")
 	system.before_move(actor,command,181,0,shots,events)
 	check(actor.ability.phase == &"cooling" and system.attack(actor,gate,181,shots,events,[]),"storm finishes into a blocked cooling window")
-	system.before_move(actor,command,217,0,shots,events)
-	check(actor.ability.phase == &"idle","cooling ends after 36 simulation ticks")
+	system.before_move(actor,command,270,0,shots,events)
+	check(actor.ability.phase == &"cooling" and system.attack(actor,gate,270,shots,events,[]),"red heat still blocks fire before 90 tick boundary")
+	system.before_move(actor,command,271,0,shots,events)
+	check(actor.ability.phase == &"idle","cooling ends at 90 simulation ticks")
 	var victim := _actor(world,2,Vector3(0,0,-3),"heavy_tracks")
 	victim.health.team_id = 1
 	system.register(victim,&"cannon",&"heavy_tracks")
@@ -312,3 +331,129 @@ func _test_storm_and_push() -> void:
 	check(victim.health.hp == victim.health.max_hp-150,"wall does not add squeeze damage")
 	world.queue_free()
 	await process_frame
+
+func _test_target_push() -> void:
+	var world := Node3D.new()
+	root.add_child(world)
+	var actor := _actor(world,1)
+	var weapon := load("res://content/weapons/scatter.tres") as WeaponDef
+	var chassis := load("res://content/chassis/light_tracks.tres") as ChassisDef
+	actor.configure(LoadoutResolver.resolve(weapon,chassis),chassis.acceleration)
+	var target := TrainingTarget.new()
+	target.state.entity_id = 100
+	target.position = Vector3(0,0,-3)
+	world.add_child(target)
+	var sim := BattleSimulation.new()
+	world.add_child(sim)
+	sim.actor = actor
+	sim.weapon = weapon
+	sim.targets.append(target)
+	sim.abilities.register(actor,&"scatter",&"light_tracks")
+	await physics_frame
+	await physics_frame
+	var initial: Vector3 = target.position
+	check(sim.enqueue_command(_command(sim,1)),"training shock request accepted")
+	for i: int in range(16): sim.step()
+	check(target.state.hp == target.state.max_hp-150,"shock damages training target once")
+	check(target.position.is_equal_approx(initial),"training push waits until next tick after batch damage")
+	sim.set_paused(true)
+	for i: int in range(12): sim.step()
+	check(target.position.is_equal_approx(initial),"pause freezes pending training knockback")
+	sim.set_paused(false)
+	for i: int in range(12): sim.step()
+	check(is_equal_approx(initial.z-target.position.z,1.2),"stationary training target is pushed full 1.2m")
+	var pushed: Vector3 = target.position
+	for i: int in range(12): sim.step()
+	check(target.position.is_equal_approx(pushed),"stationary target does not snap back after push")
+	target.reset_motion()
+	target.configure_motion(2.0,1.0)
+	target.commit_push(Vector3.FORWARD*1.2,12)
+	for i: int in range(12): target.step_motion()
+	target.step_motion()
+	check(is_equal_approx(target.position.z,initial.z-1.2),"patrol resumes relative to displaced path")
+	target.reset_motion()
+	check(target.position.is_equal_approx(initial),"rebuild/reset clears displaced path")
+	var wall := StaticBody3D.new()
+	wall.collision_layer = 1
+	wall.position = Vector3(0,0.7,-4.0)
+	var collision := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(4,2,0.1)
+	collision.shape = box
+	wall.add_child(collision)
+	world.add_child(wall)
+	await physics_frame
+	await physics_frame
+	target.commit_push(Vector3.FORWARD*1.2,12)
+	for i: int in range(12): target.step_motion()
+	check(target.position.z > -3.4 and target.position.z < -3.1,"training knockback stops at wall with body radius")
+	check(target.state.hp == target.state.max_hp-150,"wall contact adds no squeeze damage")
+	target.reset_motion()
+	target.state.hp = 0
+	target.commit_push(Vector3.FORWARD*1.2,12)
+	target.step_motion()
+	check(target.position.is_equal_approx(initial),"dead training target cannot be pushed")
+	world.free()
+
+func _test_escape_integration() -> void:
+	var world := Node3D.new()
+	root.add_child(world)
+	var actor := _actor(world,1,Vector3.ZERO,"scout_wheels")
+	var sim := BattleSimulation.new()
+	world.add_child(sim)
+	var hud := AbilityHud.new()
+	world.add_child(hud)
+	world.add_child(hud.passive_panel)
+	sim.events.published.connect(hud.on_event)
+	sim.actor = actor
+	sim.abilities.register(actor,&"cannon",&"scout_wheels")
+	var target := TrainingTarget.new()
+	target.position = Vector3(20,0,20)
+	target.state.entity_id = 100
+	world.add_child(target)
+	sim.targets.append(target)
+	await physics_frame
+	await physics_frame
+	var hit := HitEvent.new()
+	hit.projectile_id = 1000
+	hit.source_id = 2
+	hit.team_id = 1
+	hit.target = actor.health
+	hit.target_life = actor.health.life_index
+	hit.damage = 20
+	sim.projectiles.hits.append(hit)
+	sim.step()
+	check(actor.health.hp == actor.health.max_hp-20 and sim.abilities.zones.size() == 1,"real batch damage triggers one escape smoke")
+	check(is_equal_approx(actor.speed_multiplier,1.0),"escape starts next tick, never changes already committed movement")
+	check(hud._passive.text.contains("+25%") and hud._passive.text.contains("1.5秒"),"committed escape HUD displays literal percent and remaining duration")
+	for i: int in range(60):
+		var command := _command(sim)
+		command.move_x = 127
+		sim.enqueue_command(command)
+		sim.step()
+	check(is_equal_approx(actor.state.velocity.x,actor.stats.move_speed*1.25),"escape raises actual autonomous top speed by 25 percent")
+	check(actor.position.x > actor.stats.move_speed*0.95,"escape produces actual extra travel, not only a HUD multiplier")
+	var until: int = actor.ability.escape_until_tick
+	var frozen_position: Vector3 = actor.position
+	sim.set_paused(true)
+	for i: int in range(120): sim.step()
+	check(actor.ability.escape_until_tick == until and actor.position == frozen_position and sim.tick == 61,"pause freezes escape timer and displacement")
+	sim.set_paused(false)
+	target.position = sim.abilities.zones[0].position
+	target.configure_motion(20,1)
+	var before: Vector3 = target.position
+	for i: int in range(30): sim.step()
+	check(is_equal_approx(target.position.x-before.x,0.325),"simulation patrol target travels 65 percent distance inside smoke")
+	var speed_before: float = actor.speed_multiplier
+	check(is_equal_approx(speed_before,1.25),"escape lasts through final movement tick")
+	sim.step()
+	check(is_equal_approx(actor.speed_multiplier,1.0),"escape multiplier clears on first tick after window")
+	var zone: Dictionary = sim.abilities.zones[0].duplicate()
+	sim.abilities.zones.append(zone)
+	check(is_equal_approx(sim.abilities.smoke_multiplier_at(target.position,1,sim.tick),0.65),"overlapping smoke does not multiply slowdown")
+	check(is_equal_approx(sim.abilities.smoke_multiplier_at(target.position,0,sim.tick),1.0),"allied patrol is unaffected by smoke")
+	check(is_equal_approx(sim.abilities.smoke_multiplier_at(Vector3(30,0,30),1,sim.tick),1.0),"leaving smoke restores patrol speed")
+	check(is_equal_approx(sim.abilities.smoke_multiplier_at(target.position,1,152),1.0),"expired smoke cannot slow before actor cleanup")
+	actor.ability.reset_life(actor.health.life_index+1)
+	check(actor.ability.escape_until_tick == 0,"new life has no stale escape acceleration")
+	world.free()

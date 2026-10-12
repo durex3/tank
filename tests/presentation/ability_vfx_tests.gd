@@ -61,6 +61,19 @@ func _run() -> void:
 	var boosted: Sprite3D = art._effects[0].sprite
 	var ordinary: Sprite3D = art._effects[1].sprite
 	check(boosted.pixel_size > ordinary.pixel_size,"first storm shot has stronger muzzle art than ordinary fire")
+	state.source_id = 1
+	state.phase = &"cooling"
+	state.tick = 62
+	art.on_event(state)
+	check(art._heat.size() == 1 and art._heat[1].size() == 2,"red heat owns two bounded smoke plumes")
+	var plume: Sprite3D = art._heat[1][0]
+	var frozen_position: Vector3 = plume.position
+	for i: int in range(3): await process_frame
+	check(plume.position == frozen_position,"red heat smoke freezes without committed ticks")
+	state.phase = &"idle"
+	state.tick = 63
+	art.on_event(state)
+	check(art._heat.is_empty(),"red heat end removes persistent smoke")
 	art.clear()
 	art.on_event({"kind":&"ability_fired","tick":70,"source_id":1,"ability":&"shock","position":Vector3.ZERO,"yaw":PI/2})
 	var wave: MeshInstance3D = art._effects[0].sprite
@@ -100,4 +113,14 @@ func _test_projectile_direction() -> void:
 	check((trail.basis*Vector3.FORWARD).normalized().is_equal_approx(shot.direction),"breach core faces travel direction")
 	check((trail.basis*Vector3.BACK).normalized().dot(shot.direction) < -0.99,"breach tail trails behind the projectile")
 	check(shot.position == Vector3(4,0.78,2),"visual assembly never shifts the authoritative projectile")
+	var tracer := ProjectileState.new()
+	tracer.projectile_id = 8
+	tracer.direction = Vector3.RIGHT
+	tracer.position = Vector3(1,0.78,3)
+	tracer.storm_round = true
+	shots.active.append(tracer)
+	view._process(0)
+	var tracer_view: Node3D = view._visuals[8]
+	check((tracer_view.basis*Vector3.FORWARD).normalized().is_equal_approx(Vector3.RIGHT),"storm tracer follows nonzero travel direction")
+	check(tracer.position == Vector3(1,0.78,3) and tracer.radius == 0,"larger tracer never changes collision or position")
 	view.free()

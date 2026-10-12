@@ -80,14 +80,14 @@ func _step_targets() -> void:
 			target.reset_motion()
 			events.publish(&"entity_respawned", tick, {"target_id": target.state.entity_id,
 				"hp": target.state.hp, "max_hp": target.state.max_hp})
-		target.step_motion()
+		target.step_motion(abilities.smoke_multiplier_at(target.position,target.state.team_id,tick))
 
 func _step_combat() -> void:
 	if not abilities.attack(actor,weapon_controller,tick,projectiles,events,targets):
-		WeaponAttack.execute(actor, weapon, weapon_controller, _command, tick, projectiles, events,abilities.interval(actor),actor.ability.phase == &"storm")
+		WeaponAttack.execute(actor, weapon, weapon_controller, _command, tick, projectiles, events,abilities.interval(actor),actor.ability.phase == &"storm",abilities.damage_multiplier(actor))
 	if rival != null:
 		if not abilities.attack(rival,rival_controller,tick,projectiles,events,targets):
-			WeaponAttack.execute(rival, rival_weapon, rival_controller, _rival_command, tick, projectiles, events,abilities.interval(rival),rival.ability.phase == &"storm")
+			WeaponAttack.execute(rival, rival_weapon, rival_controller, _rival_command, tick, projectiles, events,abilities.interval(rival),rival.ability.phase == &"storm",abilities.damage_multiplier(rival))
 	var space := actor.get_world_3d().direct_space_state
 	projectiles.step(space, tick)
 	var results := damage_resolver.resolve_batch(projectiles.hits)
@@ -108,6 +108,7 @@ func _step_combat() -> void:
 			for target: TrainingTarget in targets:
 				if target.state.entity_id == result.target_id:
 					target.state.respawn_tick = tick + training_rules.rebuild_ticks
+	_commit_target_pushes(results)
 	abilities.after_damage(results,tick,projectiles,events)
 	if match_runtime != null:
 		match_runtime.commit_tick(tick, results, events)
@@ -156,3 +157,13 @@ func _move_actor(tank: TankActor, command: PlayerCommand, epoch: int) -> void:
 	var forced: bool = abilities.before_move(tank,command,tick,epoch,projectiles,events)
 	tank.step(command,1.0/BattleClock.TICKS_PER_SECOND)
 	abilities.after_move(tank,command,before,forced)
+
+func _commit_target_pushes(results: Array[Dictionary]) -> void:
+	# Batch health is final here: a target killed later in this tick must not move.
+	for target: TrainingTarget in targets:
+		if target.state.hp <= 0: continue
+		var displacement := Vector3.ZERO
+		for result: Dictionary in results:
+			if result.target_id == target.state.entity_id and result.life_index == target.state.life_index:
+				displacement += result.get("push",Vector3.ZERO) as Vector3
+		target.commit_push(displacement.limit_length(abilities.rules.shock_push),abilities.rules.push_ticks)

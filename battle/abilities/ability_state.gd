@@ -15,6 +15,8 @@ var release_ticks: int = 0
 var cruise_active: bool = false
 var guard_active: bool = false
 var smoke_ready_tick: int = 0
+var escape_start_tick: int = 0
+var escape_until_tick: int = 0
 var reserved: bool = false
 var gained_this_tick: float = 0.0
 
@@ -29,4 +31,6 @@ func reset_life(index: int) -> void:
 	cruise_active = false
 	guard_active = false
 	smoke_ready_tick = 0
+	escape_start_tick = 0
+	escape_until_tick = 0
 	reserved = false

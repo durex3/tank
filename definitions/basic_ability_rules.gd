@@ -14,6 +14,8 @@ class_name BasicAbilityRules
 @export var guard_charge: int = 36
 @export var guard_half_angle: float = 60.0
 @export var guard_reduction: float = 0.30
+@export var escape_ticks: int = 90
+@export var escape_multiplier: float = 1.25
 @export var smoke_radius: float = 1.6
 @export var smoke_ticks: int = 150
 @export var smoke_cooldown: int = 600
@@ -26,9 +28,10 @@ class_name BasicAbilityRules
 @export var breach_speed: float = 40.0
 @export var breach_range: float = 16.0
 @export var breach_radius: float = 0.10
+@export var storm_damage_multiplier: float = 0.6
 @export var storm_ticks: int = 180
-@export var storm_interval: int = 5
-@export var storm_cooldown: int = 36
+@export var storm_interval: int = 3
+@export var storm_cooldown: int = 90
 @export var shock_charge: int = 15
 @export var shock_half_angle: float = 35.0
 @export var shock_range: float = 4.5
@@ -44,7 +47,7 @@ func validate() -> PackedStringArray:
 			var value: float = float(get(field.name))
 			if not is_finite(value) or value <= 0.0: errors.append("Invalid ability tuning: "+str(field.name))
 	if guard_half_angle >= 90.0 or shock_half_angle >= 90.0: errors.append("Ability cone must face forward")
-	if guard_reduction >= 1.0 or smoke_multiplier > 1.0 or breach_speed_multiplier > 1.0 or cruise_threshold > 1.0: errors.append("Invalid ability factor")
+	if storm_damage_multiplier > 1.0 or guard_reduction >= 1.0 or smoke_multiplier > 1.0 or breach_speed_multiplier > 1.0 or cruise_threshold > 1.0: errors.append("Invalid ability factor")
 	if breach_damage.size() != 3: errors.append("Breach requires three explicit damage steps")
 	for value: int in breach_damage:
 		if value <= 0: errors.append("Invalid breach damage")
