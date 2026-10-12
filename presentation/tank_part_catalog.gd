@@ -3,14 +3,14 @@ class_name TankPartCatalog
 ## Visual mapping lives outside immutable gameplay definitions.
 
 const WEAPONS: Dictionary = {
-	&"cannon": preload("res://presentation/parts/cannon.tscn"),
-	&"autocannon": preload("res://presentation/parts/autocannon.tscn"),
-	&"scatter": preload("res://presentation/parts/scatter.tscn"),
+	&"cannon": preload("res://presentation/parts/card_finished/cannon.tscn"),
+	&"autocannon": preload("res://presentation/parts/card_finished/autocannon.tscn"),
+	&"scatter": preload("res://presentation/parts/card_finished/scatter.tscn"),
 }
 const CHASSIS: Dictionary = {
-	&"light_tracks": preload("res://presentation/parts/light_tracks.tscn"),
-	&"scout_wheels": preload("res://presentation/parts/scout_wheels.tscn"),
-	&"heavy_tracks": preload("res://presentation/parts/heavy_tracks.tscn"),
+	&"light_tracks": preload("res://presentation/parts/card_finished/light_tracks.tscn"),
+	&"scout_wheels": preload("res://presentation/parts/card_finished/scout_wheels.tscn"),
+	&"heavy_tracks": preload("res://presentation/parts/card_finished/heavy_tracks.tscn"),
 }
 
 static func validate_part(part: Node, socket_name: StringName, expected: Vector3) -> String:

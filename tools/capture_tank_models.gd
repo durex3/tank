@@ -27,6 +27,8 @@ func _capture() -> void:
 			column.add_child(container)
 			var viewport := SubViewport.new()
 			viewport.size = Vector2i(420, 280)
+			viewport.msaa_3d = HangarPreview.STYLE.msaa
+			viewport.scaling_3d_scale = HangarPreview.STYLE.render_scale
 			viewport.own_world_3d = true
 			container.add_child(viewport)
 			var preview := HangarPreview.new()

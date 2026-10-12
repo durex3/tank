@@ -12,6 +12,14 @@ func _run() -> void:
 		DirAccess.remove_absolute(screen.equipment.store.path + suffix)
 	root.add_child(screen)
 	await process_frame
+	# Both rich-text font slots must cover actual Chinese content, including bold.
+	for slot: String in ["normal_font", "bold_font"]:
+		var font: Font = screen.theme.get_font(slot, "RichTextLabel")
+		for entry: PartEntry in PartCatalog.DATA.entries:
+			for character: String in entry.ability_summary:
+				var code: int = character.unicode_at(0)
+				if code >= 0x4E00 and code <= 0x9FFF:
+					check(font.has_char(code), slot + " covers " + character)
 	check(screen.directory.cards.size() == 32, "complete stable card inventory")
 	check(screen.directory.count.text == "炮塔 22 / 22", "turret tab count")
 	check(screen.directory.cards[&"cannon"].upgrade_mark.visible, "eligible owned part has upgrade arrow")

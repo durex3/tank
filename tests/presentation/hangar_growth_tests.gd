@@ -18,6 +18,17 @@ func _run() -> void:
 	assert(screen.progress_panel.actions[0].text == "升级 · 20")
 	assert(screen.upgrade_button.text == "升级" and screen.upgrade_fee.text == "金币 20")
 	screen.upgrade_button.pressed.emit()
+	assert(screen.progress_panel.upgrade_dialog.visible)
+	assert(screen.equipment.profile.coins == 300)
+	assert(screen.equipment.profile.level_of(&"cannon") == 1)
+	assert(screen.progress_panel.upgrade_dialog.comparison.get_child(5).text == "120")
+	assert(screen.progress_panel.upgrade_dialog.comparison.get_child(6).text == "124")
+	assert(screen.progress_panel.upgrade_dialog.comparison.get_child(7).text == "+4")
+	screen.progress_panel.upgrade_dialog.hide()
+	assert(screen.equipment.profile.coins == 300)
+	screen.upgrade_button.pressed.emit()
+	screen.progress_panel.upgrade_dialog.hide()
+	screen.progress_panel.upgrade_dialog.confirmed.emit()
 	assert(screen.equipment.profile.coins == 280)
 	assert(screen.equipment.profile.level_of(&"cannon") == 2)
 	assert(screen.session.stats.damage == 124)
@@ -27,6 +38,13 @@ func _run() -> void:
 	if not DisplayServer.get_name() == "headless":
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("res://artifacts/hangar-growth.png")
+	screen.equipment.profile.levels["cannon"] = 6
+	screen._refresh()
+	assert(screen.upgrade_warning.text.contains("6.0 → 4.8"))
+	screen.equipment.profile.levels["cannon"] = 7
+	screen._refresh()
+	assert(screen.upgrade_warning.text.is_empty())
+	screen.equipment.profile.levels["cannon"] = 2
 	screen.equipment.profile.coins = 0
 	screen._refresh()
 	assert(screen.upgrade_button.text == "升级" and screen.upgrade_button.disabled)

@@ -10,8 +10,13 @@ var message := Label.new()
 var rows: Array[Label] = []
 var actions: Array[Button] = []
 var ids: Array[StringName] = []
+var upgrade_dialog := HangarUpgradeDialog.new()
+var _pending_id: StringName
+var _pending_level: int
+var _shade := ColorRect.new()
 
 func _ready() -> void:
+	_build_upgrade_dialog()
 	custom_minimum_size.y = 72
 	add_child(balance)
 	for index: int in range(2):
@@ -55,7 +60,7 @@ func show_parts(weapon: StringName, chassis: StringName) -> void:
 		actions[index].tooltip_text = error
 		for connection: Dictionary in actions[index].pressed.get_connections():
 			actions[index].pressed.disconnect(connection.callable)
-		actions[index].pressed.connect(_submit.bind(id, level, owned))
+		actions[index].pressed.connect(_request.bind(id, level, owned))
 
 func _submit(id: StringName, level: int, owned: bool) -> void:
 	var error: String = service.upgrade(id, level) if owned else service.unlock(id)
@@ -72,3 +77,31 @@ func _load_preview(changed_index: int, next_level: int) -> String:
 	var after := PartGrowth.resolve(ids[0], ids[1], next_level if changed_index == 0 else wl, next_level if changed_index == 1 else cl)
 	var c := PartGrowth.chassis(ids[1], next_level if changed_index == 1 else cl)
 	return "\n升级后载重 %d/%d · 超重%d · 移速 %.1f→%.1f" % [after.weight, c.capacity, after.overload, before.move_speed, after.move_speed]
+
+func _build_upgrade_dialog() -> void:
+	var overlay := CanvasLayer.new()
+	overlay.layer = 45
+	add_child(overlay)
+	_shade.color = Color(0.03, 0.02, 0.07, 0.78)
+	_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.add_child(_shade)
+	_shade.hide()
+	add_child(upgrade_dialog)
+	upgrade_dialog.visibility_changed.connect(func() -> void: _shade.visible = upgrade_dialog.visible)
+	upgrade_dialog.confirmed.connect(_confirm_upgrade)
+
+func _request(id: StringName, level: int, owned: bool) -> void:
+	if not owned:
+		_submit(id, level, false)
+		return
+	var error := service.upgrade_error(id, level)
+	if not error.is_empty():
+		operation_failed.emit(error)
+		return
+	_pending_id = id
+	_pending_level = level
+	upgrade_dialog.show_upgrade(id, level, ids, service.profile)
+
+func _confirm_upgrade() -> void:
+	# Capture the original level: service rejects stale or repeated confirmation.
+	_submit(_pending_id, _pending_level, true)

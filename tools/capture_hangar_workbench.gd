@@ -12,6 +12,25 @@ func _capture() -> void:
 		await process_frame
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("res://artifacts/workbench-turrets.png")
+	screen.upgrade_button.pressed.emit()
+	for frame: int in range(8): await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("res://artifacts/workbench-upgrade.png")
+	screen.progress_panel.upgrade_dialog.hide()
+	screen.equipment.profile.levels["cannon"] = 6
+	screen._refresh()
+	screen.upgrade_button.pressed.emit()
+	for frame: int in range(8): await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("res://artifacts/workbench-upgrade-overload.png")
+	screen.progress_panel.upgrade_dialog.hide()
+	screen.equipment.profile.levels["cannon"] = 7
+	screen._refresh()
+	for frame: int in range(8): await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("res://artifacts/workbench-overload.png")
+	screen.equipment.profile.levels["cannon"] = 1
+	screen._refresh()
 	screen.directory.cards[&"burst_cannon"].pressed.emit()
 	(screen.directory.grid.get_parent() as ScrollContainer).scroll_vertical = 400
 	for frame: int in range(6):

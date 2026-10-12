@@ -71,33 +71,42 @@ func _build_selectors() -> void:
 
 func _build_header(parent: VBoxContainer) -> void:
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 16)
+	row.add_theme_constant_override("separation", 14)
 	parent.add_child(row)
 	var back := Button.new()
-	back.text = "‹"
+	back.icon = preload("res://assets/derived/ui/back.svg")
+	back.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	back.tooltip_text = "返回 · Esc"
 	back.custom_minimum_size = Vector2(44, 44)
+	back.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	back.add_theme_font_size_override("font_size", 28)
 	var back_style := HangarStyle.panel(Color("201c2b"), Color("514858"), 22)
 	back_style.set_content_margin_all(4)
 	back.add_theme_stylebox_override("normal", back_style)
+	for state: String in ["hover", "pressed"]:
+		var style := HangarStyle.panel(Color("302b3e"), Color("7d718d"), 22)
+		style.set_content_margin_all(4)
+		back.add_theme_stylebox_override(state, style)
 	back.pressed.connect(func() -> void: back_requested.emit())
 	row.add_child(back)
 	var heading := VBoxContainer.new()
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	heading.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	heading.add_theme_constant_override("separation", 0)
 	row.add_child(heading)
 	var title := Label.new()
 	title.text = "整备车间"
-	title.add_theme_font_size_override("font_size", 29)
+	title.add_theme_font_size_override("font_size", 27)
 	heading.add_child(title)
 	var subtitle := Label.new()
 	subtitle.text = "自由组合 · 打造你的战车"
 	subtitle.add_theme_font_size_override("font_size", 11)
 	subtitle.add_theme_color_override("font_color", Color("a79eae"))
 	heading.add_child(subtitle)
+	coins_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	coins_label.add_theme_font_size_override("font_size", 20)
 	row.add_child(coins_label)
+	equipped_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	equipped_label.add_theme_font_size_override("font_size", 13)
 	equipped_label.add_theme_color_override("font_color", Color("a9b6c4"))
 	row.add_child(equipped_label)
@@ -132,6 +141,8 @@ func _build_body(parent: VBoxContainer) -> void:
 	right.add_child(actions_panel)
 	var action_column := VBoxContainer.new()
 	actions_panel.add_child(action_column)
+	ownership_label.custom_minimum_size.y = 24
+	ownership_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	ownership_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	ownership_label.add_theme_font_size_override("font_size", 14)
 	action_column.add_child(ownership_label)
@@ -140,7 +151,7 @@ func _build_body(parent: VBoxContainer) -> void:
 	progress_panel.operation_failed.connect(func(reason: String) -> void: status_label.text = "操作失败：" + HangarCopy.error(reason))
 	action_column.add_child(progress_panel)
 	progress_panel.hide()
-	upgrade_warning.custom_minimum_size.y = 32
+	upgrade_warning.custom_minimum_size.y = 28
 	upgrade_warning.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	upgrade_warning.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	upgrade_warning.add_theme_font_size_override("font_size", 13)
@@ -158,11 +169,17 @@ func _build_body(parent: VBoxContainer) -> void:
 
 func _build_actions(parent: VBoxContainer) -> void:
 	var row := HBoxContainer.new()
-	row.custom_minimum_size.y = 76
+	upgrade_fee.custom_minimum_size.y = 22
+	upgrade_fee.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	upgrade_fee.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	upgrade_fee.add_theme_font_size_override("font_size", 13)
+	upgrade_fee.add_theme_color_override("font_color", Color("ffe075"))
+	parent.add_child(upgrade_fee)
+	row.custom_minimum_size.y = 48
 	row.add_theme_constant_override("separation", 12)
 	parent.add_child(row)
 	var undo := Button.new()
-	undo.text = "↶ 撤销更改"
+	undo.text = "撤销改装"
 	undo.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	undo.custom_minimum_size.y = 48
 	undo.size_flags_vertical = Control.SIZE_SHRINK_END
@@ -174,14 +191,8 @@ func _build_actions(parent: VBoxContainer) -> void:
 	upgrade_button.add_theme_color_override("font_color", Color("092f28"))
 	upgrade_button.add_theme_stylebox_override("disabled", HangarStyle.panel(Color("2c2838"), Color("4d455b"), 14))
 	upgrade_button.add_theme_color_override("font_disabled_color", Color("8b839b"))
-	var upgrade_slot := VBoxContainer.new()
-	upgrade_slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(upgrade_slot)
-	upgrade_fee.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	upgrade_fee.add_theme_font_size_override("font_size", 12)
-	upgrade_fee.add_theme_color_override("font_color", Color("ffe075"))
-	upgrade_slot.add_child(upgrade_fee)
-	upgrade_slot.add_child(upgrade_button)
+	upgrade_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(upgrade_button)
 	part_info.text = "ⓘ"
 	part_info.custom_minimum_size = Vector2(54, 54)
 	part_info.size_flags_vertical = Control.SIZE_SHRINK_END
@@ -197,6 +208,9 @@ func _build_actions(parent: VBoxContainer) -> void:
 	apply_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	apply_button.pressed.connect(_apply_loadout)
 	row.add_child(apply_button)
+	HangarStyle.action_button(undo, Color("302b3e"), Color("e8e4f1"))
+	HangarStyle.action_button(upgrade_button, Color("33d989"), Color("092f28"))
+	HangarStyle.action_button(apply_button, Color("14c8dc"), Color("092f38"))
 	train_button.name = "TrainLoadout"
 	train_button.text = "试炼场"
 	train_button.pressed.connect(_train)
@@ -260,7 +274,7 @@ func _refresh() -> void:
 	var applied: bool = weapon.id == equipment.profile.weapon_id and chassis.id == equipment.profile.chassis_id
 	apply_button.disabled = pending or applied or not error.is_empty() or not equipment.load_error.is_empty()
 	apply_button.text = "待开发" if pending else ("已应用" if applied else ("尚未拥有" if error == "part_locked" else "应用改装"))
-	train_button.disabled = pending
+	train_button.disabled = pending or not LoadoutResolver.can_save(weapon, chassis)
 	status_label.text = "设计预览：右侧保留上次可装配组合" if pending else "试炼无收益 · 炮塔大招与底盘被动待实现"
 	if not equipment.load_error.is_empty(): status_label.text = "存档异常，已阻止覆盖"
 	_refresh_dock(kind, pending, owned, weapon, chassis)
@@ -300,15 +314,15 @@ func _refresh_dock(kind: int, pending: bool, owned: bool, weapon: WeaponDef, cha
 		ownership_label.add_theme_color_override("font_color", Color("fa607c"))
 	if not pending and session.stats.overload > 0:
 		var blocked: bool = not LoadoutResolver.can_save(weapon, chassis)
-		ownership_label.text += " · 超重%d · %s" % [session.stats.overload, "无法装配" if blocked else "移速降低"]
+		ownership_label.text += " · 超重%d · %s" % [session.stats.overload, "无法装配" if blocked else "移速降低 %d%%" % roundi(LoadoutResolver.RULES.speed_penalty_per_overload * session.stats.overload * 100)]
 		ownership_label.add_theme_color_override("font_color", Color("fa607c"))
 		if blocked: apply_button.text = "无法装配"
-	upgrade_button.custom_minimum_size.y = 44
+	upgrade_button.custom_minimum_size.y = 48
 	upgrade_button.tooltip_text = HangarCopy.error(reason) + "\n" + progress_panel.rows[kind].text
 	upgrade_warning.text = ""
 	if show_upgrade and owned:
 		var level: int = equipment.profile.level_of(inspected_id)
 		var after := PartGrowth.resolve(weapon.id, chassis.id, level + 1 if kind == 0 else equipment.profile.level_of(weapon.id), level + 1 if kind == 1 else equipment.profile.level_of(chassis.id))
-		upgrade_warning.text = "升级后超重 %d：移速 %.1f → %.1f" % [after.overload, session.stats.move_speed, after.move_speed] if after.overload > 0 else ""
+		upgrade_warning.text = "升级后超重 %d：移速 %.1f → %.1f" % [after.overload, session.stats.move_speed, after.move_speed] if after.overload > session.stats.overload or after.move_speed < session.stats.move_speed else ""
 	upgrade_warning.modulate.a = 1.0 if not upgrade_warning.text.is_empty() else 0.0
 	if pending: ownership_label.text = "设计预览 · 暂不可装配"

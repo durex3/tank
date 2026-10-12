@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="LoadoutRules" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://definitions/loadout_rules.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+maximum_overload = 1
+speed_penalty_per_overload = 0.2
+minimum_speed_ratio = 0.6

@@ -32,6 +32,12 @@ func _run() -> void:
 				check((screen.find_child("WeaponCard" + str(index), true, false) as Button).button_pressed == (index == weapon), "exactly one turret selected")
 				check((screen.find_child("ChassisCard" + str(index), true, false) as Button).button_pressed == (index == chassis), "exactly one chassis selected")
 	var toggle := screen.find_child("ArtModelToggle", true, false) as Button
+	for chassis: StringName in [&"light_tracks", &"heavy_tracks", &"scout_wheels"]:
+		var base := HangarArtCatalog.texture(&"cannon", chassis).get_image().get_region(Rect2i(0, 800, 1024, 224)).get_data()
+		for weapon: StringName in [&"autocannon", &"scatter"]:
+			var changed := HangarArtCatalog.texture(weapon, chassis).get_image().get_region(Rect2i(0, 800, 1024, 224)).get_data()
+			check(changed == base, "turret switching preserves visible lower chassis pixels exactly")
+	check(screen.art_stage.artwork.visible, "shared module composition is the default appearance")
 	toggle.pressed.emit()
 	check(not screen.art_stage.artwork.visible and screen.find_child("AssemblyPreview", true, false).visible, "explicit toggle shows assembly model")
 	var before_rotation: float = screen.preview.tank.rotation.y

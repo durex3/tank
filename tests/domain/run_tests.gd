@@ -30,13 +30,14 @@ func _initialize() -> void:
 	check(BattleClock.seconds_to_ticks(0.001) == 1, "minimum cooldown")
 	check(BattleClock.seconds_to_ticks(0.16) == 10, "fractional tick rounds up")
 	var overloaded := weapons[0].duplicate() as WeaponDef
+	overloaded.weight = 3
+	check(LoadoutResolver.can_save(overloaded, chassis_defs[0]), "overload one accepted")
+	check(is_equal_approx(LoadoutResolver.resolve(overloaded, chassis_defs[0]).move_speed, 4.8), "overload one reduces speed twenty percent")
 	overloaded.weight = 4
-	check(LoadoutResolver.can_save(overloaded, chassis_defs[0]), "overload two accepted")
-	check(is_equal_approx(LoadoutResolver.resolve(overloaded, chassis_defs[0]).move_speed, 4.2), "overload speed")
-	overloaded.weight = 5
-	check(not LoadoutResolver.can_save(overloaded, chassis_defs[0]), "overload three rejected")
+	check(not LoadoutResolver.can_save(overloaded, chassis_defs[0]), "overload two rejected")
 	overloaded.weight = 20
-	check(is_equal_approx(LoadoutResolver.resolve(overloaded, chassis_defs[0]).move_speed, 3.6), "speed floor")
+	check(not LoadoutResolver.can_save(overloaded, chassis_defs[0]), "extreme overload rejected")
+	check(is_equal_approx(LoadoutResolver.resolve(overloaded, chassis_defs[0]).move_speed, 3.6), "invalid draft preview retains speed floor")
 	resolved.max_hp = 1
 	check(LoadoutResolver.resolve(weapons[0], chassis_defs[0]).max_hp == 500, "state independence")
 	weapons.append(weapons[0])

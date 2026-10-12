@@ -43,6 +43,28 @@ func _run() -> void:
 	session.stop()
 	session.queue_free()
 	await process_frame
+	# Crossing the explicit level-seven weight/capacity breakpoints must update
+	# the saved profile and the exact same stats used by training.
+	service.profile.coins = 10000
+	service.profile.levels["cannon"] = 6
+	assert(service.upgrade(&"cannon", 6).is_empty())
+	assert(service.store.load_profile().level_of(&"cannon") == 7)
+	var overloaded := PartGrowth.resolve(&"cannon", &"light_tracks", 7, 1)
+	assert(overloaded.overload == 1 and is_equal_approx(overloaded.move_speed, 4.8))
+	assert(service.apply(&"cannon", &"light_tracks").is_empty())
+	var loaded_session := MovementSession.new()
+	assert(loaded_session.configure_loadout(&"cannon", &"light_tracks", 7, 1).is_empty())
+	assert(is_equal_approx(LoadoutResolver.resolve(loaded_session.weapon, loaded_session.chassis).move_speed, 4.8))
+	root.add_child(loaded_session)
+	await physics_frame
+	loaded_session.stop()
+	loaded_session.queue_free()
+	await process_frame
+	service.profile.levels["light_tracks"] = 6
+	assert(service.upgrade(&"light_tracks", 6).is_empty())
+	var restored := PartGrowth.resolve(&"cannon", &"light_tracks", 7, 7)
+	assert(restored.overload == 0 and is_equal_approx(restored.move_speed, 6.0))
+	service.profile.levels["cannon"] = 2
 	service.profile.coins = 0
 	assert(service.upgrade(&"cannon", 2) == "insufficient_coins")
 	service.profile.coins = 10000

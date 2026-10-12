@@ -9,15 +9,40 @@ func _initialize() -> void:
 
 func _run() -> void:
 	await _test_assembly()
+	_test_mesh_integrity()
 	_test_rejected_content()
 	await _test_hangar()
 	await _test_navigation()
 	print("TANK PARTS TESTS: " + ("PASS" if failures == 0 else "FAIL"))
 	quit(0 if failures == 0 else 1)
 
+func _test_mesh_integrity() -> void:
+	# A mixed indexed/unindexed merge previously saved invisible barrels and armor.
+	var scenes: Array = TankPartCatalog.WEAPONS.values() + TankPartCatalog.CHASSIS.values()
+	for scene: PackedScene in scenes:
+		var part: Node = scene.instantiate()
+		for node: Node in part.get_children():
+			if not node is MeshInstance3D: continue
+			var mesh: Mesh = (node as MeshInstance3D).mesh
+			for surface: int in range(mesh.get_surface_count()):
+				var arrays: Array = mesh.surface_get_arrays(surface)
+				if arrays[Mesh.ARRAY_INDEX] == null: continue
+				var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
+				var referenced: Dictionary = {}
+				for index: int in indices: referenced[index] = true
+				var vertex_count: int = mesh.surface_get_array_len(surface)
+				check(referenced.size() >= vertex_count * 0.98, "packed visual mesh retains its geometry in draw indices")
+		part.free()
+
 func _test_assembly() -> void:
 	var view := TankView.new()
 	root.add_child(view)
+	var hull: Node = view.get_node("HullMount").get_child(0)
+	view.configure_parts(&"autocannon", &"light_tracks")
+	check(view.get_node("HullMount").get_child(0) == hull, "turret change preserves the exact chassis instance")
+	var turret: Node = view.get_node("TurretMount").get_child(0)
+	view.configure_parts(&"autocannon", &"heavy_tracks")
+	check(view.get_node("TurretMount").get_child(0) == turret, "chassis change preserves the exact turret instance")
 	var state := TankState.new()
 	for weapon: StringName in TankPartCatalog.WEAPONS:
 		for chassis: StringName in TankPartCatalog.CHASSIS:

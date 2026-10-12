@@ -1,6 +1,8 @@
 extends VBoxContainer
 class_name HangarArtStage
-## Static art is the default; explicit toggle exposes the existing assembly preview.
+## Static appearance uses shared module layers; real 3D assembly is an explicit alternate.
+
+const PREVIEW_STYLE: HangarPreviewStyle = preload("res://content/presentation/hangar_preview.tres")
 
 var preview: HangarPreview
 var artwork := TextureRect.new()
@@ -21,7 +23,7 @@ func _ready() -> void:
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var header := HBoxContainer.new()
 	add_child(header)
-	_caption.text = "外观预览"
+	_caption.text = "外观预览 · 部件拼装"
 	_caption.add_theme_font_size_override("font_size", 13)
 	_caption.add_theme_color_override("font_color", Color("aca2b7"))
 	_caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -95,10 +97,16 @@ func _build_display() -> void:
 	_model.name = "AssemblyPreview"
 	_model.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_model.stretch = true
+	_model.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_model.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	display.add_child(_model)
 	var viewport := SubViewport.new()
 	viewport.size = Vector2i(640, 480)
+	# Keep the small embedded preview smooth without post-process blur.
+	viewport.msaa_3d = PREVIEW_STYLE.msaa
+	viewport.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
+	viewport.scaling_3d_scale = PREVIEW_STYLE.render_scale
+	viewport.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 	viewport.own_world_3d = true
 	_model.add_child(viewport)
 	viewport.add_child(preview)
@@ -116,7 +124,7 @@ func show_loadout(weapon: WeaponDef, chassis: ChassisDef, stats: ResolvedStats) 
 	var color: Color = Color("fa426d") if stats.overload > 0 else HangarStyle.ACCENT
 	(_load_bar.get_theme_stylebox("fill") as StyleBoxFlat).bg_color = color
 	_load_value.add_theme_color_override("font_color", color if stats.overload > 0 else Color.WHITE)
-	_status.text = HangarCopy.text("hangar.ready") if stats.overload == 0 else HangarCopy.text("hangar.overload") % stats.overload
+	_status.text = HangarCopy.text("hangar.ready") if stats.overload == 0 else ("超重 %d · 无法装配" % stats.overload if not LoadoutResolver.can_save(weapon, chassis) else "超重 %d · 移速降低 %d%%" % [stats.overload, roundi(LoadoutResolver.RULES.speed_penalty_per_overload * stats.overload * 100)])
 	return ""
 
 func _toggle_view() -> void:
@@ -124,8 +132,8 @@ func _toggle_view() -> void:
 	_dragging = false
 	_model.visible = _show_model
 	artwork.visible = not _show_model
-	_caption.text = "装配模型 · 拖动360°旋转" if _show_model else HangarCopy.text("hangar.art")
-	_toggle.text = HangarCopy.text("hangar.show_art" if _show_model else "hangar.show_model")
+	_caption.text = "装配模型 · 拖动360°旋转" if _show_model else "外观预览 · 部件拼装"
+	_toggle.text = "返回外观预览" if _show_model else "查看装配模型"
 
 func _preview_input(event: InputEvent) -> void:
 	if not _show_model: return

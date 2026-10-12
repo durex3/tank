@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="HangarPreviewStyle" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://presentation/hangar_preview_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+render_scale = 1.5
+msaa = 2
+camera_size = 2.9

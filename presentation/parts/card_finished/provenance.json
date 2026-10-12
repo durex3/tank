@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-12",
+  "authoring": "native Godot procedural geometry; no external model generator",
+  "generator": "tools/build_finished_parts.gd",
+  "reuse": [
+    "tools/build_refined_parts.gd",
+    "tools/build_detailed_parts.gd",
+    "tools/build_card_aligned_parts.gd"
+  ],
+  "references": [
+    "assets/generated/parts/aligned-v2/cannon.png",
+    "assets/generated/parts/aligned-v2/autocannon.png",
+    "assets/generated/parts/aligned-v2/scatter.png",
+    "assets/generated/parts/chassis-atlas-v1.png"
+  ],
+  "purpose": "Final display-only finish of the existing six modules",
+  "preserved_versions": [
+    "presentation/parts/card_refined",
+    "presentation/parts/card_detailed",
+    "presentation/parts/card_aligned",
+    "presentation/parts original scenes"
+  ],
+  "socket_contract": {
+    "TurretSocket": [
+      0,
+      0.76,
+      0
+    ],
+    "Muzzle": [
+      0,
+      0.02,
+      -1.05
+    ]
+  },
+  "changes": [
+    "broader armor box bevels",
+    "side vents and swept cheek fasteners",
+    "stepped hatch and lifting hardware",
+    "fender hinges and rivets",
+    "satin painted armor and muted brass, structural metal spokes"
+  ],
+  "metrics": {
+    "autocannon": {
+      "surfaces": 7,
+      "triangles": 22760
+    },
+    "cannon": {
+      "surfaces": 7,
+      "triangles": 9720
+    },
+    "heavy_tracks": {
+      "surfaces": 6,
+      "triangles": 64636
+    },
+    "light_tracks": {
+      "surfaces": 6,
+      "triangles": 63612
+    },
+    "scatter": {
+      "surfaces": 7,
+      "triangles": 11064
+    },
+    "scout_wheels": {
+      "surfaces": 6,
+      "triangles": 48860
+    }
+  },
+  "acceptance_record": "docs/features/040-装配模型最终细节收尾.md",
+  "limitations": "stylized procedural approximation; no texture baking; Android performance pending"
+}

@@ -20,19 +20,26 @@ func _ready() -> void:
 func configure_parts(next_weapon: StringName, next_chassis: StringName) -> String:
 	if not TankPartCatalog.WEAPONS.has(next_weapon) or not TankPartCatalog.CHASSIS.has(next_chassis):
 		return "Unknown visual part ID"
-	var hull := (TankPartCatalog.CHASSIS[next_chassis] as PackedScene).instantiate()
-	var turret := (TankPartCatalog.WEAPONS[next_weapon] as PackedScene).instantiate()
-	var error := TankPartCatalog.validate_part(hull, &"TurretSocket", Vector3(0, 0.76, 0))
-	if error.is_empty():
+	var hull: Node3D
+	var turret: Node3D
+	var error: String = ""
+	if next_chassis != chassis_id or _hull.get_child_count() == 0:
+		hull = (TankPartCatalog.CHASSIS[next_chassis] as PackedScene).instantiate() as Node3D
+		error = TankPartCatalog.validate_part(hull, &"TurretSocket", Vector3(0, 0.76, 0))
+	if next_weapon != weapon_id or _turret.get_child_count() == 0:
+		turret = (TankPartCatalog.WEAPONS[next_weapon] as PackedScene).instantiate() as Node3D
+	if error.is_empty() and turret != null:
 		error = TankPartCatalog.validate_part(turret, &"Muzzle", Vector3(0, 0.02, -1.05))
 	if not error.is_empty():
-		hull.free()
-		turret.free()
+		if hull != null: hull.free()
+		if turret != null: turret.free()
 		return error
-	_replace_child(_hull, hull)
-	_replace_child(_turret, turret)
-	_turret.position = (hull.get_node("TurretSocket") as Marker3D).position
-	_muzzle = turret.get_node("Muzzle") as Marker3D
+	if hull != null:
+		_replace_child(_hull, hull)
+		_turret.position = (hull.get_node("TurretSocket") as Marker3D).position
+	if turret != null:
+		_replace_child(_turret, turret)
+		_muzzle = turret.get_node("Muzzle") as Marker3D
 	weapon_id = next_weapon
 	chassis_id = next_chassis
 	return ""
