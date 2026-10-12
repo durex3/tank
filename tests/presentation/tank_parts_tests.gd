@@ -30,7 +30,7 @@ func _test_mesh_integrity() -> void:
 				var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
 				var referenced: Dictionary = {}
 				for index: int in indices: referenced[index] = true
-				var vertex_count: int = mesh.surface_get_array_len(surface)
+				var vertex_count: int = (arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()
 				check(referenced.size() >= vertex_count * 0.98, "packed visual mesh retains its geometry in draw indices")
 		part.free()
 

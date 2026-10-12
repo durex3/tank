@@ -14,6 +14,7 @@ var _hurtbox := Damageable.new()
 
 func _ready() -> void:
 	motion_origin = position
+	state.body_radius_m = 0.65
 	sync_to_physics = false
 	collision_layer = 2
 	collision_mask = 3

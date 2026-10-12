@@ -23,6 +23,9 @@ func _run() -> void:
 	var opacity_before: float = label.modulate.a
 	for i: int in range(4): await process_frame
 	check(label.position == position_before and label.modulate.a == opacity_before,"no committed ticks means feedback stays frozen")
+	for count: int in [1,2]:
+		art.on_event({"kind":&"damage_applied","tick":3,"position":Vector3.ZERO,"target_id":7,"bubble_hits":count})
+	check(art._messages.size() == 2 and (art._messages[1].label as Label3D).text.contains("2/2"),"same-tick bubble contacts show one final hit-cap label")
 	art.on_event({"kind":&"ability_zones","tick":40,"zones":[]})
 	check(art._messages.is_empty() and art._effects.is_empty(),"old block notice and sparkle expire by tick")
 	var zones: Array = []

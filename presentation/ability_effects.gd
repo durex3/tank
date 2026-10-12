@@ -93,6 +93,9 @@ func _draw_actor(state: Dictionary) -> void:
 				_line(mesh,core+ray*style.charge_ray_m*(1.2-progress*0.5),core+ray*0.12,Color(style.breach_color,0.75))
 		elif state.phase == &"shock":
 			_sector(mesh,origin,rules.shock_range,state.locked_yaw,deg_to_rad(rules.shock_half_angle),Color(style.shock_color,0.17))
+		elif state.phase == &"bubble":
+			for p: Vector3 in state.get("bubble_plan",PackedVector3Array()):
+				_ring(mesh,Vector3(p.x,style.ground_height,p.z),style.bubble_plan_radius_m,style.bubble_color)
 		elif state.phase in [&"storm",&"cooling"]:
 			_draw_storm(mesh,state)
 

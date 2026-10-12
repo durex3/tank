@@ -3,6 +3,8 @@ class_name WeaponAttack
 ## Shared attack execution for every controller; emits facts only after spawning.
 
 static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController, command: PlayerCommand, tick: int, projectiles: ProjectileSystem, events: BattleEvents, interval: int = 0, ability_damage: bool = false, damage_multiplier: float = 1.0) -> void:
+	actor.magazine.step(weapon,actor.health.life_index,tick)
+	gate.next_fire_tick = maxi(gate.next_fire_tick,actor.magazine.reload_until)
 	if actor.health.hp <= 0 or actor.health.protected:
 		gate.cancel_pending()
 		return
@@ -35,6 +37,8 @@ static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController,
 	if shots.is_empty():
 		events.publish(&"fire_rejected", tick, {"source_id": actor.state.entity_id, "reason": &"projectile_budget"})
 		return
+	actor.magazine.consume(tick)
+	gate.next_fire_tick = maxi(gate.next_fire_tick,actor.magazine.reload_until)
 	events.publish(&"weapon_fired", tick, {"source_id": actor.state.entity_id,
-		"position": muzzle, "projectile_id": shots[0].projectile_id,
+		"position": muzzle, "weapon":weapon.id, "projectile_id": shots[0].projectile_id,
 		"interval_ticks": actor.stats.interval_ticks if interval <= 0 else interval, "pellet_count": shots.size(), "next_fire_tick": gate.next_fire_tick})

@@ -21,10 +21,16 @@ func on_event(event: Dictionary) -> void:
 			_update_charge(event)
 			_update_heat(event)
 		&"weapon_fired":
+			if event.get("weapon",&"") == &"bubble_cannon": return
 			var storm: bool = _phases.get(event.source_id,&"idle") == &"storm"
 			_flash(style.muzzle,event.position,style.storm_muzzle_width_m if storm else style.muzzle_width_m,event.tick,style.storm_muzzle_ticks if storm else style.muzzle_ticks)
-		&"projectile_hit": _flash(style.impact,event.position,style.impact_width_m,event.tick,style.impact_ticks)
+		&"projectile_hit":
+			if not event.get("bubble",false): _flash(style.impact,event.position,style.impact_width_m,event.tick,style.impact_ticks)
 		&"damage_applied":
+			if event.get("bubble_hits",0) > 0:
+				_guard_message(event,"拦截泡 %d/2 · 减速15%%" % event.bubble_hits)
+			elif event.get("slow_ticks",0) > 0:
+				_guard_message(event,"减速15%")
 			if event.get("guarded",false):
 				var spark := _flash(style.impact,event.position,style.guard_spark_width_m,event.tick,style.guard_hit_ticks)
 				if spark != null: spark.modulate = style.guard_color
@@ -148,14 +154,18 @@ func _update_smoke(zones: Array, tick: int) -> void:
 			for sprite: Sprite3D in _smoke[id]: sprite.queue_free()
 			_smoke.erase(id)
 
-func _guard_message(event: Dictionary) -> void:
+func _guard_message(event: Dictionary, text: String = "正面格挡") -> void:
+	for entry: Dictionary in _messages:
+		if event.has("target_id") and entry.start == event.tick and entry.get("target_id",-1) == event.target_id:
+			(entry.label as Label3D).text = text
+			return
 	if _messages.size() >= style.max_labels: return
 	var label := Label3D.new()
 	var font := SystemFont.new()
 	font.font_names = PackedStringArray(["Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans CJK SC"])
 	font.font_weight = 700
 	label.font = font
-	label.text = "正面格挡"
+	label.text = text
 	label.font_size = 28
 	label.pixel_size = 0.012
 	label.modulate = Color("c2ecff")
@@ -163,7 +173,7 @@ func _guard_message(event: Dictionary) -> void:
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	label.position = event.position+Vector3.UP*1.0
 	add_child(label)
-	_messages.append({"label":label,"start":event.tick,"until":event.tick+style.guard_label_ticks,"position":label.position})
+	_messages.append({"label":label,"start":event.tick,"until":event.tick+style.guard_label_ticks,"position":label.position,"target_id":event.get("target_id",-1)})
 
 func clear() -> void:
 	for effect: Dictionary in _effects: (effect.sprite as Node3D).queue_free()

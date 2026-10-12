@@ -6,6 +6,7 @@ const WEAPONS: Dictionary = {
 	&"cannon": preload("res://presentation/parts/card_finished/cannon.tscn"),
 	&"autocannon": preload("res://presentation/parts/card_finished/autocannon.tscn"),
 	&"scatter": preload("res://presentation/parts/card_finished/scatter.tscn"),
+	&"bubble_cannon": preload("res://presentation/parts/bubble_refined/bubble_cannon.tscn"),
 }
 const CHASSIS: Dictionary = {
 	&"light_tracks": preload("res://presentation/parts/card_finished/light_tracks.tscn"),

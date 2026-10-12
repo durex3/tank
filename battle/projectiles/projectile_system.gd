@@ -12,7 +12,7 @@ var _next_id: int = 0
 var reservations: Dictionary = {}
 
 func spawn(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, weapon: WeaponDef, owner_id: int, request_id: int, tick: int, muzzle_yaw: float = NAN, team_id: int = 0) -> ProjectileState:
-	if active.size() + reservations.size() >= MAX_PROJECTILES:
+	if used_slots() >= MAX_PROJECTILES:
 		return null
 	_next_id += 1
 	var shot := ProjectileState.new()
@@ -23,8 +23,13 @@ func spawn(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, weapon
 	shot.spawn_tick = tick
 	shot.speed = weapon.projectile_speed
 	shot.remaining_range = weapon.range_m
+	if weapon.projectile_kind == &"bubble_round": shot.remaining_range = maxf(0.0,weapon.range_m-MUZZLE_OFFSET)
 	shot.lifetime_ticks = BattleClock.seconds_to_ticks(weapon.range_m / weapon.projectile_speed) + 1
 	shot.damage = weapon.damage
+	shot.radius = weapon.projectile_radius
+	shot.kind = weapon.projectile_kind
+	shot.slow_multiplier = weapon.slow_multiplier
+	shot.slow_ticks = weapon.slow_ticks
 	shot.direction = Vector3(sin(yaw), 0, -cos(yaw))
 	shot.position = origin + Vector3.UP * SHOT_HEIGHT
 	shot.previous_position = shot.position
@@ -38,7 +43,7 @@ func spawn(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, weapon
 
 func spawn_volley(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, offsets: PackedFloat32Array, weapon: WeaponDef, owner_id: int, request_id: int, tick: int, team_id: int = 0) -> Array[ProjectileState]:
 	var shots: Array[ProjectileState] = []
-	if offsets.is_empty() or active.size() + reservations.size() + offsets.size() > MAX_PROJECTILES:
+	if offsets.is_empty() or used_slots() + offsets.size() > MAX_PROJECTILES:
 		return shots
 	for offset: float in offsets:
 		if not is_finite(offset):
@@ -49,6 +54,7 @@ func spawn_volley(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float,
 
 func step(space: PhysicsDirectSpaceState3D, tick: int) -> void:
 	for shot: ProjectileState in active:
+		if shot.kind == &"bubble_barrier": continue
 		shot.previous_position = shot.position
 		var distance := minf(shot.speed / BattleClock.TICKS_PER_SECOND, shot.remaining_range)
 		_sweep(space, shot, shot.position + shot.direction * distance)
@@ -76,7 +82,7 @@ func _sweep(space: PhysicsDirectSpaceState3D, shot: ProjectileState, destination
 			continue
 		shot.position = collision.position
 		shot.active = false
-		impacts.append({"position": shot.position, "projectile_id": shot.projectile_id})
+		impacts.append({"position": shot.position, "projectile_id": shot.projectile_id,"bubble":shot.kind == &"bubble_round"})
 		if hurtbox != null:
 			var hit := HitEvent.new()
 			hit.projectile_id = shot.projectile_id
@@ -86,6 +92,8 @@ func _sweep(space: PhysicsDirectSpaceState3D, shot: ProjectileState, destination
 			hit.target = hurtbox.state
 			hit.target_life = hurtbox.state.life_index
 			hit.damage = shot.damage
+			hit.slow_multiplier = shot.slow_multiplier
+			hit.slow_ticks = shot.slow_ticks
 			hit.position = shot.position
 			hit.direction = shot.direction
 			hit.ability_damage = shot.ability_damage
@@ -107,16 +115,16 @@ func allocate_id() -> int:
 	_next_id += 1
 	return _next_id
 
-func reserve(owner_id: int) -> bool:
-	if reservations.has(owner_id) or active.size()+reservations.size() >= MAX_PROJECTILES: return false
-	reservations[owner_id] = true
+func reserve(owner_id: int, count: int = 1) -> bool:
+	if count <= 0 or reservations.has(owner_id) or used_slots()+count > MAX_PROJECTILES: return false
+	reservations[owner_id] = count
 	return true
 
 func release_reservation(owner_id: int) -> void:
 	reservations.erase(owner_id)
 
 func spawn_breach(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, owner_id: int, team_id: int, tick: int, rules: BasicAbilityRules, owner_life: int = 0) -> ProjectileState:
-	if active.size()+reservations.size() >= MAX_PROJECTILES: return null
+	if used_slots() >= MAX_PROJECTILES: return null
 	var shot := ProjectileState.new()
 	shot.projectile_id = allocate_id()
 	shot.owner_id = owner_id
@@ -158,3 +166,8 @@ func _collision(space: PhysicsDirectSpaceState3D, ray: PhysicsRayQueryParameters
 	var rest: Dictionary = space.get_rest_info(query)
 	if rest.is_empty(): return {}
 	return {"collider":instance_from_id(rest.collider_id),"position":rest.point}
+
+func used_slots() -> int:
+	var count: int = active.size()
+	for reserved: int in reservations.values(): count += reserved
+	return count

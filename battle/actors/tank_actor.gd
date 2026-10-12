@@ -6,6 +6,7 @@ var state := TankState.new()
 var health := DamageableState.new()
 var hurtbox := Damageable.new()
 var ability := AbilityState.new()
+var magazine := MagazineState.new()
 var weapon_id: StringName
 var chassis_id: StringName
 var speed_multiplier: float = 1.0

@@ -1,12 +1,14 @@
 extends RefCounted
 class_name AbilitySystem
-## Six-ability orchestration. Projectile/damage authority remains in the existing systems.
+## Ability orchestration. Projectile/damage authority remains in the existing systems.
 
 var rules: BasicAbilityRules = preload("res://content/rules/basic_abilities.tres")
 var training: bool = true
 var actors: Array[TankActor] = []
 var zones: Array[Dictionary] = []
 var _pushes: Dictionary = {}
+var curtain := BubbleCurtain.new()
+var slows := SlowEffects.new()
 
 func register(actor: TankActor, weapon_id: StringName, chassis_id: StringName) -> void:
 	if actors.has(actor): return
@@ -44,7 +46,7 @@ func before_move(actor: TankActor, command: PlayerCommand, tick: int, epoch: int
 		actor.speed_multiplier *= rules.escape_multiplier
 	if state.phase == &"breach": actor.speed_multiplier *= rules.breach_speed_multiplier
 	zones = zones.filter(func(zone: Dictionary) -> bool: return tick < zone.until_tick and _owner_alive(zone.owner_id))
-	actor.speed_multiplier *= smoke_multiplier_at(actor.position,actor.health.team_id,tick)
+	actor.speed_multiplier *= movement_multiplier(actor.health,actor.position,tick)
 	var forced: bool = _pushes.has(actor.state.entity_id)
 	actor.forced_velocity = Vector3.ZERO
 	if forced:
@@ -62,7 +64,7 @@ func _activate(actor: TankActor, command: PlayerCommand, tick: int, projectiles:
 	if state.phase != &"idle": return "技能进行中"
 	if tick < state.next_use_tick: return "技能间隔未结束"
 	if state.energy < rules.energy_max: return "能量不足"
-	if actor.weapon_id not in [&"cannon",&"autocannon",&"scatter"]: return "能力未就绪"
+	if actor.weapon_id not in [&"cannon",&"autocannon",&"scatter",&"bubble_cannon"]: return "能力未就绪"
 	if actor.weapon_id == &"cannon":
 		if not projectiles.reserve(actor.state.entity_id): return "弹丸预算不足"
 		state.reserved = true
@@ -71,6 +73,13 @@ func _activate(actor: TankActor, command: PlayerCommand, tick: int, projectiles:
 	elif actor.weapon_id == &"autocannon":
 		state.phase = &"storm"
 		state.until_tick = tick+rules.storm_ticks
+	elif actor.weapon_id == &"bubble_cannon":
+		state.locked_yaw = float(command.aim_yaw)/65536.0*TAU
+		var reason := curtain.prepare(actor,state.locked_yaw,projectiles)
+		if not reason.is_empty(): return reason
+		state.reserved = true
+		state.phase = &"bubble"
+		state.until_tick = tick+curtain.rules.charge_ticks
 	else:
 		state.phase = &"shock"
 		state.until_tick = tick+rules.shock_charge
@@ -89,7 +98,7 @@ func attack(actor: TankActor, gate: WeaponController, tick: int, projectiles: Pr
 	if state.phase == &"cooling":
 		gate.cancel_pending()
 		return true
-	if state.phase not in [&"breach",&"shock"]: return false
+	if state.phase not in [&"breach",&"shock",&"bubble"]: return false
 	gate.cancel_pending()
 	if tick < state.until_tick: return true
 	if state.phase == &"breach":
@@ -97,6 +106,9 @@ func attack(actor: TankActor, gate: WeaponController, tick: int, projectiles: Pr
 		var shot := projectiles.spawn_breach(actor.get_world_3d().direct_space_state,actor.position,actor.state.aim_yaw,actor.state.entity_id,actor.health.team_id,tick,rules,actor.health.life_index)
 		if shot != null:
 			events.publish(&"ability_fired",tick,{"source_id":actor.state.entity_id,"ability":&"breach","position":shot.position,"yaw":actor.state.aim_yaw})
+	elif state.phase == &"bubble":
+		curtain.deploy(actor,tick,projectiles,events)
+		state.reserved = false
 	else:
 		ShockwaveAttack.execute(actor,state.locked_yaw,tick,rules,actors,targets,projectiles,events)
 	state.phase = &"idle"
@@ -132,6 +144,7 @@ func after_damage(results: Array[Dictionary], tick: int, projectiles: Projectile
 					displacement = displacement.limit_length(rules.shock_push)
 					_pushes[id] = {"displacement":displacement,"velocity":displacement*BattleClock.TICKS_PER_SECOND/rules.push_ticks,"start_tick":tick+1,"until_tick":tick+1+rules.push_ticks}
 	zones = zones.filter(func(zone: Dictionary) -> bool: return _owner_alive(zone.owner_id))
+	curtain.prune(tick,projectiles)
 	for actor: TankActor in actors: _snapshot(actor,tick,events)
 	events.publish(&"ability_zones",tick,{"zones":zones.duplicate(true),"radius":rules.smoke_radius})
 
@@ -155,6 +168,8 @@ func refill(actor: TankActor) -> bool:
 func clear(projectiles: ProjectileSystem) -> void:
 	zones.clear()
 	_pushes.clear()
+	curtain.clear(projectiles)
+	slows.clear()
 	for actor: TankActor in actors:
 		_release(actor,projectiles)
 		actor.ability.reset_life(actor.health.life_index)
@@ -162,6 +177,7 @@ func clear(projectiles: ProjectileSystem) -> void:
 
 func _release(actor: TankActor, projectiles: ProjectileSystem) -> void:
 	if actor.ability.reserved:
+		curtain.cancel(actor.state.entity_id,projectiles)
 		projectiles.release_reservation(actor.state.entity_id)
 		actor.ability.reserved = false
 
@@ -180,7 +196,7 @@ func _snapshot(actor: TankActor, tick: int, events: BattleEvents) -> void:
 	var ready: bool = actor.health.hp > 0 and not actor.health.protected and state.phase == &"idle" and state.energy >= rules.energy_max and tick >= state.next_use_tick
 	var reason: String = "出生保护" if actor.health.protected else ("等待重建" if actor.health.hp <= 0 else ("能量不足" if state.energy < rules.energy_max else "间隔 %.1f秒" % (maxi(0,state.next_use_tick-tick)/60.0)))
 	var progress: int = roundi(100.0*state.charge_ticks/(rules.cruise_charge if actor.chassis_id == &"light_tracks" else rules.guard_charge))
-	events.publish(&"ability_state",tick,{"ready":ready,"reason":reason,"passive_progress":progress,"source_id":actor.state.entity_id,"position":actor.position,"yaw":actor.state.aim_yaw,"body_yaw":actor.state.body_yaw,"energy":state.energy,"energy_max":rules.energy_max,"phase":state.phase,"remaining":maxi(0,state.until_tick-tick),"ready_in":maxi(0,state.next_use_tick-tick),"cruise":state.cruise_active,"guard":state.guard_active,"charge":state.charge_ticks,"chassis":actor.chassis_id,"weapon":actor.weapon_id,"locked_yaw":state.locked_yaw,"alive":actor.health.hp>0,"smoke_in":maxi(0,state.smoke_ready_tick-tick),"escape_remaining":maxi(0,state.escape_until_tick-maxi(tick,state.escape_start_tick)),"escape_active":state.escape_until_tick > tick and state.escape_until_tick > 0})
+	events.publish(&"ability_state",tick,{"ready":ready,"reason":reason,"passive_progress":progress,"source_id":actor.state.entity_id,"position":actor.position,"yaw":actor.state.aim_yaw,"body_yaw":actor.state.body_yaw,"energy":state.energy,"energy_max":rules.energy_max,"phase":state.phase,"remaining":maxi(0,state.until_tick-tick),"ready_in":maxi(0,state.next_use_tick-tick),"cruise":state.cruise_active,"guard":state.guard_active,"charge":state.charge_ticks,"chassis":actor.chassis_id,"weapon":actor.weapon_id,"locked_yaw":state.locked_yaw,"alive":actor.health.hp>0,"smoke_in":maxi(0,state.smoke_ready_tick-tick),"escape_remaining":maxi(0,state.escape_until_tick-maxi(tick,state.escape_start_tick)),"escape_active":state.escape_until_tick > tick and state.escape_until_tick > 0,"bubble_plan":curtain.plan_for(actor.state.entity_id)})
 
 func damage_multiplier(actor: TankActor) -> float:
 	return rules.storm_damage_multiplier if actors.has(actor) and actor.ability.phase == &"storm" else 1.0
@@ -193,3 +209,18 @@ func smoke_multiplier_at(position: Vector3, team_id: int, tick: int) -> float:
 		if difference.length_squared() <= rules.smoke_radius*rules.smoke_radius+0.000001:
 			return rules.smoke_multiplier
 	return 1.0
+
+func movement_multiplier(state: DamageableState, position: Vector3, tick: int) -> float:
+	return maxf(0.6,minf(smoke_multiplier_at(position,state.team_id,tick),slows.multiplier(state,tick)))
+
+func collect_fields(tick: int, projectiles: ProjectileSystem, targets: Array[TrainingTarget], space: PhysicsDirectSpaceState3D) -> void:
+	var victims: Array[Damageable] = []
+	for actor: TankActor in actors: victims.append(actor.hurtbox)
+	for target: TrainingTarget in targets: victims.append(target.hurtbox())
+	curtain.step(tick,projectiles,victims,space)
+
+func commit_slows(results: Array[Dictionary], targets: Array[TrainingTarget], tick: int) -> void:
+	var states: Array[DamageableState] = []
+	for actor: TankActor in actors: states.append(actor.health)
+	for target: TrainingTarget in targets: states.append(target.state)
+	slows.commit(results,states,tick)

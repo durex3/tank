@@ -24,6 +24,10 @@ static func validate(weapons: Array[WeaponDef], chassis_defs: Array[ChassisDef],
 			errors.append("Invalid range: " + str(weapon.id))
 		if not is_finite(weapon.projectile_speed) or weapon.projectile_speed <= 0.0:
 			errors.append("Invalid projectile speed: " + str(weapon.id))
+		if weapon.magazine_size < 0 or not is_finite(weapon.reload_s) or weapon.reload_s < 0.0 or (weapon.magazine_size > 0) != (weapon.reload_s > 0.0):
+			errors.append("Invalid magazine: " + str(weapon.id))
+		if not is_finite(weapon.projectile_radius) or weapon.projectile_radius < 0.0 or not is_finite(weapon.slow_multiplier) or weapon.slow_multiplier < 0.6 or weapon.slow_multiplier > 1.0 or weapon.slow_ticks < 0 or (weapon.slow_multiplier < 1.0) != (weapon.slow_ticks > 0):
+			errors.append("Invalid projectile/slow: " + str(weapon.id))
 		if weapon.pellet_count < 1 or weapon.pellet_count > 128:
 			errors.append("Invalid pellet budget: " + str(weapon.id))
 	for chassis: ChassisDef in chassis_defs:

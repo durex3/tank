@@ -80,15 +80,18 @@ func _step_targets() -> void:
 			target.reset_motion()
 			events.publish(&"entity_respawned", tick, {"target_id": target.state.entity_id,
 				"hp": target.state.hp, "max_hp": target.state.max_hp})
-		target.step_motion(abilities.smoke_multiplier_at(target.position,target.state.team_id,tick))
+		target.step_motion(abilities.movement_multiplier(target.state,target.position,tick))
 
 func _step_combat() -> void:
+	actor.magazine.step(weapon,actor.health.life_index,tick)
+	if rival != null: rival.magazine.step(rival_weapon,rival.health.life_index,tick)
 	if not abilities.attack(actor,weapon_controller,tick,projectiles,events,targets):
 		WeaponAttack.execute(actor, weapon, weapon_controller, _command, tick, projectiles, events,abilities.interval(actor),actor.ability.phase == &"storm",abilities.damage_multiplier(actor))
 	if rival != null:
 		if not abilities.attack(rival,rival_controller,tick,projectiles,events,targets):
 			WeaponAttack.execute(rival, rival_weapon, rival_controller, _rival_command, tick, projectiles, events,abilities.interval(rival),rival.ability.phase == &"storm",abilities.damage_multiplier(rival))
 	var space := actor.get_world_3d().direct_space_state
+	abilities.collect_fields(tick,projectiles,targets,space)
 	projectiles.step(space, tick)
 	var results := damage_resolver.resolve_batch(projectiles.hits)
 	projectiles.hits.clear()
@@ -109,7 +112,10 @@ func _step_combat() -> void:
 				if target.state.entity_id == result.target_id:
 					target.state.respawn_tick = tick + training_rules.rebuild_ticks
 	_commit_target_pushes(results)
+	abilities.commit_slows(results,targets,tick)
 	abilities.after_damage(results,tick,projectiles,events)
+	actor.magazine.publish(actor.state.entity_id,tick,events)
+	if rival != null: rival.magazine.publish(rival.state.entity_id,tick,events)
 	if match_runtime != null:
 		match_runtime.commit_tick(tick, results, events)
 	var remaining := maxi(0, weapon_controller.next_fire_tick - tick)

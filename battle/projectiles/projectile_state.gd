@@ -23,3 +23,8 @@ var excluded: Array[RID] = []
 var ability_damage: bool = false
 
 var storm_round: bool = false
+
+var kind: StringName = &"normal"
+var slow_multiplier: float = 1.0
+var slow_ticks: int = 0
+var curtain_id: int = 0

@@ -5,7 +5,7 @@ class_name HangarCopy
 const TEXT: Dictionary = {
 	"hangar.title": "整备车间", "hangar.subtitle": "自由组合炮塔与底盘，打造你的训练配装",
 	"hangar.back": "返回", "hangar.turrets": "选择炮塔", "hangar.chassis": "选择底盘",
-	"hangar.cannon": "主战炮", "hangar.autocannon": "速射机炮", "hangar.scatter": "短管散射炮",
+	"hangar.cannon": "主战炮", "hangar.autocannon": "速射机炮", "hangar.scatter": "短管散射炮", "hangar.bubble_cannon": "泡泡炮",
 	"hangar.light_tracks": "轻型履带", "hangar.scout_wheels": "侦察轮式", "hangar.heavy_tracks": "重型履带",
 	"hangar.art": "外观设定图", "hangar.model": "装配模型预览", "hangar.show_model": "查看装配模型",
 	"hangar.show_art": "返回外观展示", "hangar.train": "进入试炼场", "hangar.load": "载重  %d / %d",

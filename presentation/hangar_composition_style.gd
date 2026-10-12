@@ -6,7 +6,7 @@ class_name HangarCompositionStyle
 @export var chassis_width: int = 880
 @export var turret_width: int = 420
 @export var chassis_bottom: int = 950
-@export var turret_base_cuts: Dictionary = {&"cannon": 0.93, &"autocannon": 0.86, &"scatter": 0.82}
+@export var turret_base_cuts: Dictionary = {&"cannon": 0.93, &"autocannon": 0.86, &"scatter": 0.82, &"bubble_cannon": 0.94}
 @export var turret_base_feather: float = 0.015
 @export var contact_shadow_radius: Vector2 = Vector2(112, 26)
 @export var contact_shadow_offset: Vector2 = Vector2(0, 7)
@@ -20,4 +20,5 @@ class_name HangarCompositionStyle
 	&"cannon": Vector2(0.57, 0.89),
 	&"autocannon": Vector2(0.62, 0.83),
 	&"scatter": Vector2(0.56, 0.79),
+	&"bubble_cannon": Vector2(0.55,0.91),
 }

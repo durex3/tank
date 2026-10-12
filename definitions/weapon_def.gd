@@ -13,5 +13,12 @@ class_name WeaponDef
 @export var weight: int = 2
 @export var ability_id: StringName = &"pierce_shot"
 
+@export var magazine_size: int = 0
+@export var reload_s: float = 0.0
+@export var projectile_radius: float = 0.0
+@export var projectile_kind: StringName = &"normal"
+@export var slow_multiplier: float = 1.0
+@export var slow_ticks: int = 0
+
 func nominal_dps() -> float:
 	return float(damage * pellet_count) / fire_interval_s

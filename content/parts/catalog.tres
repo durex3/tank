@@ -49,14 +49,15 @@ ultimate_ready = true
 script = ExtResource("2")
 id = &"bubble_cannon"
 basic_summary = "炮塔：泡泡炮\n伤害：55/发\n发射间隔：0.65秒\n射程：9米\n弹匣/填弹：4 / 1.40\n重量：1\n机制：弹速10；减速15%持续1秒，同源刷新"
-ability_summary = "泡泡幕：扇形发射5个泡弹，各35伤害，最多持续3秒；同目标每次技能最多命中2个；减速仍按总上限"
+ability_summary = "泡泡拦截幕：准备0.35秒，锁定前方3米横排5泡，整排约4.5米宽，原地持续3秒；接触35伤害与15%减速1秒，每目标最多2泡/70伤害；100能量，不挡车、不挡弹、不可隔墙部署；技能数值不随等级成长"
 role_summary = "封路、易读；弹慢且可绕开，不设无限控制"
 display_name = "泡泡炮"
 kind = 0
 rarity = 0
 unlock_rule_id = &"unlock_bubble_cannon"
 starter = false
-basic_ready = false
+basic_ready = true
+ultimate_ready = true
 
 [sub_resource type="Resource" id="cutting_laser"]
 script = ExtResource("2")

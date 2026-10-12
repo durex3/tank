@@ -8,6 +8,7 @@ var _energy := ProgressBar.new()
 var _status := Label.new()
 var _passive := Label.new()
 var _amount := Label.new()
+var _ammo := Label.new()
 var release := Button.new()
 var refill := Button.new()
 var passive_panel := PanelContainer.new()
@@ -32,6 +33,9 @@ func _ready() -> void:
 	add_child(column)
 	_status.add_theme_font_size_override("font_size",18)
 	column.add_child(_status)
+	_ammo.visible = false
+	_ammo.add_theme_font_size_override("font_size",14)
+	column.add_child(_ammo)
 	var meter_row := HBoxContainer.new()
 	column.add_child(meter_row)
 	_energy.show_percentage = false
@@ -64,10 +68,15 @@ func _ready() -> void:
 	_status.text = BattleCopy.text(&"skill_preparing")
 
 func on_event(event: Dictionary) -> void:
+	if event.kind == &"magazine_state" and event.source_id == 1:
+		_ammo.visible = true
+		_ammo.text = "弹匣 %d/%d" % [event.rounds,event.capacity]
+		if event.remaining > 0: _ammo.text += " · 填弹 %.1f秒" % (event.remaining/60.0)
 	if event.kind != &"ability_state" or event.source_id != 1: return
-	var names: Dictionary = {&"cannon":"破阵重炮",&"autocannon":"火力风暴",&"scatter":"震荡清场"}
+	var names: Dictionary = {&"cannon":"破阵重炮",&"autocannon":"火力风暴",&"scatter":"震荡清场",&"bubble_cannon":"泡泡拦截幕"}
 	var phases: Dictionary = {&"idle":"就绪" if event.ready else event.reason,&"breach":"蓄力中",&"shock":"准备中",&"storm":"强化 %.1fs" % (event.remaining/60.0),&"cooling":"红温禁火 %.1fs" % (event.remaining/60.0)}
 	_status.text = "%s · %s" % [names.get(event.weapon,"未开放"),phases.get(event.phase,"")]
+	if event.phase == &"bubble": _status.text = "泡泡拦截幕 · 准备 %.1f秒" % (event.remaining/60.0)
 	_amount.text = "%d/%d" % [event.energy,event.energy_max]
 	_energy.max_value = event.energy_max
 	_energy.value = event.energy

@@ -11,10 +11,10 @@ func _initialize() -> void:
 	for entry: PartEntry in PartCatalog.DATA.entries:
 		starters += int(entry.starter)
 		implemented += int(entry.basic_ready)
-		assert(entry.ultimate_ready == (entry.id in [&"cannon",&"autocannon",&"scatter"]))
+		assert(entry.ultimate_ready == (entry.id in [&"cannon",&"autocannon",&"scatter",&"bubble_cannon"]))
 		assert(entry.passive_ready == (entry.id in [&"light_tracks",&"heavy_tracks",&"scout_wheels"]))
 		assert(entry.ability_role() == (&"ultimate" if entry.kind == PartEntry.Kind.TURRET else &"passive"))
-	assert(starters == 2 and implemented == 6)
+	assert(starters == 2 and implemented == 7)
 	assert(PartCatalog.find(&"autocannon").rarity == PartEntry.Rarity.COMMON)
 	assert(not PartCatalog.find(&"autocannon").starter)
 	assert(PartCatalog.find(&"rocket_pod").rarity == PartEntry.Rarity.LEGENDARY)

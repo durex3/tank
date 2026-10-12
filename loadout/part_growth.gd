@@ -5,6 +5,7 @@ const TABLES: Array[PartGrowthDef] = [
 	preload("res://content/growth/cannon.tres"),
 	preload("res://content/growth/autocannon.tres"),
 	preload("res://content/growth/scatter.tres"),
+	preload("res://content/growth/bubble_cannon.tres"),
 	preload("res://content/growth/light_tracks.tres"),
 	preload("res://content/growth/scout_wheels.tres"),
 	preload("res://content/growth/heavy_tracks.tres"),

@@ -9,6 +9,8 @@ var _visuals: Dictionary = {}
 var _paused: bool = false
 var ability_art_enabled: bool = false
 var _effects: Array[Tween] = []
+var _tick: int = 0
+var _bubble_bursts := BubbleBursts.new()
 
 func _process(_delta: float) -> void:
 	if projectiles == null or _paused:
@@ -19,7 +21,12 @@ func _process(_delta: float) -> void:
 		if not _visuals.has(shot.projectile_id):
 			var color := Color("ffdc73") if shot.team_id == 0 else Color("ff6b64")
 			var visual: Node3D = _sphere(0.13,color)
-			if shot.ability_damage and not shot.pierce_damage.is_empty():
+			if shot.kind in [&"bubble_round",&"bubble_barrier"]:
+				visual.free()
+				var bubble := BubbleVisual.new()
+				bubble.configure(shot.radius,shot.team_id,shot.kind == &"bubble_barrier",ability_style)
+				visual = bubble
+			elif shot.ability_damage and not shot.pierce_damage.is_empty():
 				visual.free()
 				visual = _breach_projectile(color)
 				visual.rotation.y = -atan2(shot.direction.x,-shot.direction.z)
@@ -30,6 +37,8 @@ func _process(_delta: float) -> void:
 			add_child(visual)
 			_visuals[shot.projectile_id] = visual
 		_visuals[shot.projectile_id].position = shot.position
+		if _visuals[shot.projectile_id] is BubbleVisual:
+			(_visuals[shot.projectile_id] as BubbleVisual).present(shot,_tick)
 	for id: int in _visuals.keys():
 		if not alive.has(id):
 			_visuals[id].queue_free()
@@ -39,15 +48,24 @@ func on_event(event: Dictionary) -> void:
 	# Only committed facts create effects; requesting fire never shows a muzzle flash.
 	if _paused:
 		return
+	_tick = int(event.get("tick",_tick))
+	_bubble_bursts.step(_tick)
 	match event.kind:
 		&"weapon_fired":
+			if event.get("weapon",&"") == &"bubble_cannon":
+				_bubble_bursts.spawn(self,event.position,_tick,ability_style,false)
+				return
 			if ability_art_enabled: return
 			_flash(style.muzzle, event.position, style.muzzle_width_m, style.muzzle_duration_s)
 		&"projectile_hit":
+			if event.get("bubble",false):
+				_bubble_bursts.spawn(self,event.position,_tick,ability_style,true)
+				return
 			if ability_art_enabled: return
 			_flash(style.impact, event.position, style.impact_width_m, style.impact_duration_s)
 		&"entity_died":
 			_flash(style.explosion, event.position, style.explosion_width_m, style.explosion_duration_s)
+		&"match_finished": _bubble_bursts.clear()
 
 func _flash(texture: Texture2D, center: Vector3, width: float, duration: float) -> void:
 	_effects = _effects.filter(func(effect: Tween) -> bool: return effect.is_valid())

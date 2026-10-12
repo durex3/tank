@@ -12,6 +12,8 @@ static func resolve(weapon: WeaponDef, chassis: ChassisDef) -> ResolvedStats:
 	result.move_speed = chassis.move_speed * maxf(RULES.minimum_speed_ratio, 1.0 - RULES.speed_penalty_per_overload * result.overload)
 	result.damage = weapon.damage
 	result.interval_ticks = BattleClock.seconds_to_ticks(weapon.fire_interval_s)
+	result.magazine_size = weapon.magazine_size
+	result.reload_ticks = BattleClock.seconds_to_ticks(weapon.reload_s) if weapon.magazine_size > 0 else 0
 	result.ability_id = weapon.ability_id
 	result.passive_id = chassis.passive_id
 	return result

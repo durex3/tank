@@ -3,7 +3,7 @@ class_name WeaponPatterns
 
 static func create(id: StringName) -> ShotPattern:
 	match id:
-		&"cannon", &"autocannon":
+		&"cannon", &"autocannon", &"bubble_cannon":
 			return ShotPattern.new()
 		&"scatter":
 			return SpreadShotPattern.new()

@@ -17,3 +17,7 @@ var push: Vector3 = Vector3.ZERO
 var travel_order: int = 0
 
 var source_life: int = 0
+
+var slow_multiplier: float = 1.0
+var slow_ticks: int = 0
+var bubble_hits: int = 0

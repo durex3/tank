@@ -6,6 +6,7 @@ const WEAPONS: Array[WeaponDef] = [
 	preload("res://content/weapons/cannon.tres"),
 	preload("res://content/weapons/autocannon.tres"),
 	preload("res://content/weapons/scatter.tres"),
+	preload("res://content/weapons/bubble_cannon.tres"),
 ]
 const CHASSIS: Array[ChassisDef] = [
 	preload("res://content/chassis/light_tracks.tres"),
