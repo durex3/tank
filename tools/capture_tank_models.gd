@@ -1,5 +1,5 @@
 extends SceneTree
-## Actual rendered gallery of all nine modular 3D assemblies, not illustration art.
+## Actual rendered gallery of all twelve modular 3D assemblies, not illustration art.
 
 func _initialize() -> void:
 	call_deferred("_capture")
@@ -34,9 +34,12 @@ func _capture() -> void:
 			var preview := HangarPreview.new()
 			viewport.add_child(preview)
 			preview.tank.configure_parts(weapon, chassis)
+			if "--rear" in OS.get_cmdline_user_args():
+				preview.rotate_preview(PI)
 	for frame: int in range(30):
 		await process_frame
 	await RenderingServer.frame_post_draw
-	var error := root.get_texture().get_image().save_png("res://artifacts/tank-model-gallery.png")
+	var file_name: String = "tank-model-gallery-rear.png" if "--rear" in OS.get_cmdline_user_args() else "tank-model-gallery.png"
+	var error := root.get_texture().get_image().save_png("res://artifacts/" + file_name)
 	print("MODEL GALLERY: " + ("PASS" if error == OK else "FAIL"))
 	quit(0 if error == OK else 1)

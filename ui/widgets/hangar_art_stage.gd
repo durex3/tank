@@ -1,20 +1,21 @@
 extends VBoxContainer
 class_name HangarArtStage
-## Static appearance uses shared module layers; real 3D assembly is an explicit alternate.
+## Appearance directly presents real models; unmodeled designs use static fallback.
 
 const PREVIEW_STYLE: HangarPreviewStyle = preload("res://content/presentation/hangar_preview.tres")
 
 var preview: HangarPreview
 var artwork := TextureRect.new()
-var _model := SubViewportContainer.new()
+var _model := TextureRect.new()
+var _viewport := SubViewport.new()
 var _caption := Label.new()
-var _toggle := Button.new()
 var _load := Label.new()
 var _load_value := Label.new()
 var _load_bar := ProgressBar.new()
 var _status := Label.new()
-var _show_model: bool = false
+var _show_model: bool = true
 var _dragging: bool = false
+var _touch_index: int = -1
 
 func _ready() -> void:
 	add_theme_constant_override("separation", 10)
@@ -23,16 +24,11 @@ func _ready() -> void:
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var header := HBoxContainer.new()
 	add_child(header)
-	_caption.text = "外观预览 · 部件拼装"
+	_caption.text = "外观预览 · 拖动360°旋转"
 	_caption.add_theme_font_size_override("font_size", 13)
 	_caption.add_theme_color_override("font_color", Color("aca2b7"))
 	_caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(_caption)
-	_toggle.name = "ArtModelToggle"
-	_toggle.text = HangarCopy.text("hangar.show_model")
-	_toggle.add_theme_font_size_override("font_size", 13)
-	_toggle.pressed.connect(_toggle_view)
-	header.add_child(_toggle)
 	_build_display()
 	var load_panel := PanelContainer.new()
 	var load_style := HangarStyle.panel(Color("211d2c"), Color("51485b"), 18)
@@ -77,46 +73,48 @@ func _build_display() -> void:
 	artwork.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	artwork.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	artwork.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var platform := Control.new()
-	platform.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	platform.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	display.add_child(platform)
-	platform.resized.connect(platform.queue_redraw)
-	platform.draw.connect(func() -> void:
-		var points := PackedVector2Array()
-		var center := Vector2(platform.size.x * 0.5, platform.size.y * 0.88)
-		for index: int in range(49):
-			var angle: float = TAU * index / 48.0
-			points.append(center + Vector2(cos(angle) * platform.size.x * 0.28, sin(angle) * 19))
-		platform.draw_colored_polygon(points, Color("171426"))
-		platform.draw_polyline(points, Color("615573"), 2, true)
-		for index: int in range(12):
-			var angle: float = TAU * index / 12.0
-			platform.draw_circle(center + Vector2(cos(angle) * platform.size.x * 0.27, sin(angle) * 18), 2, Color("8b7a9f")))
 	display.add_child(artwork)
 	_model.name = "AssemblyPreview"
 	_model.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_model.stretch = true
+	_model.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_model.stretch_mode = TextureRect.STRETCH_SCALE
 	_model.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_model.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	display.add_child(_model)
-	var viewport := SubViewport.new()
+	var viewport := _viewport
 	viewport.size = Vector2i(640, 480)
 	# Keep the small embedded preview smooth without post-process blur.
 	viewport.msaa_3d = PREVIEW_STYLE.msaa
 	viewport.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
-	viewport.scaling_3d_scale = PREVIEW_STYLE.render_scale
+	viewport.scaling_3d_scale = 1.0
 	viewport.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 	viewport.own_world_3d = true
 	_model.add_child(viewport)
 	viewport.add_child(preview)
-	_model.hide()
+	_model.texture = viewport.get_texture()
+	_model.resized.connect(_resize_preview)
+	_resize_preview()
+	artwork.hide()
+
+func _resize_preview() -> void:
+	# Explicit pixel dimensions also supersample with Compatibility rendering.
+	var pixels := _model.size * PREVIEW_STYLE.render_scale
+	var limit := float(PREVIEW_STYLE.max_render_edge)
+	if pixels.x > limit or pixels.y > limit:
+		pixels *= limit / maxf(pixels.x, pixels.y)
+	_viewport.size = Vector2i(maxi(2, roundi(pixels.x)), maxi(2, roundi(pixels.y)))
 
 func show_loadout(weapon: WeaponDef, chassis: ChassisDef, stats: ResolvedStats) -> String:
 	var texture := HangarArtCatalog.texture(weapon.id, chassis.id)
 	if texture == null:
 		return "Missing hangar art: %s / %s" % [weapon.id, chassis.id]
 	artwork.texture = texture
+	_dragging = false
+	_touch_index = -1
+	_show_model = TankPartCatalog.WEAPONS.has(weapon.id) and TankPartCatalog.CHASSIS.has(chassis.id)
+	_model.visible = _show_model
+	artwork.visible = not _show_model
+	_caption.text = "外观预览 · 拖动360°旋转" if _show_model else "外观设计 · 静态图，模型待制作"
 	_load.text = "载重"
 	_load_value.text = "%d / %d" % [stats.weight, chassis.capacity]
 	_load_bar.max_value = maxi(chassis.capacity, stats.weight)
@@ -127,13 +125,14 @@ func show_loadout(weapon: WeaponDef, chassis: ChassisDef, stats: ResolvedStats) 
 	_status.text = HangarCopy.text("hangar.ready") if stats.overload == 0 else ("超重 %d · 无法装配" % stats.overload if not LoadoutResolver.can_save(weapon, chassis) else "超重 %d · 移速降低 %d%%" % [stats.overload, roundi(LoadoutResolver.RULES.speed_penalty_per_overload * stats.overload * 100)])
 	return ""
 
-func _toggle_view() -> void:
-	_show_model = not _show_model
+func show_design(id: StringName) -> void:
 	_dragging = false
-	_model.visible = _show_model
-	artwork.visible = not _show_model
-	_caption.text = "装配模型 · 拖动360°旋转" if _show_model else "外观预览 · 部件拼装"
-	_toggle.text = "返回外观预览" if _show_model else "查看装配模型"
+	_touch_index = -1
+	_show_model = false
+	_model.hide()
+	artwork.texture = HangarPartArtCatalog.display_texture(id)
+	artwork.show()
+	_caption.text = "外观设计 · 静态图，模型待制作"
 
 func _preview_input(event: InputEvent) -> void:
 	if not _show_model: return
@@ -141,9 +140,14 @@ func _preview_input(event: InputEvent) -> void:
 		_dragging = event.pressed
 	elif event is InputEventMouseMotion and _dragging:
 		preview.rotate_preview(event.relative.x * 0.012)
-	elif event is InputEventScreenDrag:
+	elif event is InputEventScreenTouch:
+		_touch_index = event.index if event.pressed else -1
+	elif event is InputEventScreenDrag and event.index == _touch_index:
 		preview.rotate_preview(event.relative.x * 0.012)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 		_dragging = false
+
+	if event is InputEventScreenTouch and not event.pressed and event.index == _touch_index:
+		_touch_index = -1

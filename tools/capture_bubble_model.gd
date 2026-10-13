@@ -9,7 +9,6 @@ func _run() -> void:
 	screen.equipment.store.path = "user://bubble_model_capture_fixture.json"
 	root.add_child(screen)
 	for i: int in range(8): await process_frame
-	if not screen.art_stage._show_model: screen.art_stage._toggle_view()
 	Input.warp_mouse(Vector2(10,10))
 	for chassis: StringName in [&"light_tracks",&"scout_wheels",&"heavy_tracks"]:
 		screen.restore_selection(&"bubble_cannon",chassis)

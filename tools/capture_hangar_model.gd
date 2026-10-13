@@ -10,7 +10,6 @@ func _capture() -> void:
 	root.add_child(screen)
 	for frame: int in range(12): await process_frame
 	screen.directory.cards[&"scatter"].pressed.emit()
-	if not screen.art_stage._show_model: screen.art_stage._toggle_view()
 	for frame: int in range(8): await process_frame
 	await RenderingServer.frame_post_draw
 	var suffix: String = "before" if "--before" in OS.get_cmdline_user_args() else "after"

@@ -270,12 +270,13 @@ func _refresh() -> void:
 	if pending:
 		upgrade_button.disabled = true
 		art_stage._status.text = "设计预览 · 当前部件暂不可装配"
+		art_stage.show_design(inspected_id)
 	var error := equipment.profile.application_error(weapon.id, chassis.id)
 	var applied: bool = weapon.id == equipment.profile.weapon_id and chassis.id == equipment.profile.chassis_id
 	apply_button.disabled = pending or applied or not error.is_empty() or not equipment.load_error.is_empty()
 	apply_button.text = "待开发" if pending else ("已应用" if applied else ("尚未拥有" if error == "part_locked" else "应用改装"))
 	train_button.disabled = pending or not LoadoutResolver.can_save(weapon, chassis)
-	status_label.text = "设计预览：右侧保留上次可装配组合" if pending else "试炼无收益 · 六能力已接入，训练场可补满能量"
+	status_label.text = "设计预览 · 模型待制作，不可旋转" if pending else "试炼无收益 · 六能力已接入，训练场可补满能量"
 	if not equipment.load_error.is_empty(): status_label.text = "存档异常，已阻止覆盖"
 	_refresh_dock(kind, pending, owned, weapon, chassis)
 

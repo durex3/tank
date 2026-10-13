@@ -1,0 +1,168 @@
+{
+  "date": "2026-10-13",
+  "provider": "User supplied; GLB generator metadata: Tripo",
+  "license": "Not supplied; pending confirmation",
+  "prompt": "Exact generation prompt not supplied; user generated from existing project part references",
+  "assets": [
+    {
+      "id": "cannon",
+      "source_filename": "futuristic turret 3d model.glb",
+      "reference": "assets/generated/parts/aligned-v2/cannon.png",
+      "sha256": "caf053947f3d590d8b302c614124cd157ad6968d31425090434e980aeb316a1b",
+      "bytes": 3032056,
+      "triangles": 18656,
+      "texture_dimensions": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ]
+    },
+    {
+      "id": "light_tracks",
+      "source_filename": "military tank 3d model.glb",
+      "reference": "artifacts/part-references/light_tracks.png",
+      "sha256": "0129996752671cd2926329e9dc6d4f6db5ff2108f8d7ff4538f6e2a7818ce815",
+      "bytes": 3471120,
+      "triangles": 28447,
+      "texture_dimensions": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ]
+    },
+    {
+      "id": "bubble_cannon",
+      "source_filename": "futuristic turret 3d model (1).glb",
+      "reference": "artifacts/model-generation-references/bubble_cannon.png",
+      "sha256": "d5260204e1f00db70d811b6b3151e5219bc910109cadcf573b3718712ffd0067",
+      "bytes": 2832004,
+      "triangles": 19588,
+      "alpha_mode": "OPAQUE",
+      "texture_dimensions": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ]
+    },
+    {
+      "id": "scatter",
+      "source_filename": "sci-fi turret 3d model.glb",
+      "reference": "artifacts/model-generation-references/scatter.png",
+      "sha256": "1b946f7fd700a485487e653d7ec1e00ac88b2d2c647acd104845a4c4e8da16e9",
+      "bytes": 2503332,
+      "triangles": 18489,
+      "alpha_mode": "OPAQUE",
+      "texture_dimensions": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ]
+    },
+    {
+      "id": "autocannon",
+      "source_filename": "futuristic weapon 3d model.glb",
+      "reference": "artifacts/model-generation-references/autocannon.png",
+      "sha256": "3273cc2a26682d9c54e1567402a7577391dce7d36c44d5b31bd6dfbc03e97540",
+      "bytes": 3119664,
+      "triangles": 18353,
+      "alpha_mode": "OPAQUE",
+      "texture_dimensions": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ]
+    },
+    {
+      "id": "heavy_tracks",
+      "source_filename": "futuristic tank 3d model (1).glb",
+      "reference": "artifacts/model-generation-references/heavy_tracks.png",
+      "sha256": "5b60a8342d2ea79a26e3d37d92f3c83331cafddf8779afd7f61a5de6b6713b53",
+      "bytes": 3987180,
+      "triangles": 28049,
+      "alpha_mode": "OPAQUE",
+      "texture_dimensions": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ]
+    },
+    {
+      "id": "scout_wheels",
+      "source_filename": "off-road monster truck 3d model.glb",
+      "reference": "artifacts/model-generation-references/scout_wheels.png",
+      "sha256": "90d4102dfe5f9ce53b95f584715b46c17ce4746b7163dc520d62d6d2ca2237a4",
+      "bytes": 3700628,
+      "triangles": 29672,
+      "alpha_mode": "OPAQUE",
+      "texture_dimensions": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          2048
+        ]
+      ]
+    }
+  ],
+  "notes": "Original downloads copied without alteration. Geometry transforms live only in presentation wrappers. No collision or gameplay changes."
+}

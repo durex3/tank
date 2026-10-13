@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/imported/tripo-v1/scout_wheels.glb" id="1"]
+
+[node name="scout_wheels" type="Node3D"]
+
+[node name="Visual" parent="." instance=ExtResource("1")]
+rotation = Vector3(0, 3.14159265, 0)
+scale = Vector3(1.75, 1.45, 1.9)
+
+[node name="TurretSocket" type="Marker3D" parent="."]
+position = Vector3(0, 0.76, 0)

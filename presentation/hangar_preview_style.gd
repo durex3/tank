@@ -3,6 +3,7 @@ class_name HangarPreviewStyle
 ## Display-only quality budget, independent from battle rendering.
 
 @export_range(1.0, 2.0, 0.1) var render_scale: float = 1.5
+@export var max_render_edge: int = 2048
 @export var msaa: Viewport.MSAA = Viewport.MSAA_4X
 @export_range(2.5, 5.0, 0.1) var camera_size: float = 2.9
 @export var key_energy: float = 1.25

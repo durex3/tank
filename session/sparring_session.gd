@@ -19,6 +19,7 @@ func _ready() -> void:
 	var chassis := preload("res://content/chassis/light_tracks.tres") as ChassisDef
 	rival.configure(LoadoutResolver.resolve(simulation.rival_weapon, chassis), chassis.acceleration)
 	rival.health.team_id = 1
+	_view.entity_id = rival.state.entity_id
 	rival.add_child(_view)
 	var health := TankHealthView.new()
 	health.entity_id = 2
@@ -29,7 +30,8 @@ func _ready() -> void:
 	simulation.events.published.connect(health.on_event)
 	simulation.rival = rival
 	simulation.abilities.register(rival,simulation.rival_weapon.id,chassis.id)
-	simulation.rival_snapshot_ready.connect(_view.present)
+	simulation.rival_snapshot_ready.connect(_present_rival)
+	simulation.events.published.connect(_view.on_event)
 	simulation.lives.tuning = rules
 	simulation.lives.track(player, Vector3.ZERO)
 	simulation.lives.track(rival, rules.spawn)
@@ -52,3 +54,10 @@ func has_line_of_sight() -> bool:
 func reset_intent() -> void:
 	brain.reset(simulation.tick)
 	simulation.rival_controller.cancel_pending()
+
+func _present_rival(state: TankState) -> void:
+	_view.present(state)
+	_view.advance_visual_tick(simulation.tick)
+
+func reset_visual_motion() -> void:
+	_view.reset_visual_motion()

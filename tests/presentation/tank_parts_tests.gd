@@ -10,6 +10,7 @@ func _initialize() -> void:
 func _run() -> void:
 	await _test_assembly()
 	_test_mesh_integrity()
+	_test_finish_isolation()
 	_test_rejected_content()
 	await _test_hangar()
 	await _test_navigation()
@@ -21,8 +22,7 @@ func _test_mesh_integrity() -> void:
 	var scenes: Array = TankPartCatalog.WEAPONS.values() + TankPartCatalog.CHASSIS.values()
 	for scene: PackedScene in scenes:
 		var part: Node = scene.instantiate()
-		for node: Node in part.get_children():
-			if not node is MeshInstance3D: continue
+		for node: Node in part.find_children("*", "MeshInstance3D", true, false):
 			var mesh: Mesh = (node as MeshInstance3D).mesh
 			for surface: int in range(mesh.get_surface_count()):
 				var arrays: Array = mesh.surface_get_arrays(surface)
@@ -133,3 +133,21 @@ func check(condition: bool, message: String) -> void:
 	if not condition:
 		failures += 1
 		push_error(message)
+
+func _test_finish_isolation() -> void:
+	var first := TankView.new()
+	var second := TankView.new()
+	root.add_child(first)
+	root.add_child(second)
+	var a: MeshInstance3D = first.get_node("TurretMount").find_children("*", "MeshInstance3D", true, false)[0]
+	var b: MeshInstance3D = second.get_node("TurretMount").find_children("*", "MeshInstance3D", true, false)[0]
+	var finish := a.get_surface_override_material(0) as ShaderMaterial
+	check(finish != null, "sample paint treatment applied")
+	check(finish != b.get_surface_override_material(0), "paint overrides isolated between tank instances")
+	check(a.mesh.surface_get_material(0) is StandardMaterial3D, "original imported material remains unchanged")
+	var texture: Texture2D = (a.mesh.surface_get_material(0) as StandardMaterial3D).albedo_texture
+	check(finish.get_shader_parameter("albedo_map") == texture, "sample retains original texture source")
+	finish.set_shader_parameter("cleanup_strength", 0.0)
+	check(is_equal_approx(float((b.get_surface_override_material(0) as ShaderMaterial).get_shader_parameter("cleanup_strength")), TankSurfacePolish.STYLE.cleanup_strength), "one instance cannot alter another finish")
+	first.free()
+	second.free()

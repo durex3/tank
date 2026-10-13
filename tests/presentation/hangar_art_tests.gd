@@ -31,15 +31,13 @@ func _run() -> void:
 			for index: int in range(3):
 				check((screen.find_child("WeaponCard" + str(index), true, false) as Button).button_pressed == (index == weapon), "exactly one turret selected")
 				check((screen.find_child("ChassisCard" + str(index), true, false) as Button).button_pressed == (index == chassis), "exactly one chassis selected")
-	var toggle := screen.find_child("ArtModelToggle", true, false) as Button
+	check(screen.find_child("ArtModelToggle", true, false) == null, "appearance requires no model toggle")
 	for chassis: StringName in [&"light_tracks", &"heavy_tracks", &"scout_wheels"]:
 		var base := HangarArtCatalog.texture(&"cannon", chassis).get_image().get_region(Rect2i(0, 800, 1024, 224)).get_data()
 		for weapon: StringName in [&"autocannon", &"scatter"]:
 			var changed := HangarArtCatalog.texture(weapon, chassis).get_image().get_region(Rect2i(0, 800, 1024, 224)).get_data()
 			check(changed == base, "turret switching preserves visible lower chassis pixels exactly")
-	check(screen.art_stage.artwork.visible, "shared module composition is the default appearance")
-	toggle.pressed.emit()
-	check(not screen.art_stage.artwork.visible and screen.find_child("AssemblyPreview", true, false).visible, "explicit toggle shows assembly model")
+	check(not screen.art_stage.artwork.visible and screen.art_stage._model.visible, "appearance directly shows real model")
 	var before_rotation: float = screen.preview.tank.rotation.y
 	var press := InputEventMouseButton.new()
 	press.button_index = MOUSE_BUTTON_LEFT
@@ -54,8 +52,24 @@ func _run() -> void:
 	press.pressed = false
 	screen.art_stage._input(press)
 	check(not screen.art_stage._dragging, "release outside preview clears drag")
-	toggle.pressed.emit()
-	check(screen.art_stage.artwork.visible and not screen.find_child("AssemblyPreview", true, false).visible, "toggle restores static art without changing selection")
+	press.pressed = true
+	screen.art_stage._preview_input(press)
+	screen.restore_selection(&"cannon", &"light_tracks")
+	check(not screen.art_stage._dragging, "selection change clears rotation drag")
+	screen._inspect_part(&"cutting_laser")
+	check(screen.art_stage.artwork.visible and not screen.art_stage._model.visible, "unmodeled part shows static design instead of previous model")
+	var fallback_yaw: float = screen.preview.tank.rotation.y
+	screen.art_stage._preview_input(press)
+	screen.art_stage._preview_input(drag)
+	check(is_equal_approx(fallback_yaw, screen.preview.tank.rotation.y), "static design cannot rotate")
+	screen.restore_selection(&"scatter", &"heavy_tracks")
+	var touch := InputEventScreenTouch.new()
+	touch.index = 2
+	touch.pressed = true
+	screen.art_stage._preview_input(touch)
+	touch.pressed = false
+	screen.art_stage._input(touch)
+	check(screen.art_stage._touch_index == -1, "touch release outside clears rotation")
 	screen.training_requested.connect(func(weapon: StringName, chassis: StringName) -> void: requested = [weapon, chassis])
 	(screen.find_child("TrainLoadout", true, false) as Button).pressed.emit()
 	check(requested == [&"scatter", &"heavy_tracks"], "training request preserves art selection IDs")
@@ -72,6 +86,11 @@ func _test_layout(screen: Control) -> void:
 		root.size = dimensions
 		for frame: int in range(3):
 			await process_frame
+		var pixels: Vector2i = screen.art_stage._viewport.size
+		var expected: Vector2 = screen.art_stage._model.size * HangarArtStage.PREVIEW_STYLE.render_scale
+		if maxf(expected.x, expected.y) > HangarArtStage.PREVIEW_STYLE.max_render_edge:
+			expected *= float(HangarArtStage.PREVIEW_STYLE.max_render_edge) / maxf(expected.x, expected.y)
+		check(absf(pixels.x - expected.x) <= 1 and absf(pixels.y - expected.y) <= 1, "preview uses explicit supersampled pixels at each window size")
 		var bounds := screen.get_global_rect()
 		var train := screen.find_child("TrainLoadout", true, false) as Button
 		check(bounds.encloses(train.get_global_rect()), "training entry stays inside viewport across aspect ratios")
@@ -79,7 +98,7 @@ func _test_layout(screen: Control) -> void:
 		var last := screen.find_child("WeaponCard2", true, false) as Button
 		check(bounds.encloses(first.get_global_rect()) and bounds.encloses(last.get_global_rect()), "cards stay inside tested viewport")
 		check(not first.get_global_rect().intersects(last.get_global_rect()), "card hit regions do not overlap")
-		check(screen.art_stage.artwork.size.x > 250 and screen.art_stage.artwork.size.y > 250, "hero remains a readable large presentation")
+		check(screen.art_stage._model.size.x > 250 and screen.art_stage._model.size.y > 250, "hero remains a readable large presentation")
 
 func check(condition: bool, message: String) -> void:
 	if not condition:

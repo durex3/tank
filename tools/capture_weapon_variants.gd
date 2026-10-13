@@ -14,9 +14,11 @@ func _capture() -> void:
 		screen.session.set_physics_process(false)
 		for frame: int in range(30):
 			await physics_frame
+		if screen.session.phase == MovementSession.Phase.PAUSED: screen.session.resume()
 		var sim: BattleSimulation = screen.session.simulation
 		for frame: int in range(8):
 			var command := PlayerCommand.new()
+			command.session_epoch = sim.session_epoch
 			command.sequence = frame + 1
 			command.client_tick = sim.tick + 1
 			command.fire_request_id = 1 if frame == 0 else 0

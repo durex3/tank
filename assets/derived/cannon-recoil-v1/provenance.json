@@ -1,0 +1,12 @@
+{
+  "source": "assets/imported/tripo-v1/cannon.glb",
+  "source_sha256": "caf053947f3d590d8b302c614124cd157ad6968d31425090434e980aeb316a1b",
+  "output_sha256": "df624a01a99411c63171f845ba7cab8d54cc1ab1a3cc1b7ac3396f1558121e12",
+  "method": "Local triangle clipping; original material/images retained",
+  "cut_z": 0.22,
+  "triangles": {
+    "Body": 16092,
+    "Barrel": 2792
+  },
+  "notes": "Cut remains inside sliding sleeve; no external game assets used. Original unused geometry bytes retained for reproducible source packing."
+}

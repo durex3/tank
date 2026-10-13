@@ -4,6 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-render_scale = 1.5
+render_scale = 2.0
 msaa = 2
-camera_size = 2.9
+camera_size = 2.5
+key_energy = 0.85
+fill_energy = 0.22
+rim_energy = 0.32
+ambient_energy = 0.24

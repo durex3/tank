@@ -4,9 +4,9 @@ extends Control
 signal back_requested
 signal duel_requested(weapon_id: StringName, chassis_id: StringName, touch_mode: bool)
 
-const VIEW_STYLE = preload("res://presentation/training_view_style.gd")
+const VIEW_STYLE: TrainingViewStyle = preload("res://content/presentation/training_view.tres")
 
-var view_style := VIEW_STYLE.new()
+var view_style: TrainingViewStyle = VIEW_STYLE
 var session := MovementSession.new()
 var _container := SubViewportContainer.new()
 var _viewport := SubViewport.new()

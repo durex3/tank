@@ -41,6 +41,7 @@ func _ready() -> void:
 	actor.configure(LoadoutResolver.resolve(weapon, chassis), chassis.acceleration)
 	_view.weapon_id = weapon.id
 	_view.chassis_id = chassis.id
+	_view.entity_id = actor.state.entity_id
 	simulation.weapon = weapon
 	simulation.abilities.training = match_rules == null
 	simulation.abilities.register(actor,weapon.id,chassis.id)
@@ -49,7 +50,8 @@ func _ready() -> void:
 	actor.add_child(_view)
 	add_child(simulation)
 	simulation.actor = actor
-	simulation.snapshot_ready.connect(_view.present)
+	simulation.snapshot_ready.connect(_present_player)
+	simulation.events.published.connect(_view.on_event)
 	add_child(touch)
 	add_child(desktop)
 	touch.set_enabled(use_touch)
@@ -70,12 +72,14 @@ func _ready() -> void:
 		_start_match()
 
 func _create_lighting() -> void:
-	var style := TrainingViewStyle.new()
+	var style := preload("res://content/presentation/training_view.tres") as TrainingViewStyle
 	var light := DirectionalLight3D.new()
-	light.rotation_degrees = Vector3(-55, -25, 0)
+	light.rotation_degrees = style.key_rotation
+	light.light_color = style.key_color
 	light.light_energy = style.key_energy
 	light.shadow_enabled = true
-	light.directional_shadow_max_distance = 60.0
+	light.shadow_blur = style.shadow_blur
+	light.directional_shadow_max_distance = style.shadow_distance
 	add_child(light)
 	var environment := WorldEnvironment.new()
 	environment.environment = Environment.new()
@@ -107,6 +111,9 @@ func _physics_process(delta: float) -> void:
 	rig.follow(actor.position, delta)
 
 func stop() -> void:
+	_view.reset_visual_motion()
+	if sparring != null:
+		sparring.reset_visual_motion()
 	phase = Phase.STOPPED
 	_suspend_inputs()
 	simulation.abilities.clear(simulation.projectiles)
@@ -132,7 +139,7 @@ func set_touch_mode(value: bool) -> void:
 
 func _create_targets() -> void:
 	var rules := simulation.training_rules
-	var style := TrainingViewStyle.new()
+	var style := preload("res://content/presentation/training_view.tres") as TrainingViewStyle
 	var errors := rules.validate()
 	if not errors.is_empty():
 		push_error("Invalid training content: " + "; ".join(errors))
@@ -289,3 +296,7 @@ func request_ability() -> void:
 	if not can_control: return
 	if use_touch: touch.request_ability()
 	else: desktop.request_ability()
+
+func _present_player(state: TankState) -> void:
+	_view.present(state)
+	_view.advance_visual_tick(simulation.tick)

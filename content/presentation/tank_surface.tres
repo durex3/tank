@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TankSurfaceStyle" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://presentation/tank_surface_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+cleanup_strength = 0.55
+normal_strength = 0.40
+armor_color = Color(0.92, 0.91, 0.85, 1)

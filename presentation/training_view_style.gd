@@ -11,3 +11,10 @@ class_name TrainingViewStyle
 
 @export var target_chassis: Array[StringName] = [&"light_tracks",&"scout_wheels",&"heavy_tracks"]
 @export var target_captions: PackedStringArray = PackedStringArray(["轻型训练靶","中型训练靶","重型训练靶"])
+
+@export var key_rotation: Vector3 = Vector3(-48, -32, 0)
+@export var key_color: Color = Color("fff3df")
+@export var shadow_distance: float = 24.0
+@export var tile_color_a: Color = Color("b6b1a5")
+@export var tile_color_b: Color = Color("b9b4a8")
+@export_range(0.0, 4.0) var shadow_blur: float = 2.0

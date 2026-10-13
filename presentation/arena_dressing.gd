@@ -21,6 +21,7 @@ func _ready() -> void:
 		_tree(point)
 
 func _floor_tiles() -> void:
+	var style: TrainingViewStyle = preload("res://content/presentation/training_view.tres")
 	var tiles := MultiMeshInstance3D.new()
 	var batch := MultiMesh.new()
 	batch.transform_format = MultiMesh.TRANSFORM_3D
@@ -37,7 +38,7 @@ func _floor_tiles() -> void:
 	for x: int in range(16):
 		for z: int in range(12):
 			batch.set_instance_transform(index, Transform3D(Basis.IDENTITY, Vector3(-15 + x * 2, 0.015, -11 + z * 2)))
-			batch.set_instance_color(index, Color("a59c8c") if (x + z) % 2 == 0 else Color("aaa190"))
+			batch.set_instance_color(index, style.tile_color_a if (x + z) % 2 == 0 else style.tile_color_b)
 			index += 1
 	tiles.multimesh = batch
 	add_child(tiles)
