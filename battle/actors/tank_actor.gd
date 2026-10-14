@@ -43,7 +43,7 @@ func step(command: PlayerCommand, delta: float) -> void:
 		halt()
 		return
 	state.aim_yaw = float(command.aim_yaw) / 65536.0 * TAU
-	motor.step(self, state, Vector2(command.move_x, command.move_z) / 127.0, stats.move_speed * speed_multiplier, delta, forced_velocity)
+	motor.step(self, state, Vector2(command.move_x, command.move_z) / 127.0, stats.move_speed * speed_multiplier, delta, forced_velocity,command.turn_preference)
 	force_update_transform()
 	hurtbox.force_update_transform()
 

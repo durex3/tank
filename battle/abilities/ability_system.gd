@@ -105,7 +105,7 @@ func attack(actor: TankActor, gate: WeaponController, tick: int, projectiles: Pr
 		_release(actor,projectiles)
 		var shot := projectiles.spawn_breach(actor.get_world_3d().direct_space_state,actor.position,actor.state.aim_yaw,actor.state.entity_id,actor.health.team_id,tick,rules,actor.health.life_index)
 		if shot != null:
-			events.publish(&"ability_fired",tick,{"source_id":actor.state.entity_id,"ability":&"breach","position":shot.position,"yaw":actor.state.aim_yaw})
+			events.publish(&"ability_fired",tick,{"source_id":actor.state.entity_id,"ability":&"breach","position":shot.position,"yaw":actor.state.aim_yaw,"projectile_id":shot.projectile_id})
 	elif state.phase == &"bubble":
 		curtain.deploy(actor,tick,projectiles,events)
 		state.reserved = false

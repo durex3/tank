@@ -4,13 +4,13 @@ class_name TankPartCatalog
 
 const WEAPONS: Dictionary = {
 	&"cannon": preload("res://presentation/parts/proportion_v1/cannon.tscn"),
-	&"autocannon": preload("res://presentation/parts/proportion_v1/autocannon.tscn"),
+	&"autocannon": preload("res://presentation/parts/feedback_v1/autocannon.tscn"),
 	&"scatter": preload("res://presentation/parts/proportion_v1/scatter.tscn"),
 	&"bubble_cannon": preload("res://presentation/parts/proportion_v1/bubble_cannon.tscn"),
 }
 const CHASSIS: Dictionary = {
 	&"light_tracks": preload("res://presentation/parts/proportion_v1/light_tracks.tscn"),
-	&"scout_wheels": preload("res://presentation/parts/proportion_v1/scout_wheels.tscn"),
+	&"scout_wheels": preload("res://presentation/parts/feedback_v1/scout_wheels.tscn"),
 	&"heavy_tracks": preload("res://presentation/parts/proportion_v1/heavy_tracks.tscn"),
 }
 

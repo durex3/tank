@@ -30,6 +30,10 @@ static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController,
 		shot.storm_round = ability_damage and weapon.id == &"autocannon"
 		shot.ability_damage = ability_damage
 		shot.owner_life = actor.health.life_index
+	for impact: Dictionary in projectiles.impacts:
+		if impact.projectile_id in shots.map(func(shot: ProjectileState) -> int: return shot.projectile_id):
+			impact.ability_damage = ability_damage
+			impact.storm = ability_damage and weapon.id == &"autocannon"
 	for hit: HitEvent in projectiles.hits:
 		if hit.source_id == actor.state.entity_id and hit.projectile_id in shots.map(func(shot: ProjectileState) -> int: return shot.projectile_id):
 			hit.ability_damage = ability_damage
@@ -40,5 +44,5 @@ static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController,
 	actor.magazine.consume(tick)
 	gate.next_fire_tick = maxi(gate.next_fire_tick,actor.magazine.reload_until)
 	events.publish(&"weapon_fired", tick, {"source_id": actor.state.entity_id,
-		"position": muzzle, "weapon":weapon.id, "projectile_id": shots[0].projectile_id,
+		"position": muzzle, "weapon":weapon.id, "direction":Vector3(sin(actor.state.aim_yaw),0,-cos(actor.state.aim_yaw)), "projectile_id": shots[0].projectile_id, "projectile_ids":shots.map(func(shot: ProjectileState) -> int: return shot.projectile_id),
 		"interval_ticks": actor.stats.interval_ticks if interval <= 0 else interval, "pellet_count": shots.size(), "next_fire_tick": gate.next_fire_tick})

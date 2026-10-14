@@ -12,10 +12,10 @@ var _tick: int = -1
 var _distance: float = 0.0
 var _weapon: StringName = &"cannon"
 
-func bind(part: Node3D, weapon: StringName = &"cannon") -> void:
+func bind(part: Node3D, weapon: StringName = &"cannon", pivot_name: String = "RecoilPivot") -> void:
 	reset()
 	_weapon = weapon
-	_pivot = part.find_child("RecoilPivot", true, false) as Node3D
+	_pivot = part.find_child(pivot_name, true, false) as Node3D
 	if _pivot == null:
 		return
 	_rest = _pivot.position

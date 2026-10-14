@@ -24,6 +24,7 @@ var ability_damage: bool = false
 
 var storm_round: bool = false
 
+var weapon_id: StringName = &"cannon"
 var kind: StringName = &"normal"
 var slow_multiplier: float = 1.0
 var slow_ticks: int = 0

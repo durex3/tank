@@ -41,6 +41,7 @@ func handle_event(event: InputEvent) -> bool:
 
 func sample(tick: int) -> PlayerCommand:
 	var command: PlayerCommand = state.sample(tick,session_epoch)
+	command.turn_preference = signi(command.move_x)
 	if command.ability_request_id > 0 or _button_pending:
 		_button_request += 1
 		command.ability_request_id = _button_request

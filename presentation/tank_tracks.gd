@@ -38,7 +38,9 @@ func reset() -> void:
 		if is_instance_valid(wheel): wheel.rotation.x = 0.0
 	for material: ShaderMaterial in _materials:
 		material.set_shader_parameter("track_travel", 0.0)
-	if is_instance_valid(_rig): _rig.present_travel(Vector2.ZERO)
+	if is_instance_valid(_rig):
+		_rig.present_turn(0,0)
+		_rig.present_travel(Vector2.ZERO)
 
 func sample(position: Vector3, yaw: float, tick: int) -> void:
 	if tick <= _tick:
@@ -61,6 +63,7 @@ func sample(position: Vector3, yaw: float, tick: int) -> void:
 	var half_width: float = _rig.style.axle_x if is_instance_valid(_rig) else STYLE.track_half_width_m
 	_travel += Vector2(distance + turn * half_width, distance - turn * half_width)
 	if is_instance_valid(_rig):
+		_rig.present_turn(turn,distance)
 		_rig.present_travel(_travel)
 		return
 	for wheel: Node3D in _wheels:

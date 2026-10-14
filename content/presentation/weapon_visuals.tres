@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="WeaponVisualStyle" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://definitions/weapon_visual_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+signature_width = 0.12
+shock_height = 0.8

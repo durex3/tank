@@ -41,7 +41,7 @@ func enqueue_command(command: PlayerCommand) -> bool:
 	if command.client_tick < tick - INPUT_TIMEOUT_TICKS:
 		return false
 	_command = PlayerCommand.new()
-	for field: String in ["session_epoch", "sequence", "client_tick", "move_x", "move_z", "aim_yaw", "fire_held", "fire_request_id", "ability_request_id"]:
+	for field: String in ["session_epoch", "sequence", "client_tick", "move_x", "move_z", "turn_preference", "aim_yaw", "fire_held", "fire_request_id", "ability_request_id"]:
 		_command.set(field, command.get(field))
 	_last_sequence = command.sequence
 	_last_input_tick = tick
@@ -149,7 +149,7 @@ func enqueue_rival_command(command: PlayerCommand) -> bool:
 	if not command.is_valid() or command.sequence <= _rival_sequence or command.client_tick != tick + 1:
 		return false
 	_rival_command = PlayerCommand.new()
-	for field: String in ["sequence", "client_tick", "move_x", "move_z", "aim_yaw", "fire_held", "fire_request_id", "ability_request_id"]:
+	for field: String in ["sequence", "client_tick", "move_x", "move_z", "turn_preference", "aim_yaw", "fire_held", "fire_request_id", "ability_request_id"]:
 		_rival_command.set(field, command.get(field))
 	_rival_sequence = command.sequence
 	_rival_input_tick = tick

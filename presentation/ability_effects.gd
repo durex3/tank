@@ -12,6 +12,7 @@ var _material := StandardMaterial3D.new()
 var _guard_hits: Dictionary = {}
 var _tick: int = 0
 var _art := AbilitySpriteEffects.new()
+var _signatures := AbilitySignatureEffects.new()
 
 func _ready() -> void:
 	_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -20,10 +21,12 @@ func _ready() -> void:
 	_material.cull_mode = BaseMaterial3D.CULL_DISABLED
 	add_child(_zones)
 	add_child(_art)
+	add_child(_signatures)
 
 func on_event(event: Dictionary) -> void:
 	_tick = event.tick
 	_art.on_event(event)
+	_signatures.on_event(event)
 	if event.kind == &"damage_applied" and event.get("guarded",false):
 		_guard_hits[event.target_id] = _tick+style.guard_hit_ticks
 	if event.kind == &"ability_state":
@@ -37,6 +40,7 @@ func on_event(event: Dictionary) -> void:
 
 func clear() -> void:
 	_art.clear()
+	_signatures.clear()
 	for node: MeshInstance3D in _nodes.values(): node.mesh = null
 	_zones.mesh = null
 	_states.clear()

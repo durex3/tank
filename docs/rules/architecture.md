@@ -1,5 +1,9 @@
 # 分层架构规则
 
+089：屏幕左右输入提供已校验turn_preference（-1/0/1），BattleSimulation复制到命令快照；TankMotor只在180°边界消歧。移动仍按投影方向，鼠标世界瞄准保持独立，禁止领域读取原始输入或相机。对手模型订阅顺序不得使会话桥接落后一发，采样前先幂等消费提交事实。
+
+086—088增补：弹丸ID及武器身份随提交事件提供，session仅注入可视出膛位置，CombatView短程衔接不改权威弹丸。左右枪口/后坐归TankView；成功发射交替，拒绝/重复不换边。TankMotor按只读TankSteeringRules提交有限转速body_yaw，迎击装甲及表现消费同一朝向，禁止表现另造影响减伤的角度。炮塔独立aim_yaw且挂接位置固定。轮胎源网格圆度/轴心与变换刚性分别验收；卡片摄影仅离线渲染。
+
 080统一部件视觉尺寸只作用于presentation Geometry分支，配置来源content/presentation/part_size.tres；所有炮塔同宽高总长、所有底盘同宽高总长。外层根与权威Muzzle/TurretSocket不变，领域不依赖视觉尺寸。派生构建与验证遵守docs/art/080-部件统一尺寸契约.md。
 
 基线：原始架构文档第7—10章。依赖方向：UI/Presentation → 应用与会话服务 → 战斗/配装领域 → Definitions/Core。依赖注入从app入口完成，领域不能反向引用入口。
@@ -94,3 +98,6 @@ Autoload最多AppServices、ProfileService、AudioService、PlatformService；�
 
 
 081起统一尺寸不得通过整件非等比缩放破坏圆形机械件；轮组须脱离非等比车壳变换，检查转动中世界轴正交与等长。主炮壳体保留原始纵横比例，通过独立装配底座补齐统一高度。派生资源另存，权威挂点保持原值。
+
+
+090—091：TankMotor有限转向后按朝向对齐比例调整自主目标速度，转向/松手制动来自TankSteeringRules；强制位移在自主速度之后合成，不受转向比例缩放。保持WASD方向移动与鼠标独立瞄准。卡片专用材质/摄影只用于离线派生，原模型/图不覆盖，不以非等比拉伸冒充体积；实际渲染与真人观感验收分别记录。

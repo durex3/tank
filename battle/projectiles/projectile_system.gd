@@ -28,6 +28,7 @@ func spawn(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, weapon
 	shot.damage = weapon.damage
 	shot.radius = weapon.projectile_radius
 	shot.kind = weapon.projectile_kind
+	shot.weapon_id = weapon.id
 	shot.slow_multiplier = weapon.slow_multiplier
 	shot.slow_ticks = weapon.slow_ticks
 	shot.direction = Vector3(sin(yaw), 0, -cos(yaw))
@@ -82,7 +83,7 @@ func _sweep(space: PhysicsDirectSpaceState3D, shot: ProjectileState, destination
 			continue
 		shot.position = collision.position
 		shot.active = false
-		impacts.append({"position": shot.position, "projectile_id": shot.projectile_id,"bubble":shot.kind == &"bubble_round"})
+		impacts.append({"position": shot.position, "projectile_id": shot.projectile_id,"bubble":shot.kind == &"bubble_round", "weapon":shot.weapon_id, "direction":shot.direction, "ability_damage":shot.ability_damage, "storm":shot.storm_round})
 		if hurtbox != null:
 			var hit := HitEvent.new()
 			hit.projectile_id = shot.projectile_id

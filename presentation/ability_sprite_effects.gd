@@ -4,6 +4,7 @@ class_name AbilitySpriteEffects
 
 const SHOCK_SHADER := preload("res://presentation/shaders/shock_sector.gdshader")
 var style: AbilityEffectStyle = preload("res://content/presentation/ability_effects.tres")
+var weapon_style: WeaponVisualStyle = preload("res://content/presentation/weapon_visuals.tres")
 var rules: BasicAbilityRules = preload("res://content/rules/basic_abilities.tres")
 var _effects: Array[Dictionary] = []
 var _smoke: Dictionary = {}
@@ -23,9 +24,31 @@ func on_event(event: Dictionary) -> void:
 		&"weapon_fired":
 			if event.get("weapon",&"") == &"bubble_cannon": return
 			var storm: bool = _phases.get(event.source_id,&"idle") == &"storm"
-			_flash(style.muzzle,event.position,style.storm_muzzle_width_m if storm else style.muzzle_width_m,event.tick,style.storm_muzzle_ticks if storm else style.muzzle_ticks)
+			var weapon: StringName = event.get("weapon",&"")
+			var width: float = style.muzzle_width_m
+			var shape := Vector3.ONE
+			match weapon:
+				&"cannon": width = weapon_style.cannon_muzzle_width
+				&"autocannon":
+					width = weapon_style.needle_muzzle_width
+					shape = weapon_style.needle_flash_shape
+				&"scatter":
+					width = weapon_style.scatter_muzzle_width
+					shape = weapon_style.scatter_flash_shape
+			_flash(style.muzzle,event.position,style.storm_muzzle_width_m if storm else width,event.tick,style.storm_muzzle_ticks if storm else style.muzzle_ticks,shape)
 		&"projectile_hit":
-			if not event.get("bubble",false): _flash(style.impact,event.position,style.impact_width_m,event.tick,style.impact_ticks)
+			if not event.get("bubble",false):
+				var weapon: StringName = event.get("weapon",&"")
+				var texture: Texture2D = weapon_style.cannon_impact if weapon == &"cannon" else style.impact
+				var width: float = weapon_style.impact_width if weapon == &"cannon" else style.impact_width_m
+				var shape := Vector3.ONE
+				if weapon == &"autocannon":
+					width = weapon_style.needle_impact_width
+					shape = weapon_style.needle_flash_shape
+				elif weapon == &"scatter":
+					width = weapon_style.scatter_impact_width
+					shape = weapon_style.scatter_flash_shape
+				_flash(texture,event.position,width,event.tick,weapon_style.impact_ticks,shape)
 		&"damage_applied":
 			if event.get("bubble_hits",0) > 0:
 				_guard_message(event,"拦截泡 %d/2 · 减速15%%" % event.bubble_hits)
@@ -41,14 +64,15 @@ func on_event(event: Dictionary) -> void:
 		&"ability_zones": _update_smoke(event.zones,event.tick)
 		&"match_finished": clear()
 
-func _flash(texture: Texture2D, position_value: Vector3, width: float, tick: int, duration: int) -> Sprite3D:
+func _flash(texture: Texture2D, position_value: Vector3, width: float, tick: int, duration: int, shape: Vector3 = Vector3.ONE) -> Sprite3D:
 	if _effects.size() >= style.max_sprites: return null
 	var sprite: Sprite3D = _sprite(texture,width)
 	sprite.position = position_value
 	var camera := get_viewport().get_camera_3d()
 	if camera != null: sprite.position += camera.global_basis.z*style.art_camera_offset_m
 	add_child(sprite)
-	_effects.append({"sprite":sprite,"start":tick,"until":tick+duration})
+	sprite.scale = shape
+	_effects.append({"sprite":sprite,"start":tick,"until":tick+duration,"shape":shape})
 	return sprite
 
 func _sprite(texture: Texture2D, width: float) -> Sprite3D:
@@ -89,7 +113,7 @@ func _age(tick: int) -> void:
 			var eased: float = 1.0-pow(1.0-fraction,2)
 			if node is Sprite3D:
 				(node as Sprite3D).modulate.a = 1.0-fraction
-				node.scale = Vector3.ONE*(0.7+eased*0.5)
+				node.scale = effect.get("shape",Vector3.ONE)*(0.7+eased*0.5)
 			else:
 				(effect.material as ShaderMaterial).set_shader_parameter("opacity",1.0-fraction)
 				node.scale = Vector3.ONE*(0.35+eased*0.65)

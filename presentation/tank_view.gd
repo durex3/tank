@@ -6,6 +6,10 @@ var weapon_id: StringName = &"cannon"
 var chassis_id: StringName = &"light_tracks"
 var entity_id: int = 0
 var _recoil := TankRecoil.new()
+var _right_recoil := TankRecoil.new()
+var _active_barrel: int = 0
+var _next_barrel: int = 0
+var _last_visual_fire: int = -1
 var _tracks := TankTracks.new()
 var _present_position: Vector3
 var _present_yaw: float = 0.0
@@ -51,6 +55,9 @@ func configure_parts(next_weapon: StringName, next_chassis: StringName) -> Strin
 		_replace_child(_turret, turret)
 		_muzzle = turret.get_node("Muzzle") as Marker3D
 		_recoil.bind(turret, next_weapon)
+		_right_recoil.bind(turret,next_weapon,"RecoilPivotRight")
+		_active_barrel = 0
+		_next_barrel = 0
 	weapon_id = next_weapon
 	chassis_id = next_chassis
 	return ""
@@ -65,16 +72,24 @@ func present(state: TankState) -> void:
 func muzzle_transform() -> Transform3D:
 	return _muzzle.global_transform
 
+func active_barrel_index() -> int:
+	return _active_barrel
+
 func visual_muzzle_position() -> Vector3:
-	var marker := _turret.find_child("VisualMuzzle", true, false) as Node3D
+	var marker_name: String = "VisualMuzzleRight" if weapon_id == &"autocannon" and _active_barrel == 1 else "VisualMuzzle"
+	var marker := _turret.find_child(marker_name, true, false) as Node3D
 	return marker.global_position if marker != null else _muzzle.global_position
 
 func advance_visual_tick(tick: int) -> void:
 	_recoil.advance(tick)
+	_right_recoil.advance(tick)
 	_tracks.sample(_present_position, _present_yaw, tick)
 
 func reset_visual_motion() -> void:
 	_recoil.reset()
+	_right_recoil.reset()
+	_active_barrel = 0
+	_next_barrel = 0
 	_tracks.reset()
 
 func on_event(event: Dictionary) -> void:
@@ -84,7 +99,12 @@ func on_event(event: Dictionary) -> void:
 		reset_visual_motion()
 	elif event.get("source_id", -1) == entity_id:
 		if event.kind == &"weapon_fired" and event.get("weapon", &"") == weapon_id:
-			_recoil.fire(event.tick)
+			if event.tick <= _last_visual_fire: return
+			_last_visual_fire = event.tick
+			_active_barrel = _next_barrel if weapon_id == &"autocannon" else 0
+			_next_barrel = 1-_active_barrel
+			if _active_barrel == 1: _right_recoil.fire(event.tick)
+			else: _recoil.fire(event.tick)
 		elif weapon_id == &"cannon" and event.kind == &"ability_fired" and event.get("ability", &"") == &"breach":
 			_recoil.fire(event.tick, true)
 

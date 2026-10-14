@@ -13,3 +13,5 @@ class_name TankMotionStyle
 @export var track_half_width_m: float = 0.62
 @export var track_source_scale: float = 1.35
 @export var visual_teleport_limit_m: float = 2.0
+@export var wheel_steer_max_radians: float = 0.42
+@export var wheel_steer_distance_floor_m: float = 0.08

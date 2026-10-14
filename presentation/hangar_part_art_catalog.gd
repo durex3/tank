@@ -5,13 +5,13 @@ class_name HangarPartArtCatalog
 const TURRETS: Texture2D = preload("res://assets/generated/parts/turrets-atlas-v1.png")
 const CHASSIS: Texture2D = preload("res://assets/generated/parts/chassis-atlas-v1.png")
 const ALIGNED_TURRETS: Dictionary = {
-	&"heavy_tracks": preload("res://assets/derived/clean-finish-v1/heavy_tracks.png"),
-	&"scout_wheels": preload("res://assets/derived/clean-finish-v1/scout_wheels.png"),
-	&"bubble_cannon": preload("res://assets/derived/clean-finish-v1/bubble_cannon.png"),
-	&"cannon": preload("res://assets/derived/clean-finish-v1/cannon.png"),
-	&"light_tracks": preload("res://assets/derived/clean-finish-v1/light_tracks.png"),
-	&"autocannon": preload("res://assets/derived/clean-finish-v1/autocannon.png"),
-	&"scatter": preload("res://assets/derived/clean-finish-v1/scatter.png"),
+	&"heavy_tracks": preload("res://assets/derived/model-reference-cards-v1/heavy_tracks.png"),
+	&"scout_wheels": preload("res://assets/derived/model-reference-cards-v1/scout_wheels.png"),
+	&"light_tracks": preload("res://assets/derived/model-reference-cards-v1/light_tracks.png"),
+	&"cannon": preload("res://assets/derived/model-reference-cards-v1/cannon.png"),
+	&"autocannon": preload("res://assets/derived/model-reference-cards-v1/autocannon.png"),
+	&"scatter": preload("res://assets/derived/model-reference-cards-v1/scatter.png"),
+	&"bubble_cannon": preload("res://assets/derived/model-reference-cards-v1/bubble_cannon.png"),
 }
 static var _cache: Dictionary = {}
 static var _display_cache: Dictionary = {}
@@ -28,12 +28,12 @@ static func display_texture(id: StringName) -> Texture2D:
 	if not bounds.has_area():
 		return source
 	var subject := image.get_region(bounds)
-	var factor := minf(448.0 / bounds.size.x, 320.0 / bounds.size.y)
+	var factor := minf(448.0 / bounds.size.x, 280.0 / bounds.size.y)
 	var dimensions := Vector2i(Vector2(bounds.size) * factor)
 	subject.resize(dimensions.x, dimensions.y, Image.INTERPOLATE_LANCZOS)
-	var canvas := Image.create(512, 384, false, Image.FORMAT_RGBA8)
+	var canvas := Image.create(512, 320, false, Image.FORMAT_RGBA8)
 	canvas.fill(Color.TRANSPARENT)
-	canvas.blit_rect(subject, Rect2i(Vector2i.ZERO, dimensions), (Vector2i(512, 384) - dimensions) / 2)
+	canvas.blit_rect(subject, Rect2i(Vector2i.ZERO, dimensions), (Vector2i(512, 320) - dimensions) / 2)
 	var result := ImageTexture.create_from_image(canvas)
 	_display_cache[id] = result
 	return result

@@ -75,9 +75,14 @@ func _present_effect_event(event: Dictionary) -> void:
 	var view: TankView = _view if event.get("source_id", -1) == _view.entity_id else null
 	if view == null and is_instance_valid(sparring) and event.get("source_id", -1) == sparring._view.entity_id:
 		view = sparring._view
-	if view != null and view.weapon_id == &"cannon":
+	if view != null:
 		if event.kind == &"weapon_fired" or (event.kind == &"ability_fired" and event.get("ability", &"") == &"breach"):
+			# Rival views subscribe after this bridge; consume the idempotent fact first.
+			view.on_event(event)
 			display_event = event.duplicate()
+			display_event.authoritative_muzzle_position = event.position
+			display_event.visual_muzzle_position = view.visual_muzzle_position()
+			display_event.barrel_index = view.active_barrel_index()
 			display_event.position = view.visual_muzzle_position()
 		elif event.kind == &"ability_state" and event.get("phase", &"") == &"breach":
 			display_event = event.duplicate()

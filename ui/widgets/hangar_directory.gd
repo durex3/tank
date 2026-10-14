@@ -86,7 +86,7 @@ func _ready() -> void:
 	scroll.add_child(grid)
 	for entry: PartEntry in PartCatalog.DATA.entries:
 		var card := HangarPartCard.new()
-		card.custom_minimum_size = Vector2(130, 128)
+		card.custom_minimum_size = Vector2(130, 138)
 		card.label_key = entry.display_name
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		card.pressed.connect(_select.bind(entry.id))

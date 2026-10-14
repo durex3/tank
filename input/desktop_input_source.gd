@@ -27,6 +27,7 @@ func sample(tick: int) -> PlayerCommand:
 	var move := Vector2(_strength(&"move_right") - _strength(&"move_left"), _strength(&"move_down") - _strength(&"move_up")).limit_length(1.0)
 	command.move_x = roundi(move.x * 127.0)
 	command.move_z = roundi(move.y * 127.0)
+	command.turn_preference = signi(command.move_x)
 	command.aim_yaw = roundi(fposmod(atan2(aim_direction.x, -aim_direction.y), TAU) / TAU * 65536.0) % 65536
 	command.fire_held = continuous_fire and not _fire_contacts.is_empty()
 	command.ability_request_id = _pending_ability

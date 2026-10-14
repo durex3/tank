@@ -13,7 +13,7 @@ var label_key: String = ""
 func _ready() -> void:
 	toggle_mode = true
 	clip_contents = true
-	custom_minimum_size = Vector2(126, 128)
+	custom_minimum_size = Vector2(126, 138)
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -31,7 +31,7 @@ func _ready() -> void:
 	artwork.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	artwork.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	artwork.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	artwork.custom_minimum_size.y = 70
+	artwork.custom_minimum_size.y = 80
 	artwork.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(artwork)
 	caption.mouse_filter = Control.MOUSE_FILTER_IGNORE

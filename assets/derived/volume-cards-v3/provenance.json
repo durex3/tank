@@ -1,0 +1,8 @@
+{
+  "date": "2026-10-15",
+  "source": "Existing TankPartCatalog models; provenance inherited from docs/art/091-卡片重渲染来源.md",
+  "tool": "tools/capture_volume_cards_v3.gd",
+  "style": "content/presentation/part_cards_v3.tres",
+  "process": "Godot 4.7.2 Compatibility, 1024px 4x MSAA to transparent 512px PNG; lower camera; production geometry unchanged",
+  "acceptance": "Real hangar screens reviewed; user visual approval and Android pending"
+}

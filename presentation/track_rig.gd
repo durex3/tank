@@ -26,6 +26,9 @@ func _ready() -> void:
 func perimeter() -> float:
 	return 2.0 * (style.rear_z - style.front_z) + TAU * style.belt_radius
 
+func present_turn(_turn: float, _distance: float) -> void:
+	pass
+
 func present_travel(travel: Vector2) -> void:
 	_cleat_poses.clear()
 	for i: int in range(_wheels.size()):
