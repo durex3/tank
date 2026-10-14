@@ -1,0 +1,11 @@
+{
+  "source": "assets/imported/rodin-v1/tank_bang_pbr.glb",
+  "source_sha256": "ccbada256c194b4be5d0835690ed6473fa1972099eb02b05dde484d6639bac02",
+  "generation_id": "a2b536e9-d910-40d5-b536-b811e0d575b4",
+  "triangles": {
+    "light_tracks": 20052,
+    "cannon": 9948
+  },
+  "method": "Lossless node grouping, embedded texture bytes retained",
+  "limitations": "Unused source buffers retained. Tracks are not separate wheels. Visual muzzle alignment requires review."
+}

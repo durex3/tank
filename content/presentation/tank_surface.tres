@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1")
-cleanup_strength = 0.55
-normal_strength = 0.40
-armor_color = Color(0.92, 0.91, 0.85, 1)
+cleanup_strength = 0.90
+normal_strength = 0.18
+armor_color = Color(0.91, 0.925, 0.92, 1)

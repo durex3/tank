@@ -1,0 +1,47 @@
+[
+  {
+    "id": "autocannon",
+    "image": "autocannon.png",
+    "prompt": "Faithfully reconstruct ONLY the standalone twin-short-barrel rapid-fire turret shown. Preserve white beveled armor, gold collars, mint lights, rear black fins, circular rotation mount. No hull, tracks, wheels or added platform. Two complete hollow cannon barrels mechanically distinct from body. Symmetrical clean manufactured stylized PBR game asset.",
+    "generation_id": "c83faa75-c2ae-46ec-8c93-f85e248feda8",
+    "status": "queued",
+    "display_url": "https://hyper3d.ai/workspace/rodin/c83faa75-c2ae-46ec-8c93-f85e248feda8",
+    "bang_generation_id": "e058f8e4-ac01-4656-a780-f344cd19e87e"
+  },
+  {
+    "id": "scatter",
+    "image": "scatter.png",
+    "prompt": "Faithfully reconstruct the standalone wide short hexagonal muzzle scatter turret exactly as shown, white armor, dark twin SIDE recoil cylinders, gold rim, circular mount. No vehicle hull, wheels or tracks. One complete hollow wide muzzle mechanically distinct from turret body for recoil animation. Preserve shape and clean stylized PBR finish.",
+    "generation_id": "ecf56d9d-acea-4399-bbd4-735cbc5fe01a",
+    "status": "queued",
+    "display_url": "https://hyper3d.ai/workspace/rodin/ecf56d9d-acea-4399-bbd4-735cbc5fe01a",
+    "bang_generation_id": null
+  },
+  {
+    "id": "bubble_cannon",
+    "image": "bubble_cannon.png",
+    "prompt": "Faithfully reconstruct only the shown standalone bubble projector turret: white porcelain pump housing, short gold rim hollow nozzle, turquoise horizontal liquid reservoir, pressure gauge and dark hoses, circular rotation mount. No hull/tracks/wheels. Preserve approved silhouette. Keep nozzle distinct for recoil and reservoir distinct for glass/liquid material setup. Clean stylized PBR game prop.",
+    "generation_id": "c770e885-1730-40c6-b37d-531cd5b88cfd",
+    "status": "queued",
+    "display_url": "https://hyper3d.ai/workspace/rodin/c770e885-1730-40c6-b37d-531cd5b88cfd",
+    "bang_generation_id": null
+  },
+  {
+    "id": "scout_wheels",
+    "image": "scout_wheels.png",
+    "prompt": "Faithfully reconstruct ONLY the shown four-wheel scout chassis: white arrowhead armor, FOUR complete round rubber wheels with gold rims, visible suspension, fenders, mint lamps, empty flat top turret socket. No turret, gun or barrel. Separate complete wheels from hull for animation; do not model only decorative wheel faces. Clean stylized PBR game asset.",
+    "generation_id": "19ee125d-f3f5-4238-bdf8-8e4d88dde8af",
+    "status": "queued",
+    "display_url": "https://hyper3d.ai/workspace/rodin/19ee125d-f3f5-4238-bdf8-8e4d88dde8af",
+    "bang_generation_id": null
+  },
+  {
+    "id": "heavy_tracks",
+    "image": "heavy_tracks.png",
+    "prompt": "Faithfully reconstruct ONLY shown heavy tracked chassis: thick white layered hull, wide closed charcoal tread loops each with FOUR complete road wheels, gold rims, white hubs, top fenders, mint front lamps, gold tow hooks, empty circular turret socket on deck. No turret or gun. Preserve continuous lower treads beneath wheels. Clean stylized PBR game asset; hull, belts and complete wheels distinct for later mechanical animation.",
+    "generation_id": "e4768615-ea17-4440-94b9-12cefcd41d68",
+    "status": "queued",
+    "display_url": "https://hyper3d.ai/workspace/rodin/e4768615-ea17-4440-94b9-12cefcd41d68",
+    "bang_generation_id": null
+  }
+]

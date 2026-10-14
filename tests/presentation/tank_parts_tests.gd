@@ -64,11 +64,13 @@ func _test_assembly() -> void:
 	for frame: int in range(30):
 		view.configure_parts(&"cannon", &"light_tracks")
 	await process_frame
-	for mount: Node in view.get_children():
+	for mount: Node in [view.get_node("HullMount"), view.get_node("TurretMount")]:
 		check(mount.get_child_count() == 1, "repeated replacement retains exactly one part per mount")
+	check(view.get_node("ContactShadow") is MeshInstance3D, "contact shadow remains a visual mesh")
+	check(view.find_children("*", "CollisionObject3D", true, false).is_empty(), "surface finish adds no authority collision")
 	view.free()
 	await process_frame
-	check(root.get_child_count() == 0, "assembly disposal releases mounts")
+	check(root.get_child_count() == 0, "assembly disposal releases mounts and contact shadow")
 
 func _test_rejected_content() -> void:
 	var part := Node3D.new()

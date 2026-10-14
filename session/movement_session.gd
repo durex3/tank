@@ -59,10 +59,9 @@ func _ready() -> void:
 	add_child(rig)
 	add_child(combat_view)
 	add_child(ability_effects)
-	simulation.events.published.connect(ability_effects.on_event)
+	simulation.events.published.connect(_present_effect_event)
 	combat_view.projectiles = simulation.projectiles
 	combat_view.ability_art_enabled = true
-	simulation.events.published.connect(combat_view.on_event)
 	if match_rules == null:
 		_create_targets()
 	_attach_player_health()
@@ -70,6 +69,21 @@ func _ready() -> void:
 	_create_lighting()
 	if match_rules != null:
 		_start_match()
+
+func _present_effect_event(event: Dictionary) -> void:
+	var display_event: Dictionary = event
+	var view: TankView = _view if event.get("source_id", -1) == _view.entity_id else null
+	if view == null and is_instance_valid(sparring) and event.get("source_id", -1) == sparring._view.entity_id:
+		view = sparring._view
+	if view != null and view.weapon_id == &"cannon":
+		if event.kind == &"weapon_fired" or (event.kind == &"ability_fired" and event.get("ability", &"") == &"breach"):
+			display_event = event.duplicate()
+			display_event.position = view.visual_muzzle_position()
+		elif event.kind == &"ability_state" and event.get("phase", &"") == &"breach":
+			display_event = event.duplicate()
+			display_event.visual_muzzle_position = view.visual_muzzle_position()
+	ability_effects.on_event(display_event)
+	combat_view.on_event(display_event)
 
 func _create_lighting() -> void:
 	var style := preload("res://content/presentation/training_view.tres") as TrainingViewStyle
@@ -81,6 +95,11 @@ func _create_lighting() -> void:
 	light.shadow_blur = style.shadow_blur
 	light.directional_shadow_max_distance = style.shadow_distance
 	add_child(light)
+	var fill := DirectionalLight3D.new()
+	fill.rotation_degrees = style.fill_rotation
+	fill.light_color = style.fill_color
+	fill.light_energy = style.fill_energy
+	add_child(fill)
 	var environment := WorldEnvironment.new()
 	environment.environment = Environment.new()
 	environment.environment.background_mode = Environment.BG_COLOR

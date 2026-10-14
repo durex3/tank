@@ -119,7 +119,7 @@ func _update_charge(event: Dictionary) -> void:
 		_charge[id] = sprite
 	var core: Sprite3D = _charge[id]
 	var progress: float = clampf(1.0-float(event.remaining)/rules.breach_charge,0,1)
-	core.position = event.position+Vector3(sin(event.yaw),0,-cos(event.yaw))*ProjectileSystem.MUZZLE_OFFSET+Vector3.UP*ProjectileSystem.SHOT_HEIGHT
+	core.position = event.get("visual_muzzle_position", event.position+Vector3(sin(event.yaw),0,-cos(event.yaw))*ProjectileSystem.MUZZLE_OFFSET+Vector3.UP*ProjectileSystem.SHOT_HEIGHT)
 	var camera := get_viewport().get_camera_3d()
 	if camera != null: core.position += camera.global_basis.z*style.art_camera_offset_m
 	core.scale = Vector3.ONE*(0.3+progress*0.7)

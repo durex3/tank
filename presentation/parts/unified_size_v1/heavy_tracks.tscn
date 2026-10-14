@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://presentation/parts/rodin_family_v2/heavy_tracks.tscn" id="1"]
+
+[node name="heavy_tracks" type="Node3D"]
+
+[node name="Geometry" parent="." instance=ExtResource("1")]
+position = Vector3(0, 0, -0.17289841)
+scale = Vector3(0.77464783, 1.1135672, 0.7766643)
+
+[node name="TurretSocket" type="Marker3D" parent="."]
+position = Vector3(0, 0.76, 0)

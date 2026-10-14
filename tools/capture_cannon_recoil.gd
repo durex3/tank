@@ -17,6 +17,7 @@ func _capture() -> void:
 	session.set_physics_process(false)
 	for frame: int in range(8): await physics_frame
 	if session.phase == MovementSession.Phase.PAUSED: session.resume()
+	session.set_physics_process(false)
 	await _save("training-rest")
 	# Inspection close-up only. Gameplay camera tuning remains unchanged.
 	session.rig.position = Vector3.ZERO
@@ -46,6 +47,7 @@ func _capture() -> void:
 	for frame: int in range(6): await physics_frame
 	assert(pivot.position == pose)
 	session.resume()
+	session.set_physics_process(false)
 	for frame: int in range(18): sim.step()
 	await _save("close-returned")
 	assert(pivot.position.is_zero_approx())

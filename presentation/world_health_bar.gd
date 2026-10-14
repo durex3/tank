@@ -2,6 +2,8 @@ extends Node3D
 class_name WorldHealthBar
 ## Lightweight billboard health indicator, driven by committed HP values.
 
+const STYLE: Resource = preload("res://content/presentation/world_health.tres")
+
 var friendly: bool = false
 var _label := Label3D.new()
 var _number := Label3D.new()
@@ -32,10 +34,10 @@ func _ready() -> void:
 		label.pixel_size = 0.010
 		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 		label.no_depth_test = true
-		label.outline_size = 6
+		label.outline_size = STYLE.outline_size
 		label.render_priority = 3
 		add_child(label)
-	_label.position.y = 0.38
+	_label.position.y = STYLE.caption_gap
 	_label.modulate = Color("a3edb0") if friendly else Color("ffa5a2")
 
 func show_health(hp: int, maximum: int, caption: String = "") -> void:

@@ -18,3 +18,7 @@ class_name TrainingViewStyle
 @export var tile_color_a: Color = Color("b6b1a5")
 @export var tile_color_b: Color = Color("b9b4a8")
 @export_range(0.0, 4.0) var shadow_blur: float = 2.0
+
+@export var fill_energy: float = 0.18
+@export var fill_color: Color = Color("c6d8ed")
+@export var fill_rotation: Vector3 = Vector3(-25, 115, 0)

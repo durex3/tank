@@ -85,7 +85,7 @@ func _draw_actor(state: Dictionary) -> void:
 			var aim := Vector3(sin(state.yaw),0,-cos(state.yaw))
 			var progress: float = clampf(1.0-float(state.remaining)/rules.breach_charge,0,1)
 			_line(mesh,origin+aim*0.8,origin+aim*rules.breach_range,Color(style.breach_color,0.4))
-			var core: Vector3 = state.position+aim*ProjectileSystem.MUZZLE_OFFSET+Vector3.UP*ProjectileSystem.SHOT_HEIGHT
+			var core: Vector3 = state.get("visual_muzzle_position", state.position+aim*ProjectileSystem.MUZZLE_OFFSET+Vector3.UP*ProjectileSystem.SHOT_HEIGHT)
 			_ring(mesh,core,style.charge_core_m*(1.1-progress*0.5),style.breach_color)
 			for i: int in range(8):
 				var angle: float = i*TAU/8.0+progress*0.5

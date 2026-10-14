@@ -1,0 +1,31 @@
+{
+  "provider_images": "OpenAI built-in imagegen",
+  "reference": "assets/generated/rodin-family-v1/concept-board-v1.png",
+  "parts": [
+    {
+      "id": "autocannon",
+      "source": "/Users/liugelong/.codex/generated_images/01a1394c-6de5-7722-a8bf-d1381cbda953/exec-a9cfed3d-aa5d-423d-89c7-a553cb1138cc.png",
+      "prompt": "Use case: stylized-concept. Reference: the attached user-approved five-part design board. Create ONE standalone square product render of ONLY the upper left twin-barrel autocannon turret. Two short parallel dark barrels with perforated muzzle sleeves and gold rims, white armored housing, black rear cooling fins, round mounting base. Preserve that exact component's design, silhouette, colors and details from the board. Show the entire isolated module centered large with generous margins, front facing toward lower left, three-quarter elevated view matching the board. Clean ivory matte armor, dark charcoal mechanics, restrained gold trim and mint lamps. Neutral light gray studio background, soft even lighting, minimal shadow. No other components, no complete tank, no text, no labels, no collage, no pedestal. This single-object image will be used for image-to-3D reconstruction."
+    },
+    {
+      "id": "scatter",
+      "source": "/Users/liugelong/.codex/generated_images/01a1394c-6de5-7722-a8bf-d1381cbda953/exec-cf5855a4-8c2a-4b5d-bc5e-65d0c657daca.png",
+      "prompt": "Use case: stylized-concept. Reference: the attached user-approved five-part design board. Create ONE standalone square product render of ONLY the upper middle scatter cannon turret. One very wide short hexagonal hollow muzzle with gold rim, white angular armored housing, paired dark side recoil cylinders, round mounting base. Preserve that exact component's design, silhouette, colors and details from the board. Show the entire isolated module centered large with generous margins, front facing toward lower left, three-quarter elevated view matching the board. Clean ivory matte armor, dark charcoal mechanics, restrained gold trim and mint lamps. Neutral light gray studio background, soft even lighting, minimal shadow. No other components, no complete tank, no text, no labels, no collage, no pedestal. This single-object image will be used for image-to-3D reconstruction."
+    },
+    {
+      "id": "bubble_cannon",
+      "source": "/Users/liugelong/.codex/generated_images/01a1394c-6de5-7722-a8bf-d1381cbda953/exec-6f214c91-2dca-495e-bef8-8960786c51c9.png",
+      "prompt": "Use case: stylized-concept. Reference: the attached user-approved five-part design board. Create ONE standalone square product render of ONLY the upper right bubble cannon turret. Round short nozzle with gold rim and mint inner ring, large horizontal translucent turquoise liquid tank at rear, curved black hoses, small pressure gauge, white rounded housing and round mounting base. Preserve that exact component's design, silhouette, colors and details from the board. Show the entire isolated module centered large with generous margins, front facing toward lower left, three-quarter elevated view matching the board. Clean ivory matte armor, dark charcoal mechanics, restrained gold trim and mint lamps. Neutral light gray studio background, soft even lighting, minimal shadow. No other components, no complete tank, no text, no labels, no collage, no pedestal. This single-object image will be used for image-to-3D reconstruction."
+    },
+    {
+      "id": "scout_wheels",
+      "source": "/Users/liugelong/.codex/generated_images/01a1394c-6de5-7722-a8bf-d1381cbda953/exec-80fe603a-f54f-4af6-a35b-5210429ae81c.png",
+      "prompt": "Use case: stylized-concept. Reference: the attached user-approved five-part design board. Create ONE standalone square product render of ONLY the lower left scout wheeled chassis. Low arrowhead white armored hull, FOUR chunky black rubber wheels in total, gold rim accents, visible suspension, empty circular turret mounting socket on deck. Preserve that exact component's design, silhouette, colors and details from the board. Show the entire isolated module centered large with generous margins, front facing toward lower left, three-quarter elevated view matching the board. Clean ivory matte armor, dark charcoal mechanics, restrained gold trim and mint lamps. Neutral light gray studio background, soft even lighting, minimal shadow. No other components, no complete tank, no text, no labels, no collage, no pedestal. This single-object image will be used for image-to-3D reconstruction."
+    },
+    {
+      "id": "heavy_tracks",
+      "source": "/Users/liugelong/.codex/generated_images/01a1394c-6de5-7722-a8bf-d1381cbda953/exec-09ff872e-bec4-48c7-add0-1f6f7254b02c.png",
+      "prompt": "Use case: stylized-concept. Reference: the attached user-approved five-part design board. Create ONE standalone square product render of ONLY the lower right heavy tracked chassis. Wide thick white armored hull, TWO closed black track belts, FOUR large road wheels on EACH side with pale hubs and gold rims, white side fenders, empty circular turret mounting socket on deck. Preserve that exact component's design, silhouette, colors and details from the board. Show the entire isolated module centered large with generous margins, front facing toward lower left, three-quarter elevated view matching the board. Clean ivory matte armor, dark charcoal mechanics, restrained gold trim and mint lamps. Neutral light gray studio background, soft even lighting, minimal shadow. No other components, no complete tank, no text, no labels, no collage, no pedestal. This single-object image will be used for image-to-3D reconstruction."
+    }
+  ]
+}

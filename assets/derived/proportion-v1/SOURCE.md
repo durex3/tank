@@ -1,0 +1,7 @@
+# 来源
+
+沿用079的Rodin生产拆件模型和074程序化履带；原始生成提示词与来源见原生成目录及079功能记录。没有新增生图或模型服务任务。
+
+由tools/calibrate_part_proportions.gd从原装配场景派生真实三维场景到presentation/parts/proportion_v1，不覆盖原GLB。尺寸配置content/presentation/part_size.tres。主炮安装环为程序化CylinderMesh；重型轮组共用首套履带米制尺寸，4轮/56履带块；侦察轮组保留原始网格、独立刚性变换。其余部件延续080尺寸校准。
+
+本目录PNG由tools/capture_proportion_icons.gd渲染当前真实模型，仅作为卡片图。

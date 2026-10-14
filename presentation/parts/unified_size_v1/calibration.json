@@ -1,0 +1,51 @@
+{
+	"autocannon": {
+		"before": "AABB(-0.6597868, -0.04146689, -0.9525913, 1.3189495, 0.72269756, 1.8005674)",
+		"offset": "Vector3(0.00031232834, 0.022488996, -0.09480393)",
+		"scale": "Vector3(1.0007966, 0.9409192, 1.0552229)",
+		"source": "res://presentation/parts/rodin_family_v2/autocannon.tscn",
+		"target": "AABB(-0.66, -0.016528, -1.1, 1.32, 0.68, 1.9)"
+	},
+	"bubble_cannon": {
+		"before": "AABB(-0.72602135, -7.674098e-05, -0.85727525, 1.4523437, 0.68085134, 1.6122552)",
+		"offset": "Vector3(-0.00013679266, -0.016451355, -0.089723945)",
+		"scale": "Vector3(0.9088758, 0.9987496, 1.1784735)",
+		"source": "res://presentation/parts/rodin_family_v2/bubble_cannon.tscn",
+		"target": "AABB(-0.66, -0.016528, -1.1, 1.32, 0.68, 1.9)"
+	},
+	"cannon": {
+		"before": "AABB(-0.5530549, -0.016527742, -1.4786589, 1.1032689, 0.45769164, 2.1793609)",
+		"offset": "Vector3(0.0016995668, 0.008027539, 0.18911731)",
+		"scale": "Vector3(1.1964446, 1.4857165, 0.8718152)",
+		"source": "res://presentation/parts/rodin_motion_v1/cannon.tscn",
+		"target": "AABB(-0.66, -0.016528, -1.1, 1.32, 0.68, 1.9)"
+	},
+	"heavy_tracks": {
+		"before": "AABB(-1.065, 0, -1.1378964, 2.13, 0.76094556, 2.2703798)",
+		"offset": "Vector3(0, 0, -0.17289841)",
+		"scale": "Vector3(0.77464783, 1.1135672, 0.7766643)",
+		"source": "res://presentation/parts/rodin_family_v2/heavy_tracks.tscn",
+		"target": "AABB(-0.825, 0, -1.056662, 1.65, 0.847364, 1.763323)"
+	},
+	"light_tracks": {
+		"before": "AABB(-0.825, 0, -1.0566616, 1.65, 0.8473637, 1.7633233)",
+		"offset": "Vector3(0, 0, -5.9604645e-07)",
+		"scale": "Vector3(1, 1.0000004, 0.9999998)",
+		"source": "res://presentation/parts/track_rig_v1/light_tracks.tscn",
+		"target": "AABB(-0.825, 0, -1.056662, 1.65, 0.847364, 1.763323)"
+	},
+	"scatter": {
+		"before": "AABB(-0.6470327, -0.000120550394, -1.0000837, 1.3038018, 0.64995694, 1.8954487)",
+		"offset": "Vector3(-0.004928708, -0.016401876, -0.09751499)",
+		"scale": "Vector3(1.0124239, 1.0462232, 1.0024011)",
+		"source": "res://presentation/parts/rodin_family_v2/scatter.tscn",
+		"target": "AABB(-0.66, -0.016528, -1.1, 1.32, 0.68, 1.9)"
+	},
+	"scout_wheels": {
+		"before": "AABB(-0.780918, 0.019971013, -0.9034085, 1.5617261, 0.7588514, 1.8034389)",
+		"offset": "Vector3(5.811453e-05, -0.022300437, -0.17334902)",
+		"scale": "Vector3(1.0565233, 1.1166402, 0.97775584)",
+		"source": "res://presentation/parts/rodin_family_v2/scout_wheels.tscn",
+		"target": "AABB(-0.825, 0, -1.056662, 1.65, 0.847364, 1.763323)"
+	}
+}

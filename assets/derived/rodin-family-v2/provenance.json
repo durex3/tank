@@ -1,0 +1,77 @@
+{
+  "source_tasks": "assets/generated/rodin-family-v2/production-tasks-078.json",
+  "derivation": "tools/derive_rodin_family.py",
+  "note": "Approved reference design production BANG variants. Original models and the separate 12000-triangle candidates in rodin-approved-v1 are preserved. Heavy hull mesh 5 only; running gear authored with existing TrackRig. Turquoise tank remains opaque, not real glass.",
+  "source_files": [
+    {
+      "file": "assets/imported/rodin-family-v2/scout_wheels.glb",
+      "sha256": "8826351e19b8f9e49b8f3fac380b6ef6e2e5bdc760f4bda1d185f45214e6868f",
+      "triangles": 18000,
+      "meshes": 1,
+      "images": 3
+    },
+    {
+      "file": "assets/imported/rodin-family-v2/bubble_cannon_bang.glb",
+      "sha256": "cb8e1e0916b3fa6ca65030c4c89da34fffb3ef23357dc1d7e14a545e1d884a44",
+      "triangles": 18000,
+      "meshes": 3,
+      "images": 3
+    },
+    {
+      "file": "assets/imported/rodin-family-v2/scatter_bang.glb",
+      "sha256": "5acf580519bc01384c699c5abdb37975b46ab87105ffb06df98d265abd502217",
+      "triangles": 18000,
+      "meshes": 5,
+      "images": 3
+    },
+    {
+      "file": "assets/imported/rodin-family-v2/scatter.glb",
+      "sha256": "08225988ca61979b7921c192bde2c59e97693bd5e20752486cfd68554d3f4d57",
+      "triangles": 18000,
+      "meshes": 1,
+      "images": 3
+    },
+    {
+      "file": "assets/imported/rodin-family-v2/bubble_cannon.glb",
+      "sha256": "5234ec796fdd3af3eff6e70b7948b2d6fef5b83c747e9d8fef673c33a914e517",
+      "triangles": 18000,
+      "meshes": 1,
+      "images": 3
+    },
+    {
+      "file": "assets/imported/rodin-family-v2/heavy_tracks_bang.glb",
+      "sha256": "944010cdf0402c393bf2434d9f604480a51e2a3d1d40bed0d93ad3edf7dc93dd",
+      "triangles": 18000,
+      "meshes": 7,
+      "images": 3
+    },
+    {
+      "file": "assets/imported/rodin-family-v2/scout_wheels_bang.glb",
+      "sha256": "f78e9ca7fb56fdbf8afafffe8aee91d6f9b6711690db50310d27b2fd575c4f36",
+      "triangles": 18000,
+      "meshes": 6,
+      "images": 3
+    },
+    {
+      "file": "assets/imported/rodin-family-v2/autocannon.glb",
+      "sha256": "90424d03eef418e3fa32b686396b4a80af22b5d78060b998d9f001012c6b74a6",
+      "triangles": 18000,
+      "meshes": 1,
+      "images": 3
+    },
+    {
+      "file": "assets/imported/rodin-family-v2/autocannon_bang.glb",
+      "sha256": "afb780a490d1f23b39f54df0717738b7f9a33fb3e2cfc74b2a5aeb641e0e7a2e",
+      "triangles": 18000,
+      "meshes": 3,
+      "images": 3
+    },
+    {
+      "file": "assets/imported/rodin-family-v2/heavy_tracks.glb",
+      "sha256": "36d8d8f4daac908cbf59ca2cb45ef117b1c281eb290d7bf8978dcd935fa1452e",
+      "triangles": 18000,
+      "meshes": 1,
+      "images": 3
+    }
+  ]
+}

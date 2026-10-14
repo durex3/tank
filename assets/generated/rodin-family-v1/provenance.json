@@ -1,0 +1,56 @@
+{
+  "tool": "Hyper3D Rodin Gen-2.5",
+  "date": "2026-10-14",
+  "license": "Provider terms; no independent license assertion",
+  "quality_override": 18000,
+  "mesh_mode": "Raw",
+  "tier": "Gen-2.5-Medium",
+  "texture_delight": true,
+  "items": [
+    {
+      "id": "autocannon",
+      "prompt": "Reference is STYLE ONLY, do not copy its shapes. New stylized toy sci-fi modular part: matte porcelain-white beveled armor, charcoal mechanisms, restrained gold trim, mint lamps, chunky readable forms. No text, scenery or display plinth. A standalone compact RAPID-FIRE TURRET only, no tank hull, no tracks or vehicle wheels. New silhouette: low rounded trapezoid armored housing and two short parallel charcoal autocannon tubes emerging from a single broad recessed front cradle, golden muzzle collars, a stepped rear heat-exchanger pack with large dark fins, small mint status lamp. Avoid long thin minigun barrels, exposed bullet belts, tall box machine-gun silhouettes. Housing clearly distinct from cannon barrels for later mechanical separation; centered flat circular rotation interface underneath. Short stout breech/sleeves, visible clean barrel openings.",
+      "generation_id": "7ff1826b-9a7f-4ae6-85a7-1e075ed03f5b",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/7ff1826b-9a7f-4ae6-85a7-1e075ed03f5b",
+      "reference": "assets/generated/rodin-sample-v1/user_tank_reference.png",
+      "reference_role": "Style only; old part renders deliberately not submitted, per user instruction"
+    },
+    {
+      "id": "scatter",
+      "prompt": "Reference is STYLE ONLY, do not copy its shapes. New stylized toy sci-fi modular part: matte porcelain-white beveled armor, charcoal mechanisms, restrained gold trim, mint lamps, chunky readable forms. No text, scenery or display plinth. A standalone close-range SCATTER CANNON TURRET only, no vehicle chassis or tracks. Original broad low rounded wedge housing with ONE very wide short hexagonal trumpet muzzle, inset charcoal multi-aperture scatter diffuser deep inside its gold-trimmed rim, paired thick side recoil cylinders, rear angled armor cheek blocks, small mint lamp. Do not use two cylindrical shotgun barrels; unique unmistakable wide single-mouth silhouette. Chunky short muzzle cradle mechanically distinct from housing for recoil separation. Centered flat circular rotation interface underneath.",
+      "generation_id": "da331ed6-3fc0-456d-8b5f-0e884b52ae62",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/da331ed6-3fc0-456d-8b5f-0e884b52ae62",
+      "reference": "assets/generated/rodin-sample-v1/user_tank_reference.png",
+      "reference_role": "Style only; old part renders deliberately not submitted, per user instruction"
+    },
+    {
+      "id": "bubble_cannon",
+      "prompt": "Reference is STYLE ONLY, do not copy its shapes. New stylized toy sci-fi modular part: matte porcelain-white beveled armor, charcoal mechanisms, restrained gold trim, mint lamps, chunky readable forms. No text, scenery or display plinth. A standalone BUBBLE PROJECTOR TURRET only, no tank chassis/tracks. Original friendly rounded pressure-pump design: ONE squat translucent turquoise cylindrical liquid vessel lying horizontally across the rear, white armored end caps, twin thick dark U-shaped hoses leading to ONE short flared circular ring nozzle at front, gold rim and small gold valves, small dark pressure gauge on side. Low broad porcelain-white saddle housing, no spherical fishbowl, no long cannon barrel. Main nozzle visibly separate from housing for a small recoil. Centered flat circular rotation interface underneath.",
+      "generation_id": "e2ed5af4-638c-4515-a848-9bc41773f8a3",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/e2ed5af4-638c-4515-a848-9bc41773f8a3",
+      "reference": "assets/generated/rodin-sample-v1/user_tank_reference.png",
+      "reference_role": "Style only; old part renders deliberately not submitted, per user instruction"
+    },
+    {
+      "id": "scout_wheels",
+      "prompt": "Reference is STYLE ONLY, do not copy its shapes. New stylized toy sci-fi modular part: matte porcelain-white beveled armor, charcoal mechanisms, restrained gold trim, mint lamps, chunky readable forms. No text, scenery or display plinth. A standalone LIGHT SCOUT WHEELED CHASSIS only, absolutely no turret, cannon, weapon, gun barrel. New compact low arrowhead armored car hull with sloped white front armor and split dark grille, small mint headlights, shallow armored deck, visible centered empty flat dark circular turret mounting socket. FOUR large independent rubber off-road wheels, two each side, gold ring hubs and white hub caps, separated from hull with clear axles and visible gaps. Slim white fenders and dark exposed suspension swingarms, tapered rear. Not a six-wheel tank, not tracks. Wheels complete round cylinders, separate components for later rotation. Same toy-like scale as reference, fast nimble silhouette.",
+      "generation_id": "39804524-eed2-4361-a28b-c2d1c56cccb0",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/39804524-eed2-4361-a28b-c2d1c56cccb0",
+      "reference": "assets/generated/rodin-sample-v1/user_tank_reference.png",
+      "reference_role": "Style only; old part renders deliberately not submitted, per user instruction"
+    },
+    {
+      "id": "heavy_tracks",
+      "prompt": "Reference is STYLE ONLY, do not copy its shapes. New stylized toy sci-fi modular part: matte porcelain-white beveled armor, charcoal mechanisms, restrained gold trim, mint lamps, chunky readable forms. No text, scenery or display plinth. A standalone HEAVY TRACKED CHASSIS only, absolutely no turret, cannon or gun barrel. Original broad heavy low slab armored hull, thick beveled white layered front glacis, two rectangular dark grille recesses and mint running lights, chunky gold towing hooks, shallow top deck with empty centered flat dark circular turret mount. Two wide charcoal CLOSED continuous track loops, each side enclosing FOUR complete round road wheels with gold rims and white hub caps. Distinct large angular white fenders covering only top sections, lower track and wheel faces visible. Thick heavy silhouette distinct from compact three-wheel reference. Clean separable hull, closed belts, and complete wheels for mechanical animation; no fused decorative wheel faces.",
+      "generation_id": "ca8336d4-802e-47f3-9676-1fa7cf7f41c3",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/ca8336d4-802e-47f3-9676-1fa7cf7f41c3",
+      "reference": "assets/generated/rodin-sample-v1/user_tank_reference.png",
+      "reference_role": "Style only; old part renders deliberately not submitted, per user instruction"
+    }
+  ]
+}

@@ -10,9 +10,11 @@ var _fired_at: int = -1
 var _last_fire: int = -1
 var _tick: int = -1
 var _distance: float = 0.0
+var _weapon: StringName = &"cannon"
 
-func bind(part: Node3D) -> void:
+func bind(part: Node3D, weapon: StringName = &"cannon") -> void:
 	reset()
+	_weapon = weapon
 	_pivot = part.find_child("RecoilPivot", true, false) as Node3D
 	if _pivot == null:
 		return
@@ -26,6 +28,11 @@ func fire(tick: int, powerful: bool = false) -> void:
 	_last_fire = tick
 	_fired_at = tick
 	_distance = STYLE.breach_recoil_m if powerful else STYLE.cannon_recoil_m
+	if not powerful:
+		match _weapon:
+			&"autocannon": _distance = STYLE.autocannon_recoil_m
+			&"scatter": _distance = STYLE.scatter_recoil_m
+			&"bubble_cannon": _distance = STYLE.bubble_recoil_m
 	advance(tick)
 
 func advance(tick: int) -> void:

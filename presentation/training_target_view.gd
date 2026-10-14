@@ -17,17 +17,19 @@ func _ready() -> void:
 	_tank.scale = Vector3.ONE * 0.65
 	_tank.rotation.y = PI * 0.5
 	add_child(_tank)
-	_bar.position.y = 1.4
+	_bar.position.y = WorldHealthBar.STYLE.target_height
 	add_child(_bar)
 	var ring := MeshInstance3D.new()
 	var mesh := TorusMesh.new()
 	mesh.inner_radius = 0.70
-	mesh.outer_radius = 0.77
+	mesh.outer_radius = mesh.inner_radius + TankSurfacePolish.STYLE.team_ring_width
 	mesh.rings = 32
 	mesh.ring_segments = 6
 	var material := StandardMaterial3D.new()
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	material.albedo_color = Color("d95c63")
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.albedo_color.a = TankSurfacePolish.STYLE.team_ring_opacity
 	mesh.material = material
 	ring.mesh = mesh
 	ring.position.y = 0.055

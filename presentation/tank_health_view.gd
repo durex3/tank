@@ -11,7 +11,7 @@ var _protected: bool = false
 var _bar := WorldHealthBar.new()
 
 func _ready() -> void:
-	_bar.position.y = 1.45
+	_bar.position.y = WorldHealthBar.STYLE.actor_height
 	_bar.friendly = friendly
 	add_child(_bar)
 	_add_team_ring()
@@ -41,12 +41,14 @@ func _add_team_ring() -> void:
 	var ring := MeshInstance3D.new()
 	var mesh := TorusMesh.new()
 	mesh.inner_radius = 0.72
-	mesh.outer_radius = 0.77
+	mesh.outer_radius = mesh.inner_radius + TankSurfacePolish.STYLE.team_ring_width
 	mesh.rings = 20
 	mesh.ring_segments = 6
 	var material := StandardMaterial3D.new()
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	material.albedo_color = Color("21c5da") if friendly else Color("e35f66")
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.albedo_color.a = TankSurfacePolish.STYLE.team_ring_opacity
 	mesh.material = material
 	ring.mesh = mesh
 	ring.position.y = 0.06

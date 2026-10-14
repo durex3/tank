@@ -6,6 +6,9 @@ var weapon_id: StringName = &"cannon"
 var chassis_id: StringName = &"light_tracks"
 var entity_id: int = 0
 var _recoil := TankRecoil.new()
+var _tracks := TankTracks.new()
+var _present_position: Vector3
+var _present_yaw: float = 0.0
 var _hull := Node3D.new()
 var _turret := Node3D.new()
 var _muzzle: Marker3D
@@ -15,6 +18,7 @@ func _ready() -> void:
 	_turret.name = "TurretMount"
 	add_child(_hull)
 	add_child(_turret)
+	_add_contact_shadow()
 	var error := configure_parts(weapon_id, chassis_id)
 	if not error.is_empty():
 		push_error(error)
@@ -39,18 +43,21 @@ func configure_parts(next_weapon: StringName, next_chassis: StringName) -> Strin
 	if hull != null:
 		TankSurfacePolish.apply(hull, next_chassis)
 		_replace_child(_hull, hull)
+		_tracks.bind(hull)
 		_turret.position = (hull.get_node("TurretSocket") as Marker3D).position
 	if turret != null:
 		_recoil.reset()
 		TankSurfacePolish.apply(turret, next_weapon)
 		_replace_child(_turret, turret)
 		_muzzle = turret.get_node("Muzzle") as Marker3D
-		_recoil.bind(turret)
+		_recoil.bind(turret, next_weapon)
 	weapon_id = next_weapon
 	chassis_id = next_chassis
 	return ""
 
 func present(state: TankState) -> void:
+	_present_position = state.position
+	_present_yaw = state.body_yaw
 	# Mounts are siblings: body yaw must not accumulate into aim yaw.
 	_hull.rotation.y = -state.body_yaw
 	_turret.rotation.y = -state.aim_yaw
@@ -58,21 +65,27 @@ func present(state: TankState) -> void:
 func muzzle_transform() -> Transform3D:
 	return _muzzle.global_transform
 
+func visual_muzzle_position() -> Vector3:
+	var marker := _turret.find_child("VisualMuzzle", true, false) as Node3D
+	return marker.global_position if marker != null else _muzzle.global_position
+
 func advance_visual_tick(tick: int) -> void:
 	_recoil.advance(tick)
+	_tracks.sample(_present_position, _present_yaw, tick)
 
 func reset_visual_motion() -> void:
 	_recoil.reset()
+	_tracks.reset()
 
 func on_event(event: Dictionary) -> void:
 	if event.kind == &"match_finished":
-		_recoil.reset()
+		reset_visual_motion()
 	elif event.kind in [&"entity_died", &"entity_respawned"] and event.get("target_id", -1) == entity_id:
-		_recoil.reset()
-	elif event.get("source_id", -1) == entity_id and weapon_id == &"cannon":
-		if event.kind == &"weapon_fired" and event.get("weapon", &"") == &"cannon":
+		reset_visual_motion()
+	elif event.get("source_id", -1) == entity_id:
+		if event.kind == &"weapon_fired" and event.get("weapon", &"") == weapon_id:
 			_recoil.fire(event.tick)
-		elif event.kind == &"ability_fired" and event.get("ability", &"") == &"breach":
+		elif weapon_id == &"cannon" and event.kind == &"ability_fired" and event.get("ability", &"") == &"breach":
 			_recoil.fire(event.tick, true)
 
 func _replace_child(mount: Node3D, part: Node) -> void:
@@ -85,3 +98,17 @@ func _replace_child(mount: Node3D, part: Node) -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		TankSurfacePolish.clear(self)
+
+func _add_contact_shadow() -> void:
+	var shadow := MeshInstance3D.new()
+	shadow.name = "ContactShadow"
+	var plane := PlaneMesh.new()
+	plane.size = TankSurfacePolish.STYLE.contact_shadow_size
+	shadow.mesh = plane
+	shadow.position.y = 0.025
+	shadow.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var material := ShaderMaterial.new()
+	material.shader = preload("res://presentation/shaders/contact_shadow.gdshader")
+	material.set_shader_parameter("opacity", TankSurfacePolish.STYLE.contact_shadow_opacity)
+	shadow.material_override = material
+	add_child(shadow)

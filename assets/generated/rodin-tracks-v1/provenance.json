@@ -1,0 +1,12 @@
+{
+  "source": "Hyper3D Rodin MCP Gen-2.5-High",
+  "generation_id": "45223830-6a7a-4b11-a9bb-ab554b1a9675",
+  "reference": "Crop of user-provided MiniTanks screenshot, track module appearance only",
+  "mesh_mode": "Raw",
+  "target_polygons": 12000,
+  "format": "glb",
+  "texture_delight": true,
+  "status": "generation_completed_unverified",
+  "requirements": "One side only, three independent wheels, independent belt and support; must inspect actual geometry before claiming readiness",
+  "result_page": "https://hyper3d.ai/workspace/rodin/45223830-6a7a-4b11-a9bb-ab554b1a9675"
+}

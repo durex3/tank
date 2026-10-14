@@ -70,6 +70,8 @@ if (run('script import', ['--headless', '--path', root, '--editor', '--import', 
   run('ability vfx tests', ['--headless', '--path', root, '--script', 'res://tests/presentation/ability_vfx_tests.gd'], 'ABILITY VFX TESTS: PASS');
   run('tank parts tests', ['--headless', '--path', root, '--script', 'res://tests/presentation/tank_parts_tests.gd'], 'TANK PARTS TESTS: PASS');
   run('tank motion tests', ['--headless', '--path', root, '--script', 'res://tests/presentation/tank_motion_tests.gd'], 'TANK MOTION TESTS: PASS');
+  run('family motion tests', ['--headless', '--path', root, '--script', 'res://tools/verify_family_motion.gd'], 'FAMILY MOTION: PASS');
+  run('part size tests', ['--headless', '--path', root, '--script', 'res://tests/presentation/part_size_tests.gd'], 'PART SIZE TESTS: PASS');
   run('weapon variants tests', ['--headless', '--path', root, '--script', 'res://tests/battle/weapon_variants_tests.gd'], 'WEAPON VARIANTS TESTS: PASS');
   run('sparring tests', ['--headless', '--path', root, '--script', 'res://tests/battle/sparring_tests.gd'], 'SPARRING TESTS: PASS');
   run('match tests', ['--headless', '--path', root, '--script', 'res://tests/battle/match_tests.gd'], 'MATCH TESTS: PASS');
