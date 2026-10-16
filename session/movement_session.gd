@@ -97,6 +97,7 @@ func _create_lighting() -> void:
 	light.light_color = style.key_color
 	light.light_energy = style.key_energy
 	light.shadow_enabled = true
+	light.shadow_normal_bias = style.shadow_normal_bias
 	light.shadow_blur = style.shadow_blur
 	light.directional_shadow_max_distance = style.shadow_distance
 	add_child(light)

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/imported/modular-sample-v1/t02_pbr.glb" id="1"]
+[ext_resource type="Script" path="res://presentation/previews/modular_candidate_part.gd" id="2"]
+
+[node name="T02Candidate" type="Node3D"]
+script = ExtResource("2")
+turret = true
+source_minimum = Vector3(-0.5525839924812317, -0.4768456816673279, -0.9407507181167603)
+source_size = Vector3(1.1148518323898315, 0.9558182954788208, 1.8923979997634888)
+
+[node name="Geometry" parent="." instance=ExtResource("1")]
+
+[node name="Muzzle" type="Marker3D" parent="."]
+position = Vector3(0, 0.02, -1.05)

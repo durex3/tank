@@ -141,8 +141,9 @@ func _test_finish_isolation() -> void:
 	var second := TankView.new()
 	root.add_child(first)
 	root.add_child(second)
-	var a: MeshInstance3D = first.get_node("TurretMount").find_children("*", "MeshInstance3D", true, false)[0]
-	var b: MeshInstance3D = second.get_node("TurretMount").find_children("*", "MeshInstance3D", true, false)[0]
+	# Imported armor is the textured finish subject; an authored mount may precede it.
+	var a := first.get_node("TurretMount").find_child("Body", true, false) as MeshInstance3D
+	var b := second.get_node("TurretMount").find_child("Body", true, false) as MeshInstance3D
 	var finish := a.get_surface_override_material(0) as ShaderMaterial
 	check(finish != null, "sample paint treatment applied")
 	check(finish != b.get_surface_override_material(0), "paint overrides isolated between tank instances")

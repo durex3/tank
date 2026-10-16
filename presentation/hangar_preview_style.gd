@@ -10,6 +10,7 @@ class_name HangarPreviewStyle
 @export var fill_energy: float = 0.35
 @export var rim_energy: float = 0.55
 @export var ambient_energy: float = 0.34
+@export_range(0.0, 4.0) var shadow_normal_bias: float = 0.0
 @export var background_color: Color = Color("252632")
 @export var platform_color: Color = Color("383b48")
 @export var camera_position: Vector3 = Vector3(-3, 2.7, -4)

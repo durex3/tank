@@ -21,6 +21,7 @@ func _ready() -> void:
 	light.light_energy = STYLE.key_energy
 	light.light_color = Color("fff1dd")
 	light.shadow_enabled = true
+	light.shadow_normal_bias = STYLE.shadow_normal_bias
 	light.directional_shadow_max_distance = 12.0
 	add_child(light)
 	var fill := DirectionalLight3D.new()

@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-15",
+  "provider": "Hyper3D Rodin MCP",
+  "status": "generation_completed_geometry_unverified",
+  "billing_workspace": "OAuth-selected workspace; tool does not expose workspace name or credit quote",
+  "jobs": [
+    {
+      "part": "T02",
+      "prompt": "A single modular stylized twin-barrel tank turret, faithfully match the reference. Exactly two parallel short thick barrels with open bores, ivory matte armored housing, charcoal mechanics, yellow muzzle rings, cyan indicator, low round mounting collar. Complete symmetric rear and underside. Preserve clear gaps and distinct barrel sleeves for later independent recoil. No chassis, wheels, ground or stand. Clean broad beveled surfaces; no grime. Preserve reference proportions; no elongated thin barrels.",
+      "reference_upload_ids": [
+        "46c1f5a7-88eb-44c0-8862-b5eb9d6a1b28"
+      ],
+      "tier": "Gen-2.5-Medium",
+      "mesh_mode": "Raw",
+      "quality_override": 20000,
+      "geometry_file_format": "glb",
+      "texture_delight": true,
+      "generation_id": "30658af8-495d-44c5-b53a-7ffe3613bb80",
+      "status": "completed",
+      "display_url": "https://hyper3d.ai/workspace/rodin/30658af8-495d-44c5-b53a-7ffe3613bb80"
+    },
+    {
+      "part": "C03",
+      "prompt": "A single modular stylized four-wheel tank chassis with NO turret, faithfully match the reference. Exactly FOUR complete circular off-road wheels, two per side, symmetric axles, clear gaps between front and rear tires and between tires and fenders. Ivory matte wedge armor, charcoal tires and underside, yellow hub rings, cyan lights, central low empty turret socket. Model the hidden fourth wheel and rear fully. No tracks, extra wheels, cannon, ground or stand. Distinct complete wheels suitable for later separation and rolling. Preserve squat compact reference proportions.",
+      "reference_upload_ids": [
+        "efc5a576-d919-49e9-89c3-c3f3850dfa78"
+      ],
+      "tier": "Gen-2.5-Medium",
+      "mesh_mode": "Raw",
+      "quality_override": 20000,
+      "geometry_file_format": "glb",
+      "texture_delight": true,
+      "generation_id": "64695746-3f61-47c4-833b-34845ecf42e1",
+      "status": "completed",
+      "display_url": "https://hyper3d.ai/workspace/rodin/64695746-3f61-47c4-833b-34845ecf42e1"
+    }
+  ],
+  "validation": "Pending generation completion and geometric inspection. quality_override is a target, not measured count."
+}

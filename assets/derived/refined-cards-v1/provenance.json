@@ -1,0 +1,8 @@
+{
+  "feature": "101",
+  "method": "Godot Compatibility render of production isolated modules, transparent 512x512",
+  "source": "presentation/parts/refined_v1/provenance.json",
+  "script": "tools/capture_refined_cards.gd",
+  "outputs": ["autocannon.png", "scout_wheels.png"],
+  "original_illustrations_preserved": true
+}

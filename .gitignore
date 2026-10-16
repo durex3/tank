@@ -5,6 +5,9 @@ artifacts/
 *.keystore
 *.jks
 export_credentials.cfg
+*.blend1
+*.blend2
+__pycache__/
 
 # Local Godot user data and GPU logs
 /Godot/

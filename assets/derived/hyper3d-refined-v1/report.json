@@ -1,0 +1,139 @@
+{
+  "turret": {
+    "triangles": 21020,
+    "size": [
+      1.0296000242233276,
+      0.8827276229556661,
+      1.747687816619873
+    ],
+    "qa": {
+      "BarrelLeftMesh.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "RecoilSleeveLeft.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "BarrelRightMesh.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "RecoilSleeveRight.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "T02Armor.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      }
+    }
+  },
+  "chassis": {
+    "triangles": 21622,
+    "size": [
+      1.6497801542282104,
+      0.9923022091388702,
+      1.9207118153572083
+    ],
+    "qa": {
+      "AxleLeftFront.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "AxleLeftRear.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "AxleRightFront.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "AxleRightRear.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "C03Armor.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "TireLeftFront.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "TireLeftRear.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "TireRightFront.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "TireRightRear.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      }
+    }
+  },
+  "wheel_metrics": [
+    {
+      "name": "LeftRear",
+      "center": [
+        -0.625983476638794,
+        -0.5403459072113037,
+        0.41999998688697815
+      ],
+      "source_diameter_y": 0.8615465238690376,
+      "source_diameter_z": 0.791889846372505,
+      "corrected_diameter": 0.84
+    },
+    {
+      "name": "LeftFront",
+      "center": [
+        -0.625983476638794,
+        0.5403459072113037,
+        0.41999998688697815
+      ],
+      "source_diameter_y": 0.8615465238690376,
+      "source_diameter_z": 0.791889846372505,
+      "corrected_diameter": 0.84
+    },
+    {
+      "name": "RightRear",
+      "center": [
+        0.6276906728744507,
+        -0.5403459072113037,
+        0.41999998688697815
+      ],
+      "source_diameter_y": 0.8549156785011292,
+      "source_diameter_z": 0.7922195966966683,
+      "corrected_diameter": 0.84
+    },
+    {
+      "name": "RightFront",
+      "center": [
+        0.6276906728744507,
+        0.5403459072113037,
+        0.41999998688697815
+      ],
+      "source_diameter_y": 0.8549156785011292,
+      "source_diameter_z": 0.7922195966966683,
+      "corrected_diameter": 0.84
+    }
+  ],
+  "caps": {
+    "T02Armor.001": 4,
+    "BarrelLeftMesh.001": 1,
+    "BarrelRightMesh.001": 3,
+    "C03Armor.001": 0,
+    "TireLeftRear.001": 0,
+    "TireLeftFront.001": 0,
+    "TireRightRear.001": 0,
+    "TireRightFront.001": 0
+  },
+  "status": "mesh_and_godot_review_passed_user_and_production_pending",
+  "source_hashes": {
+    "t02": "2c8c2d627609157e7b0e25fad64fc362b89ac9c1554111aab9ab3c798db340ef",
+    "c03": "4d806aeb584c47d7e03649cd5a02a092f7c8189c4e7b492f7a45e95324996d08"
+  }
+}

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://presentation/previews/modular_sample_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+turret_uniform_scale = 0.78
+turret_seating_offset = 0.12

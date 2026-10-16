@@ -1,0 +1,244 @@
+{
+  "cannon": {
+    "triangles": 20512,
+    "bounds": [
+      [
+        -0.5148000121116638,
+        0.5148000121116638
+      ],
+      [
+        -0.6102235913276672,
+        1.137464165687561
+      ],
+      [
+        0.11999998986721039,
+        1.0027276277542114
+      ]
+    ],
+    "meshes": {
+      "ArmoredMount.012": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "Body.022": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "MountBearing.012": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "Barrel.019": {
+        "boundary": 0,
+        "nonmanifold": 0
+      }
+    }
+  },
+  "scatter": {
+    "triangles": 20824,
+    "bounds": [
+      [
+        -0.5148000121116638,
+        0.5148000121116638
+      ],
+      [
+        -0.6102235913276672,
+        1.137464165687561
+      ],
+      [
+        0.11999999731779099,
+        1.0027276277542114
+      ]
+    ],
+    "meshes": {
+      "ArmoredMount.013": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "Body.023": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "MountBearing.013": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "Barrel.020": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "RecoilSleeve.008": {
+        "boundary": 0,
+        "nonmanifold": 0
+      }
+    }
+  },
+  "bubble_cannon": {
+    "triangles": 21344,
+    "bounds": [
+      [
+        -0.5148000121116638,
+        0.5148000121116638
+      ],
+      [
+        -0.6102235913276672,
+        1.137464165687561
+      ],
+      [
+        0.11999998986721039,
+        1.0027276277542114
+      ]
+    ],
+    "meshes": {
+      "ArmoredMount.014": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "Body.024": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "MountBearing.014": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "Barrel.021": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "RecoilSleeve.009": {
+        "boundary": 0,
+        "nonmanifold": 0
+      }
+    }
+  },
+  "light_tracks": {
+    "triangles": 9238,
+    "bounds": [
+      [
+        -0.7900000214576721,
+        0.7900000214576721
+      ],
+      [
+        -0.8721944093704224,
+        0.8721944093704224
+      ],
+      [
+        0.26999998092651367,
+        0.9923021793365479
+      ]
+    ],
+    "meshes": {
+      "Body.025": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "ClosedUndercarriage.006": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "FlushRearArmor.003": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "RearVent.009": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "RearVent.010": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "RearVent.011": {
+        "boundary": 0,
+        "nonmanifold": 0
+      }
+    }
+  },
+  "heavy_tracks": {
+    "triangles": 6036,
+    "bounds": [
+      [
+        -0.7900000214576721,
+        0.7900000214576721
+      ],
+      [
+        -0.8999999761581421,
+        0.8999999761581421
+      ],
+      [
+        0.24144035577774048,
+        0.9923021793365479
+      ]
+    ],
+    "meshes": {
+      "Body.026": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "ClosedUndercarriage.007": {
+        "boundary": 0,
+        "nonmanifold": 0
+      }
+    }
+  },
+  "scout_wheels": {
+    "triangles": 27700,
+    "bounds": [
+      [
+        -0.8247801661491394,
+        0.824999988079071
+      ],
+      [
+        -0.9603459239006042,
+        0.9603459239006042
+      ],
+      [
+        -2.9802322387695312e-08,
+        0.9923021793365479
+      ]
+    ],
+    "meshes": {
+      "Body.027": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "DistinctRearArmor.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "RearBumper.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "RearInsetGrille.001": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "RearTailLamp.002": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "RearTailLamp.003": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "TireLeftFront.007": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "TireLeftRear.007": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "TireRightFront.007": {
+        "boundary": 0,
+        "nonmanifold": 0
+      },
+      "TireRightRear.007": {
+        "boundary": 0,
+        "nonmanifold": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "CannonModule.006_Body": {
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "zero_area_faces": 0,
+    "uv_layers": 1,
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "Barrel.006": {
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "zero_area_faces": 0,
+    "uv_layers": 1,
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "TireAssembly.023": {
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "zero_area_faces": 0,
+    "uv_layers": 1,
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "ScoutWheelsModule.006_Body": {
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "zero_area_faces": 0,
+    "uv_layers": 1,
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "TireAssembly.022": {
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "zero_area_faces": 0,
+    "uv_layers": 1,
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "TireAssembly.021": {
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "zero_area_faces": 0,
+    "uv_layers": 1,
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "TireAssembly.020": {
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "zero_area_faces": 0,
+    "uv_layers": 1,
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  }
+}

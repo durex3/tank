@@ -5,13 +5,13 @@ class_name HangarPartArtCatalog
 const TURRETS: Texture2D = preload("res://assets/generated/parts/turrets-atlas-v1.png")
 const CHASSIS: Texture2D = preload("res://assets/generated/parts/chassis-atlas-v1.png")
 const ALIGNED_TURRETS: Dictionary = {
-	&"heavy_tracks": preload("res://assets/derived/model-reference-cards-v1/heavy_tracks.png"),
-	&"scout_wheels": preload("res://assets/derived/model-reference-cards-v1/scout_wheels.png"),
-	&"light_tracks": preload("res://assets/derived/model-reference-cards-v1/light_tracks.png"),
-	&"cannon": preload("res://assets/derived/model-reference-cards-v1/cannon.png"),
-	&"autocannon": preload("res://assets/derived/model-reference-cards-v1/autocannon.png"),
-	&"scatter": preload("res://assets/derived/model-reference-cards-v1/scatter.png"),
-	&"bubble_cannon": preload("res://assets/derived/model-reference-cards-v1/bubble_cannon.png"),
+	&"heavy_tracks": preload("res://assets/derived/family-cards-v3/heavy_tracks.png"),
+	&"scout_wheels": preload("res://assets/derived/family-cards-v3/scout_wheels.png"),
+	&"light_tracks": preload("res://assets/derived/family-cards-v3/light_tracks.png"),
+	&"cannon": preload("res://assets/derived/family-cards-v3/cannon.png"),
+	&"autocannon": preload("res://assets/derived/family-cards-v3/autocannon.png"),
+	&"scatter": preload("res://assets/derived/family-cards-v3/scatter.png"),
+	&"bubble_cannon": preload("res://assets/derived/family-cards-v3/bubble_cannon.png"),
 }
 static var _cache: Dictionary = {}
 static var _display_cache: Dictionary = {}

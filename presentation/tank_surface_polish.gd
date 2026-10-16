@@ -9,7 +9,8 @@ static func apply(part: Node3D, part_id: StringName) -> void:
 	if part_id not in [&"cannon", &"light_tracks", &"autocannon", &"scatter", &"bubble_cannon", &"scout_wheels", &"heavy_tracks"]:
 		return
 	var visual: Node = part.find_child("Visual", true, false)
-	if visual == null:
+	# Refined Hyper3D parts expose Geometry directly instead of legacy Visual.
+	if visual == null and part.find_child("Geometry", true, false) == null:
 		return
 	for node: Node in part.find_children("*", "MeshInstance3D", true, false):
 		var instance := node as MeshInstance3D

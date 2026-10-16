@@ -11,3 +11,4 @@ key_energy = 0.85
 fill_energy = 0.22
 rim_energy = 0.32
 ambient_energy = 0.24
+shadow_normal_bias = 0.0

@@ -1,5 +1,7 @@
 # 项目强制开发规则
 
+101起正式模型目录为presentation/parts/refined_v1；新机炮/四轮采用用户确认的100修整模型，七件共同外廓统一迁移至content/presentation/part_size.tres。旧炮塔保持壳体等比，以独立装甲底座及炮管位移适配；履带轮组保持刚性。原资源只读，权威Muzzle/TurretSocket不动；重建入口tools/integrate_refined_parts.gd，详见101记录。
+
 089起保持用户确认的WASD屏幕方向移动、鼠标独立瞄准；180°反向的转弯偏好由PlayerCommand.turn_preference显式注入并校验，仅用于PI边界消歧。battle不读按键/相机，普通角度继续最短路、固定tick有限转速；不得擅自改成W/S前后、A/D相对转向操控。
 
 086—088：可视枪口与权威Muzzle分离，普攻/重炮事件携带弹丸ID，由session注入可视出膛位置，8tick视觉衔接不得改碰撞或伤害。双管机炮只在成功提交发射后交替，左右后坐独立，拒绝/重复事件不换边。body_yaw由TankMotor按content/rules/tank_steering.tres有限转速提交，正面装甲和轮组共用该朝向，炮塔挂接位置固定、aim_yaw独立。轮胎检查源网格滚动直径与轮轴中心，不能只验变换轴；卡片摄影参数独立配置，派生另存。
