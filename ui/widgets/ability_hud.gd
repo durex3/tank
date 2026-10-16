@@ -73,18 +73,18 @@ func on_event(event: Dictionary) -> void:
 		_ammo.text = "弹匣 %d/%d" % [event.rounds,event.capacity]
 		if event.remaining > 0: _ammo.text += " · 填弹 %.1f秒" % (event.remaining/60.0)
 	if event.kind != &"ability_state" or event.source_id != 1: return
-	var names: Dictionary = {&"cannon":"破阵重炮",&"autocannon":"火力风暴",&"scatter":"震荡清场",&"bubble_cannon":"泡泡拦截幕"}
-	var phases: Dictionary = {&"idle":"就绪" if event.ready else event.reason,&"breach":"蓄力中",&"shock":"准备中",&"storm":"强化 %.1fs" % (event.remaining/60.0),&"cooling":"红温禁火 %.1fs" % (event.remaining/60.0)}
+	var names: Dictionary = {&"cannon":"邪能贯穿炮",&"autocannon":"火力风暴",&"scatter":"突击冲锋",&"bubble_cannon":"腐蚀泡池"}
+	var phases: Dictionary = {&"idle":"就绪" if event.ready else event.reason,&"breach":"蓄力中",&"shock":"准备中",&"dash":"冲锋中",&"storm":"强化 %.1fs" % (event.remaining/60.0),&"cooling":"红温禁火 %.1fs" % (event.remaining/60.0)}
 	_status.text = "%s · %s" % [names.get(event.weapon,"未开放"),phases.get(event.phase,"")]
-	if event.phase == &"bubble": _status.text = "泡泡拦截幕 · 准备 %.1f秒" % (event.remaining/60.0)
+	if event.phase == &"bubble": _status.text = "腐蚀泡池 · 准备 %.1f秒" % (event.remaining/60.0)
 	_amount.text = "%d/%d" % [event.energy,event.energy_max]
 	_energy.max_value = event.energy_max
 	_energy.value = event.energy
 	release.disabled = not event.ready
 	refill.disabled = not event.alive
 	match event.chassis:
-		&"light_tracks": _passive.text = "巡航推进 · 推进中" if event.cruise else "巡航推进 · %d%%" % event.passive_progress
-		&"heavy_tracks": _passive.text = "迎击装甲 · 防御中" if event.guard else "迎击装甲 · %d%%" % event.passive_progress
+		&"light_tracks": _passive.text = "行进装填 · 装填加速" if event.cruise else "行进装填 · 移动触发"
+		&"heavy_tracks": _passive.text = "正面装甲 · 正面减伤30%"
 		&"scout_wheels":
 			if event.get("escape_active",false):
 				_passive.text = "脱险加速 +25%% · %.1f秒" % (event.escape_remaining/60.0)

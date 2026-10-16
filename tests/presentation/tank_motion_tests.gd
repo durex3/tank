@@ -17,6 +17,22 @@ func _run() -> void:
 func _pivot(view: TankView) -> Node3D:
 	return view.find_child("RecoilPivot", true, false) as Node3D
 
+func _housing_poses(view: TankView) -> Dictionary:
+	var result: Dictionary = {}
+	for node: MeshInstance3D in view._turret.find_children("*", "MeshInstance3D", true, false):
+		var ancestor: Node = node.get_parent()
+		var moving := false
+		while ancestor != view._turret:
+			if ancestor.name in [&"RecoilPivot", &"RecoilPivotRight"]: moving = true
+			ancestor = ancestor.get_parent()
+		if not moving: result[node] = node.global_transform
+	return result
+
+func _housing_unchanged(poses: Dictionary) -> bool:
+	for node: Node3D in poses:
+		if not node.global_transform.is_equal_approx(poses[node]): return false
+	return true
+
 func _test_tracks() -> void:
 	var view := TankView.new()
 	root.add_child(view)
@@ -94,16 +110,15 @@ func _test_family_motion() -> void:
 		view.entity_id = 10
 		root.add_child(view)
 		var pivot := _pivot(view)
-		var body := view.find_child("Body", true, false) as Node3D
-		check(pivot != null and body != null, "new turret has separate rigid housing and nozzle: " + str(weapon))
-		var rest := body.transform
+		var housing := _housing_poses(view)
+		check(pivot != null and not housing.is_empty(), "new turret has separate rigid housing and nozzle: " + str(weapon))
 		var authority := view.muzzle_transform()
 		var cosmetic := view.visual_muzzle_position()
 		view.on_event({"kind": &"weapon_fired", "weapon": &"cannon", "source_id": 10, "tick": 1})
 		check(pivot.position.is_zero_approx(), "mismatched weapon cannot animate new turret")
 		view.on_event({"kind": &"weapon_fired", "weapon": weapon, "source_id": 10, "tick": 2})
 		view.advance_visual_tick(3)
-		check(not pivot.position.is_zero_approx() and body.transform == rest, "committed matching shot retracts only nozzle")
+		check(not pivot.position.is_zero_approx() and _housing_unchanged(housing), "committed matching shot retracts only nozzle")
 		check(view.visual_muzzle_position().z > cosmetic.z, "new turret cosmetic muzzle follows nozzle")
 		check(view.muzzle_transform().is_equal_approx(authority), "new turret animation preserves combat muzzle")
 		view.on_event({"kind": &"entity_respawned", "target_id": 10})
@@ -146,8 +161,8 @@ func _test_independent_barrel() -> void:
 		second.free()
 		return
 	var barrel := pivot.get_child(0) as MeshInstance3D
-	var body := first.find_child("Body", true, false) as MeshInstance3D
-	var body_before := body.transform
+	var housing := _housing_poses(first)
+	check(not housing.is_empty(), "turret contains static housing meshes")
 	var before := barrel.global_position
 	var muzzle := first.muzzle_transform()
 	var visual_muzzle := first.visual_muzzle_position()
@@ -158,7 +173,7 @@ func _test_independent_barrel() -> void:
 	_fire(first, 2)
 	first.advance_visual_tick(3)
 	check(barrel.global_position.distance_to(before + Vector3.BACK * TankRecoil.STYLE.cannon_recoil_m) < 0.0001, "barrel retracts by world-space cosmetic distance")
-	check(body.transform == body_before, "housing remains fixed during barrel recoil")
+	check(_housing_unchanged(housing), "housing remains fixed during barrel recoil")
 	check(first.muzzle_transform().is_equal_approx(muzzle), "authoritative muzzle never follows visual barrel")
 	check(first.visual_muzzle_position().distance_to(visual_muzzle + Vector3.BACK * TankRecoil.STYLE.cannon_recoil_m) < 0.0001, "cosmetic muzzle follows separated barrel recoil")
 	check(_pivot(second).position.is_zero_approx(), "entity animation state is independent")

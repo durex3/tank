@@ -37,8 +37,9 @@ func on_event(event: Dictionary) -> void:
 					shape = weapon_style.scatter_flash_shape
 			_flash(style.muzzle,event.position,style.storm_muzzle_width_m if storm else width,event.tick,style.storm_muzzle_ticks if storm else style.muzzle_ticks,shape)
 		&"projectile_hit":
-			if not event.get("bubble",false):
+			if not event.get("bubble",false) and not event.get("ability_damage",false):
 				var weapon: StringName = event.get("weapon",&"")
+				if weapon == &"cannon": return
 				var texture: Texture2D = weapon_style.cannon_impact if weapon == &"cannon" else style.impact
 				var width: float = weapon_style.impact_width if weapon == &"cannon" else style.impact_width_m
 				var shape := Vector3.ONE
@@ -59,7 +60,7 @@ func on_event(event: Dictionary) -> void:
 				if spark != null: spark.modulate = style.guard_color
 				_guard_message(event)
 		&"ability_fired":
-			if event.ability == &"breach": _flash(style.muzzle,event.position,style.breach_muzzle_width_m,event.tick,style.muzzle_ticks+3)
+			if event.ability == &"breach": pass
 			elif event.ability == &"shock": _shock(event)
 		&"ability_zones": _update_smoke(event.zones,event.tick)
 		&"match_finished": clear()

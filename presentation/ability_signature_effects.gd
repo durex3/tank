@@ -41,7 +41,8 @@ func on_event(event: Dictionary) -> void:
 		if _seen.has(key) or bursts.size() >= style.max_signatures: return
 		_seen[key] = tick+style.signature_ticks
 		var node: MeshInstance3D = _node()
-		var burst: Dictionary = {"node":node,"event":event.duplicate(),"start":tick,"until":tick+style.signature_ticks}
+		var duration: int = style.energy_release_ticks if event.ability == &"breach" else style.signature_ticks
+		var burst: Dictionary = {"node":node,"event":event.duplicate(),"start":tick,"until":tick+duration}
 		bursts.append(burst)
 		_draw_burst(burst,tick)
 
@@ -78,13 +79,11 @@ func _draw_state(node: MeshInstance3D, state: Dictionary) -> void:
 				var tip: Vector3 = start-aim*style.storm_jet_length*pulse
 				_triangle(mesh,start+Vector3.UP*0.14,start-Vector3.UP*0.14,tip,colors.storm_color)
 				_line(mesh,start+aim*0.1,tip+right*side*0.16,Color("fff2c4"))
-		&"shock":
-			var progress: float = clampf(1.0-float(state.remaining)/rules.shock_charge,0,1)
-			_arc(mesh,center,rules.shock_range*(1.0-progress*0.5),state.locked_yaw,deg_to_rad(rules.shock_half_angle),Color(colors.shock_color,0.9),0.22)
-			for i: int in range(5):
-				var angle: float = state.locked_yaw+deg_to_rad(rules.shock_half_angle)*(float(i)/2-1)
-				var dir := Vector3(sin(angle),0,-cos(angle))
-				_line(mesh,center+dir*(1.1+progress),center+dir*(1.5+progress),colors.shock_color)
+		&"shock", &"dash":
+			var direction := Vector3(sin(state.locked_yaw),0,-cos(state.locked_yaw))
+			var lateral := Vector3(-direction.z,0,direction.x)
+			for side: int in [-1,1]:
+				_line(mesh,center+lateral*side*0.55,center+direction*rules.dash_distance+lateral*side*0.55,Color(colors.shock_color,0.65))
 		&"bubble":
 			var progress: float = clampf(1.0-float(state.remaining)/bubble_rules.charge_ticks,0,1)
 			var index: int = 0
@@ -94,27 +93,39 @@ func _draw_state(node: MeshInstance3D, state: Dictionary) -> void:
 				_circle(mesh,base,Vector3.RIGHT,Vector3.BACK,colors.bubble_plan_radius_m,colors.bubble_color)
 				for side: int in [-1,1]: _line(mesh,base+right*side*0.36,base+right*side*0.36+Vector3.UP*height,colors.bubble_color)
 				index += 1
-	if state.get("cruise",false):
-		var front := Vector3(sin(state.body_yaw),0,-cos(state.body_yaw))
-		var lateral := Vector3(-front.z,0,front.x)
-		for side: int in [-1,1]:
-			var p: Vector3 = center-front*0.7+lateral*side*0.5+Vector3.UP*0.20
-			_triangle(mesh,p+lateral*0.14,p-lateral*0.14,p-front*1.3*pulse,colors.cruise_color)
 	mesh.surface_end()
 	node.mesh = mesh
 
 func _draw_burst(burst: Dictionary, tick: int) -> void:
 	var mesh: ImmediateMesh = _mesh()
 	var event: Dictionary = burst.event
-	var t: float = clampf(float(tick-burst.start)/style.signature_ticks,0,1)
+	var t: float = clampf(float(tick-burst.start)/maxi(1,int(burst.until)-int(burst.start)),0,1)
 	var ease: float = 1-pow(1-t,3)
 	var p: Vector3 = event.position
 	match event.ability:
 		&"breach":
-			var aim := Vector3(sin(event.yaw),0,-cos(event.yaw))
-			var right := Vector3(-aim.z,0,aim.x)
-			_circle(mesh,p,right,Vector3.UP,lerpf(0.25,style.breach_release_radius,ease),Color(colors.breach_color,1-t))
-			_circle(mesh,p-aim*0.2,right,Vector3.UP,lerpf(0.15,style.breach_release_radius*0.65,ease),Color.WHITE*(1-t))
+			var end: Vector3 = event.get("end",p)
+			var direction: Vector3 = (end-p).normalized()
+			var lateral: Vector3 = direction.cross(Vector3.UP).normalized()
+			if not burst.has("plasma"):
+				var plasma := MeshInstance3D.new()
+				var quad := QuadMesh.new()
+				quad.size = Vector2(style.energy_beam_width,p.distance_to(end))
+				plasma.mesh = quad
+				plasma.position = (p+end)*0.5
+				plasma.basis = Basis(lateral,direction,lateral.cross(direction))
+				plasma.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+				var material := ShaderMaterial.new()
+				material.shader = preload("res://presentation/shaders/red_energy_beam.gdshader")
+				plasma.material_override = material
+				(burst.node as Node).add_child(plasma)
+				burst.plasma = material
+			(burst.plasma as ShaderMaterial).set_shader_parameter("phase",float(tick-burst.start)/3)
+			var tail: float = clampf(float(tick-int(burst.start)-style.energy_peak_ticks)/maxi(1,style.energy_release_ticks-style.energy_peak_ticks),0,1)
+			var strength: float = pow(1-tail,1.5)
+			(burst.plasma as ShaderMaterial).set_shader_parameter("opacity",strength)
+			(burst.plasma as ShaderMaterial).set_shader_parameter("thickness",lerpf(0.12,1.2,pow(1-tail,2.0)))
+			_draw_energy_arcs(mesh,p,end,tick-int(burst.start),strength)
 		&"shock":
 			for i: int in range(3):
 				var progress: float = clampf((t-float(i)*0.12)*1.5,0,1)
@@ -177,9 +188,12 @@ func _arc(mesh: ImmediateMesh, p: Vector3, radius: float, yaw: float, half: floa
 		_triangle(mesh,start,end+Vector3.UP*height,start+Vector3.UP*height,Color(color,color.a*0.28))
 
 func _line(mesh: ImmediateMesh, start: Vector3, end: Vector3, color: Color) -> void:
+	_ribbon(mesh,start,end,style.signature_width,color)
+
+func _ribbon(mesh: ImmediateMesh, start: Vector3, end: Vector3, width: float, color: Color) -> void:
 	var side: Vector3 = (end-start).cross(Vector3.UP)
 	if side.length_squared() < 0.000001: side = Vector3.RIGHT
-	side = side.normalized()*style.signature_width*0.5
+	side = side.normalized()*width*0.5
 	_triangle(mesh,start-side,start+side,end+side,color)
 	_triangle(mesh,start-side,end+side,end-side,color)
 
@@ -188,3 +202,27 @@ func _triangle(mesh: ImmediateMesh, a: Vector3, b: Vector3, c: Vector3, color: C
 	mesh.surface_add_vertex(a)
 	mesh.surface_add_vertex(b)
 	mesh.surface_add_vertex(c)
+
+func _draw_energy_arcs(mesh: ImmediateMesh, start: Vector3, end: Vector3, age: int, opacity: float) -> void:
+	var axis: Vector3 = end-start
+	var length_m: float = axis.length()
+	if length_m < 0.01: return
+	var forward: Vector3 = axis/length_m
+	var side: Vector3 = forward.cross(Vector3.UP).normalized()
+	var vertical: Vector3 = side.cross(forward).normalized()
+	var segments: int = mini(160,maxi(8,ceili(length_m/style.energy_arc_step)))
+	var phase: float = age*0.16
+	var previous: Vector3 = start
+	for i: int in range(segments+1):
+		var u: float = float(i)/segments
+		var angle: float = u*length_m*style.energy_arc_turns_per_m*TAU-phase+sin(u*19+phase)*0.45
+		var jitter: float = fposmod(sin(i*127.1+floor(age/3.0)*311.7)*43758.5453,1.0)
+		var radius: float = style.energy_arc_radius*(0.8+jitter*0.4)*sin(PI*clampf(u*8,0,0.5))*sin(PI*clampf((1-u)*8,0,0.5))
+		var drift: float = sin(u*17-phase*0.65)*0.12*sin(u*PI)
+		var point: Vector3 = start+axis*u+side*drift+(side*cos(angle)+vertical*sin(angle))*radius
+		if i > 0 and jitter > 0.22:
+			var width: float = style.energy_arc_width*(0.6+jitter)
+			_ribbon(mesh,previous,point,width*3,Color(0.18,0.008,0.028,opacity*0.22))
+			_ribbon(mesh,previous,point,width,Color(0.62,0.025,0.07,opacity*0.9))
+			_ribbon(mesh,previous,point,width*0.25,Color(0.78,0.09,0.12,opacity*0.8))
+		previous = point

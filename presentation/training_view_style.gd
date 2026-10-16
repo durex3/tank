@@ -23,3 +23,5 @@ class_name TrainingViewStyle
 @export var fill_energy: float = 0.18
 @export var fill_color: Color = Color("c6d8ed")
 @export var fill_rotation: Vector3 = Vector3(-25, 115, 0)
+
+@export_range(0.0, 4.0) var shadow_bias: float = 0.1

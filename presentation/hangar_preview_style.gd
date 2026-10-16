@@ -15,3 +15,9 @@ class_name HangarPreviewStyle
 @export var platform_color: Color = Color("383b48")
 @export var camera_position: Vector3 = Vector3(-3, 2.7, -4)
 @export var initial_yaw: float = -0.25
+
+@export_range(0.0, 4.0) var shadow_bias: float = 0.1
+
+@export var camera_far: float = 12.0
+@export var shadow_opacity: float = 0.72
+@export var shadows_enabled: bool = false

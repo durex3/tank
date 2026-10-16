@@ -25,7 +25,7 @@ static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController,
 	if damage_multiplier != 1.0:
 		attack_weapon = weapon.duplicate() as WeaponDef
 		attack_weapon.damage = maxi(1,roundi(weapon.damage*damage_multiplier))
-	var shots := projectiles.spawn_volley(space, actor.position, actor.state.aim_yaw, pattern.offsets(weapon), attack_weapon, actor.state.entity_id, fire.request_id, tick, actor.health.team_id)
+	var shots := projectiles.spawn_volley(space, actor.position, actor.state.aim_yaw, pattern.offsets(weapon), attack_weapon, actor.state.entity_id, fire.request_id, tick, actor.health.team_id,float(command.aim_distance_cm)/100.0)
 	for shot: ProjectileState in shots:
 		shot.storm_round = ability_damage and weapon.id == &"autocannon"
 		shot.ability_damage = ability_damage
@@ -37,6 +37,7 @@ static func execute(actor: TankActor, weapon: WeaponDef, gate: WeaponController,
 	for hit: HitEvent in projectiles.hits:
 		if hit.source_id == actor.state.entity_id and hit.projectile_id in shots.map(func(shot: ProjectileState) -> int: return shot.projectile_id):
 			hit.ability_damage = ability_damage
+			hit.ability_id = &"storm" if ability_damage and weapon.id == &"autocannon" else &""
 			hit.source_life = actor.health.life_index
 	if shots.is_empty():
 		events.publish(&"fire_rejected", tick, {"source_id": actor.state.entity_id, "reason": &"projectile_budget"})

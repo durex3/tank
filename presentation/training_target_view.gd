@@ -12,6 +12,7 @@ var _bar := WorldHealthBar.new()
 var _tank := TankView.new()
 
 func _ready() -> void:
+	_tank.entity_id = target_id
 	_tank.chassis_id = chassis_id
 	# Fit the existing 1.3m training footprint. This is a dummy, not a loadout actor.
 	_tank.scale = Vector3.ONE * 0.65
@@ -43,6 +44,7 @@ func show_health(hp: int, maximum: int) -> void:
 	_tank.visible = hp > 0
 
 func on_event(event: Dictionary) -> void:
+	_tank.on_event(event)
 	if event.get("target_id",-1) != target_id: return
 	if event.kind == &"damage_applied" or event.kind == &"entity_respawned":
 		show_health(event.hp,event.max_hp)

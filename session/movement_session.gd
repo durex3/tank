@@ -98,6 +98,7 @@ func _create_lighting() -> void:
 	light.light_energy = style.key_energy
 	light.shadow_enabled = true
 	light.shadow_normal_bias = style.shadow_normal_bias
+	light.shadow_bias = style.shadow_bias
 	light.shadow_blur = style.shadow_blur
 	light.directional_shadow_max_distance = style.shadow_distance
 	add_child(light)
@@ -123,6 +124,7 @@ func _physics_process(delta: float) -> void:
 		command = PlanarInput.map_command(touch.sample(simulation.tick + 1), rig.horizontal_right(), rig.horizontal_forward())
 	else:
 		var point := rig.ground_point(mouse_viewport_position)
+		desktop.aim_distance_cm = clampi(roundi(Vector2(point.x-actor.position.x,point.z-actor.position.z).length()*100),150,1600)
 		desktop.aim_direction = Vector2(point.x - actor.position.x, point.z - actor.position.z).normalized()
 		command = desktop.sample(simulation.tick + 1)
 		# Mouse aim is already in world space. Only keyboard movement needs mapping.

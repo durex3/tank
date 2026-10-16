@@ -8,6 +8,7 @@ var tuning: TouchInputTuning = preload("res://content/input/default_touch.tres")
 var continuous_fire: bool = false
 var move_vector: Vector2 = Vector2.ZERO
 var aim_vector: Vector2 = Vector2.UP
+var aim_distance_cm: int = 600
 var aim_drag: Vector2 = Vector2.ZERO
 var ability_drag: Vector2 = Vector2.ZERO
 var enabled: bool = true
@@ -50,6 +51,7 @@ func drag(index: int, position: Vector2) -> bool:
 			move_vector = stick
 		Slot.AIM:
 			aim_drag = stick
+			if stick.length() > 0.1: aim_distance_cm = clampi(roundi(stick.length()*900),200,900)
 			if not stick.is_zero_approx() and not is_canceled(slot):
 				aim_vector = stick.normalized()
 		Slot.ABILITY:
@@ -85,6 +87,7 @@ func sample(tick: int, epoch: int = 0) -> PlayerCommand:
 	command.move_x = roundi(move_vector.x * 127.0)
 	command.move_z = roundi(move_vector.y * 127.0)
 	# XZ yaw: 0 points toward -Z, positive rotates toward +X.
+	command.aim_distance_cm = aim_distance_cm
 	command.aim_yaw = roundi(fposmod(atan2(aim_vector.x, -aim_vector.y), TAU) / TAU * 65536.0) % 65536
 	command.fire_held = (enabled and continuous_fire and _owners.has(Slot.AIM)
 		and not aim_drag.is_zero_approx() and not is_canceled(Slot.AIM))

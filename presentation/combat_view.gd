@@ -20,14 +20,17 @@ func _process(_delta: float) -> void:
 	var alive: Dictionary = {}
 	for shot: ProjectileState in projectiles.active:
 		alive[shot.projectile_id] = true
+		if _visuals.has(shot.projectile_id) and _visuals[shot.projectile_id].get_meta("kind", &"") != shot.kind:
+			_visuals[shot.projectile_id].queue_free()
+			_visuals.erase(shot.projectile_id)
 		if not _visuals.has(shot.projectile_id):
 			var color := Color("ffdc73") if shot.team_id == 0 else Color("ff6b64")
 			var visual: Node3D = WeaponProjectileVisual.create(shot.weapon_id,shot.team_id,weapon_style)
 			visual.rotation.y = -atan2(shot.direction.x,-shot.direction.z)
-			if shot.kind in [&"bubble_round",&"bubble_barrier"]:
+			if shot.kind in [&"bubble_round",&"bubble_barrier",&"bubble_lob",&"bubble_field"]:
 				visual.free()
 				var bubble := BubbleVisual.new()
-				bubble.configure(shot.radius,shot.team_id,shot.kind == &"bubble_barrier",ability_style)
+				bubble.configure(shot.radius,shot.team_id,shot.kind in [&"bubble_barrier",&"bubble_field"],ability_style)
 				visual = bubble
 			elif shot.ability_damage and not shot.pierce_damage.is_empty():
 				visual.free()
@@ -37,6 +40,7 @@ func _process(_delta: float) -> void:
 				visual.free()
 				visual = _storm_projectile(color)
 				visual.rotation.y = -atan2(shot.direction.x,-shot.direction.z)
+			visual.set_meta("kind",shot.kind)
 			add_child(visual)
 			_visuals[shot.projectile_id] = visual
 		_visuals[shot.projectile_id].position = shot.position
@@ -187,6 +191,6 @@ func _storm_projectile(team_color: Color) -> Node3D:
 	for side: int in [-1,1]:
 		var rail := Node3D.new()
 		rail.position.x = side*ability_style.storm_core_width_m*1.5
-		WeaponProjectileVisual.rod(rail,ability_style.storm_core_width_m*0.3,weapon_style.needle_tail*1.6,weapon_style.needle_tail*0.6,ability_style.storm_color)
+		WeaponProjectileVisual.rod(rail,ability_style.storm_core_width_m*0.3,weapon_style.storm_trace_length*1.6,weapon_style.storm_trace_length*0.6,ability_style.storm_color)
 		root.add_child(rail)
 	return root

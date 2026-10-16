@@ -7,6 +7,11 @@ class_name BasicAbilityRules
 @export var damage_per_energy: float = 10.0
 @export var energy_tick_cap: float = 5.0
 @export var minimum_interval: int = 480
+@export var reload_bonus: float = 0.25
+@export var reload_min_speed: float = 0.6
+@export var dash_distance: float = 4.5
+@export var dash_speed: float = 12.0
+@export var dash_damage: int = 80
 @export var cruise_charge: int = 90
 @export var cruise_release: int = 12
 @export var cruise_threshold: float = 0.5
@@ -47,7 +52,7 @@ func validate() -> PackedStringArray:
 			var value: float = float(get(field.name))
 			if not is_finite(value) or value <= 0.0: errors.append("Invalid ability tuning: "+str(field.name))
 	if guard_half_angle >= 90.0 or shock_half_angle >= 90.0: errors.append("Ability cone must face forward")
-	if storm_damage_multiplier > 1.0 or guard_reduction >= 1.0 or smoke_multiplier > 1.0 or breach_speed_multiplier > 1.0 or cruise_threshold > 1.0: errors.append("Invalid ability factor")
+	if reload_bonus > 1.0 or storm_damage_multiplier > 1.0 or guard_reduction >= 1.0 or smoke_multiplier > 1.0 or breach_speed_multiplier > 1.0 or cruise_threshold > 1.0: errors.append("Invalid ability factor")
 	if breach_damage.size() != 3: errors.append("Breach requires three explicit damage steps")
 	for value: int in breach_damage:
 		if value <= 0: errors.append("Invalid breach damage")

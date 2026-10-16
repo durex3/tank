@@ -1,30 +1,28 @@
 extends RefCounted
 class_name ChassisAbilities
-## Passive state transitions use actual autonomous displacement, never presentation motion.
+## Movement reload and directional armor. Forced travel never earns reload progress.
 
 static func after_move(actor: TankActor, command: PlayerCommand, before: Vector3, forced: bool, rules: BasicAbilityRules) -> void:
 	var state: AbilityState = actor.ability
 	var moving: bool = command.move_x != 0 or command.move_z != 0
-	var displacement: float = actor.position.distance_to(before)
-	var autonomous_speed: float = displacement * BattleClock.TICKS_PER_SECOND
-	if actor.chassis_id == &"light_tracks":
-		var valid: bool = moving and not forced and autonomous_speed + 0.0001 >= actor.stats.move_speed * rules.cruise_threshold
-		if valid:
-			state.release_ticks = 0
-			state.charge_ticks = mini(rules.cruise_charge,state.charge_ticks+1)
-			state.cruise_active = state.charge_ticks >= rules.cruise_charge
-		else:
-			state.release_ticks += 1
-			if state.release_ticks >= rules.cruise_release:
-				state.cruise_active = false
-				state.charge_ticks = 0
-	if actor.chassis_id == &"heavy_tracks":
-		if moving or forced or autonomous_speed > 0.1:
-			state.charge_ticks = 0
-			state.guard_active = false
-		else:
-			state.charge_ticks = mini(rules.guard_charge,state.charge_ticks+1)
-			state.guard_active = state.charge_ticks >= rules.guard_charge
+	var speed: float = actor.position.distance_to(before)*BattleClock.TICKS_PER_SECOND
+	state.cruise_active = actor.chassis_id == &"light_tracks" and moving and not forced and speed >= rules.reload_min_speed and state.phase == &"idle"
+	if not state.cruise_active: state.reload_credit = 0.0
+	state.guard_active = actor.chassis_id == &"heavy_tracks"
 	actor.health.guard_reduction = rules.guard_reduction if state.guard_active else 0.0
 	actor.health.guard_yaw = actor.state.body_yaw
 	actor.health.guard_half_angle = rules.guard_half_angle
+
+static func reload_step(actor: TankActor, gate: WeaponController, tick: int, rules: BasicAbilityRules) -> void:
+	var state: AbilityState = actor.ability
+	if not state.cruise_active or actor.health.hp <= 0 or state.phase != &"idle": return
+	if gate.next_fire_tick <= tick and actor.magazine.reload_until <= tick:
+		state.reload_credit = 0.0
+		return
+	state.reload_credit += rules.reload_bonus
+	var extra: int = floori(state.reload_credit)
+	state.reload_credit -= extra
+	if extra == 0: return
+	gate.next_fire_tick = maxi(tick,gate.next_fire_tick-extra)
+	if actor.magazine.reload_until > tick:
+		actor.magazine.reload_until = maxi(tick,actor.magazine.reload_until-extra)

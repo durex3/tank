@@ -7,6 +7,7 @@ var health := DamageableState.new()
 var hurtbox := Damageable.new()
 var ability := AbilityState.new()
 var magazine := MagazineState.new()
+var aim_distance_m: float = 6.0
 var weapon_id: StringName
 var chassis_id: StringName
 var speed_multiplier: float = 1.0
@@ -42,8 +43,9 @@ func step(command: PlayerCommand, delta: float) -> void:
 	if health.hp <= 0:
 		halt()
 		return
+	aim_distance_m = float(command.aim_distance_cm)/100.0
 	state.aim_yaw = float(command.aim_yaw) / 65536.0 * TAU
-	motor.step(self, state, Vector2(command.move_x, command.move_z) / 127.0, stats.move_speed * speed_multiplier, delta, forced_velocity,command.turn_preference)
+	motor.step(self, state, Vector2(command.move_x, command.move_z) / 127.0, stats.move_speed * speed_multiplier, delta, forced_velocity,command.turn_preference,ability.phase == &"dash")
 	force_update_transform()
 	hurtbox.force_update_transform()
 

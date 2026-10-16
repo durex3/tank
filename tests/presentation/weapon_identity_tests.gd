@@ -51,6 +51,9 @@ func _identity() -> void:
 		id += 1
 	view._process(0)
 	check(view._visuals[10].get_child_count() != view._visuals[11].get_child_count(),"shell and needle have different 3D silhouette assemblies")
+	for i: int in [2,3]:
+		var trail := view._visuals[10].get_child(i) as MeshInstance3D
+		check((trail.basis*Vector3.UP).is_equal_approx(Vector3.BACK),"both glow planes extend behind shell, never form crossed projectiles")
 	check((view._visuals[12].get_child(0) as MeshInstance3D).mesh is PrismMesh,"scatter uses angular fragments")
 	check(view._visuals[13] is BubbleVisual,"bubble remains translucent film rather than a solid bullet")
 	for sample: ProjectileState in view.projectiles.active:
@@ -98,6 +101,14 @@ func _stages() -> void:
 	check(signatures.bursts.is_empty(),"stale prior-tick releases cannot replay after expiry")
 	signatures.on_event({"kind":&"match_finished","tick":31})
 	check(signatures.actors.is_empty() and signatures.bursts.is_empty(),"finished session clears signature ownership")
+	signatures.on_event({"kind":&"ability_fired","tick":40,"source_id":1,"ability":&"breach","position":Vector3.ZERO,"end":Vector3.FORWARD*10,"yaw":0.0})
+	check(signatures.bursts.size() == 1,"energy cannon creates one committed release")
+	var energy: ShaderMaterial = signatures.bursts[0].plasma
+	var peak: float = energy.get_shader_parameter("thickness")
+	signatures.on_event({"kind":&"ability_zones","tick":47})
+	check(float(energy.get_shader_parameter("thickness")) < peak,"energy blast contracts after its initial peak")
+	signatures.on_event({"kind":&"ability_zones","tick":54})
+	check(signatures.bursts.is_empty(),"energy blast expires after fourteen ticks")
 	signatures.free()
 	await process_frame
 	check(root.get_child_count() == 0,"new visual owners dispose completely")

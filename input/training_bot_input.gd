@@ -29,6 +29,7 @@ func sample(tick: int, origin: Vector3, target: Vector3, alive: bool, target_ali
 	var move := Vector2(destination.x - origin.x, destination.z - origin.z).normalized() * tuning.speed_fraction
 	command.move_x = roundi(move.x * 127.0)
 	command.move_z = roundi(move.y * 127.0)
+	command.aim_distance_cm = clampi(roundi(delta.length()*100),150,1600)
 	command.aim_yaw = roundi(fposmod(atan2(delta.x, -delta.z), TAU) / TAU * 65536.0) % 65536
 	if engaging and tick >= _next_request:
 		_request += 1

@@ -1,5 +1,13 @@
 # 分层架构规则
 
+112起泡泡炮正式采用bubble-armored-v1及presentation/parts/bubble_armored_v1，低矮装甲壳＋内嵌圆喷口替代110圆盘长颈。113机库按用户要求关闭实时投影，灯光与裁面配置仅作用于HangarPreview，不修改实战阴影。
+
+110起泡泡炮单独采用bubble-compact-v1派生GLB、presentation/parts/bubble_compact_v1包装；109长杆悬环保留历史只读。111升级箭头保持右上绿色圆标，在独立顶部留白区与等级对齐，不覆盖模型图；资格仍由服务判断。
+
+109：五件新Blender部件使用mechanical_v2包装，静态网格按材质/运动父节点合并，RecoilPivot/Right与VisualMuzzle/Right保持独立。两履带车壳新建，轮带仍由TrackRig生成并按提交位移驱动；part_size.tres与权威接口不变。
+
+108：正式表现目录mechanical_v1使用105主炮/四轮及旧五件过渡适配；共同外廓从认可样板派生至part_size.tres。旧炮塔壳体等比、侧装甲与轴向套筒独立适配，履带轮组刚性；权威挂点和会话边界不变。详见108记录。
+
 089：屏幕左右输入提供已校验turn_preference（-1/0/1），BattleSimulation复制到命令快照；TankMotor只在180°边界消歧。移动仍按投影方向，鼠标世界瞄准保持独立，禁止领域读取原始输入或相机。对手模型订阅顺序不得使会话桥接落后一发，采样前先幂等消费提交事实。
 
 086—088增补：弹丸ID及武器身份随提交事件提供，session仅注入可视出膛位置，CombatView短程衔接不改权威弹丸。左右枪口/后坐归TankView；成功发射交替，拒绝/重复不换边。TankMotor按只读TankSteeringRules提交有限转速body_yaw，迎击装甲及表现消费同一朝向，禁止表现另造影响减伤的角度。炮塔独立aim_yaw且挂接位置固定。轮胎源网格圆度/轴心与变换刚性分别验收；卡片摄影仅离线渲染。
@@ -101,3 +109,11 @@ Autoload最多AppServices、ProfileService、AudioService、PlatformService；�
 
 
 090—091：TankMotor有限转向后按朝向对齐比例调整自主目标速度，转向/松手制动来自TankSteeringRules；强制位移在自主速度之后合成，不受转向比例缩放。保持WASD方向移动与鼠标独立瞄准。卡片专用材质/摄影只用于离线派生，原模型/图不覆盖，不以非等比拉伸冒充体积；实际渲染与真人观感验收分别记录。
+
+### 114 技能重设计接口
+
+当前四炮塔三底盘以114功能记录为准。PlayerCommand增加范围受限的aim_distance_cm，session负责鼠标地面坐标换算，领域不读取相机/Input。泡泡弧线/落地区域、周期命中、生命清理归battle；DashCharge只计划前向扫掠位移与接触命中，TankMotor仍是唯一移动提交入口。轻履带只推进普通射击间隔与弹匣装填，技能阶段不获该加速；重履带减伤依据body_yaw并在移动时保留。已提交事件携带闪电终点供表现，贴图/着色器不能改变权威命中。旧稳定ID继续兼容，旧横排幕、停稳护甲与巡航增速不再用于当前运行。
+
+115视觉修订：主战炮大招为连续红色束体与外围螺旋电弧，沿用已提交射线终点及模拟tick；视觉形态不改变权威穿刺/伤害，旧稳定ID不迁移。
+
+116表现修订：红色能量炮以多股非等宽流动束体替代直线等宽亮芯；材质phase由提交tick驱动，视觉宽度与撕裂不参与碰撞、穿刺或伤害。

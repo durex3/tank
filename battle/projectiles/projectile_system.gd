@@ -11,7 +11,7 @@ var impacts: Array[Dictionary] = []
 var _next_id: int = 0
 var reservations: Dictionary = {}
 
-func spawn(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, weapon: WeaponDef, owner_id: int, request_id: int, tick: int, muzzle_yaw: float = NAN, team_id: int = 0) -> ProjectileState:
+func spawn(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, weapon: WeaponDef, owner_id: int, request_id: int, tick: int, muzzle_yaw: float = NAN, team_id: int = 0, aim_distance: float = -1.0) -> ProjectileState:
 	if used_slots() >= MAX_PROJECTILES:
 		return null
 	_next_id += 1
@@ -38,11 +38,18 @@ func spawn(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, weapon
 	var barrel_yaw := yaw if is_nan(muzzle_yaw) else muzzle_yaw
 	var barrel_direction := Vector3(sin(barrel_yaw), 0, -cos(barrel_yaw))
 	_sweep(space, shot, shot.position + barrel_direction * MUZZLE_OFFSET)
+	if shot.kind == &"bubble_round":
+		var distance_m: float = clampf(aim_distance if aim_distance > 0 else weapon.range_m,1.5,weapon.range_m)
+		shot.arc_start = shot.position
+		shot.arc_end = origin+shot.direction*distance_m+Vector3.UP*0.2
+		shot.arc_ticks = maxi(12,ceili((distance_m-MUZZLE_OFFSET)/weapon.projectile_speed*60))
+		shot.arc_height = weapon.arc_height
+		shot.lifetime_ticks = shot.arc_ticks+2
 	if shot.active:
 		active.append(shot)
 	return shot
 
-func spawn_volley(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, offsets: PackedFloat32Array, weapon: WeaponDef, owner_id: int, request_id: int, tick: int, team_id: int = 0) -> Array[ProjectileState]:
+func spawn_volley(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float, offsets: PackedFloat32Array, weapon: WeaponDef, owner_id: int, request_id: int, tick: int, team_id: int = 0, aim_distance: float = -1.0) -> Array[ProjectileState]:
 	var shots: Array[ProjectileState] = []
 	if offsets.is_empty() or used_slots() + offsets.size() > MAX_PROJECTILES:
 		return shots
@@ -50,13 +57,21 @@ func spawn_volley(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float,
 		if not is_finite(offset):
 			return shots
 	for offset: float in offsets:
-		shots.append(spawn(space, origin, yaw + offset, weapon, owner_id, request_id, tick, yaw, team_id))
+		shots.append(spawn(space, origin, yaw + offset, weapon, owner_id, request_id, tick, yaw, team_id,aim_distance))
 	return shots
 
 func step(space: PhysicsDirectSpaceState3D, tick: int) -> void:
 	for shot: ProjectileState in active:
-		if shot.kind == &"bubble_barrier": continue
+		if shot.kind in [&"bubble_barrier",&"bubble_lob",&"bubble_field"]: continue
 		shot.previous_position = shot.position
+		if shot.kind == &"bubble_round":
+			var u: float = clampf(float(tick-shot.spawn_tick+1)/shot.arc_ticks,0,1)
+			var destination: Vector3 = shot.arc_start.lerp(shot.arc_end,u)+Vector3.UP*4.0*shot.arc_height*u*(1.0-u)
+			_sweep(space,shot,destination)
+			if u >= 1.0 and shot.active:
+				shot.active = false
+				impacts.append({"position":shot.position,"projectile_id":shot.projectile_id,"bubble":true,"weapon":shot.weapon_id})
+			continue
 		var distance := minf(shot.speed / BattleClock.TICKS_PER_SECOND, shot.remaining_range)
 		_sweep(space, shot, shot.position + shot.direction * distance)
 		shot.remaining_range -= distance
@@ -98,6 +113,7 @@ func _sweep(space: PhysicsDirectSpaceState3D, shot: ProjectileState, destination
 			hit.position = shot.position
 			hit.direction = shot.direction
 			hit.ability_damage = shot.ability_damage
+			hit.ability_id = &"breach" if not shot.pierce_damage.is_empty() else (&"storm" if shot.storm_round else &"")
 			hit.travel_order = shot.hit_lives.size()
 			hits.append(hit)
 			if not shot.pierce_damage.is_empty():
@@ -143,7 +159,8 @@ func spawn_breach(space: PhysicsDirectSpaceState3D, origin: Vector3, yaw: float,
 	shot.position = origin+Vector3.UP*SHOT_HEIGHT
 	shot.previous_position = shot.position
 	_sweep(space,shot,shot.position+shot.direction*MUZZLE_OFFSET)
-	if shot.active: active.append(shot)
+	if shot.active: _sweep(space,shot,origin+Vector3.UP*SHOT_HEIGHT+shot.direction*rules.breach_range)
+	shot.active = false
 	return shot
 
 func _collision(space: PhysicsDirectSpaceState3D, ray: PhysicsRayQueryParameters3D, radius: float) -> Dictionary:

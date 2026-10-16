@@ -81,11 +81,11 @@ func _test_physics() -> void:
 	var space := target.get_world_3d().direct_space_state
 	var w := LoadoutCatalog.weapon(&"bubble_cannon")
 	var p := ProjectileSystem.new()
-	var shot := p.spawn(space,Vector3.ZERO,0,w,1,1,1)
+	var shot := p.spawn(space,Vector3.ZERO,0,w,1,1,1,NAN,0,3.0)
 	check(is_equal_approx(shot.remaining_range,7.95),"range accounts for barrel offset")
 	p.step(space,2)
-	check(is_equal_approx(shot.position.z,-1.05-10.0/60),"bubble travels at 10m/s")
-	for tick: int in range(3,20): p.step(space,tick)
+	check(shot.position.y > ProjectileSystem.SHOT_HEIGHT and shot.position.z < -1.05,"bubble ascends along real ballistic path")
+	for tick: int in range(3,30): p.step(space,tick)
 	check(p.hits.size() == 1 and p.active.is_empty(),"ordinary bubble hits once then pops")
 	var results := DamageResolver.new().resolve_batch(p.hits)
 	check(results.size() == 1 and results[0].actual_damage == 55 and results[0].slow_ticks == 60,"ordinary hit commits damage and slow metadata")
@@ -94,20 +94,19 @@ func _test_physics() -> void:
 	wall.position = Vector3(0,0.78,-0.5)
 	var collision := CollisionShape3D.new()
 	var shape := BoxShape3D.new()
-	shape.size = Vector3(5,2,0.1)
+	shape.size = Vector3(5,6,0.1)
 	collision.shape = shape
 	wall.add_child(collision)
 	world.add_child(wall)
 	await physics_frame
 	await physics_frame
 	p = ProjectileSystem.new()
-	p.spawn(space,Vector3.ZERO,0,w,1,1,1)
+	p.spawn(space,Vector3.ZERO,0,w,1,1,1,NAN,0,3.0)
 	check(p.active.is_empty() and p.hits.is_empty() and p.impacts.size() == 1,"wall blocks bubble before muzzle")
 	var curtain := BubbleCurtain.new()
-	var positions := PackedVector3Array()
-	for i: int in range(5): positions.append(Vector3((i-2)*0.9,0.78,-3))
-	check(not curtain.valid_plan(space,Vector3(0,0.78,0),positions),"any obstructed candidate rejects entire deployment")
-	positions[0] = Vector3(100,0.78,0)
+	var positions := PackedVector3Array([Vector3(0,0.2,-3)])
+	check(not curtain.valid_plan(space,Vector3(0,0.78,0),positions),"high wall blocks lob arc")
+	positions[0] = Vector3(100,0.2,0)
 	check(not curtain.valid_plan(space,Vector3.ZERO,positions),"map bounds reject field")
 	world.free()
 	await process_frame
@@ -139,43 +138,49 @@ func _test_session() -> void:
 	sim.set_paused(false)
 	var curtain := sim.abilities.curtain
 	var p := ProjectileSystem.new()
-	for i: int in range(124): p.active.append(ProjectileState.new())
-	check(curtain.prepare(actor,0,p) == "弹丸预算不足" and p.reservations.is_empty(),"four slots reject five bubble reservation")
+	for i: int in range(128): p.active.append(ProjectileState.new())
+	check(curtain.prepare(actor,0,p) == "弹丸预算不足" and p.reservations.is_empty(),"full budget rejects field atomically")
 	p.active.clear()
-	check(curtain.prepare(actor,0,p).is_empty() and p.used_slots() == 5,"reserve whole field")
+	check(curtain.prepare(actor,0,p).is_empty() and p.used_slots() == 1,"reserve single lob")
 	var plan := curtain.plan_for(actor.state.entity_id)
-	check(plan.size() == 5 and is_equal_approx(plan[4].x-plan[0].x,3.6),"five centers span 3.6m, full row 4.5m")
+	check(plan.size() == 1,"one frozen landing point")
 	actor.position.x = 2
-	check(curtain.deploy(actor,120,p,sim.events),"deploy reserved field")
-	check(p.active.size() == 5 and p.reservations.is_empty() and p.active[2].position.is_equal_approx(plan[2]),"deployment stays at frozen origin")
+	check(curtain.deploy(actor,120,p,sim.events),"deploy reserved lob")
+	check(p.active.size() == 1 and p.reservations.is_empty() and p.active[0].arc_end == plan[0],"moving caster keeps frozen landing")
 	var target: TrainingTarget = sim.targets[0]
-	target.position = Vector3(plan[2].x,0,plan[2].z)
+	target.position = Vector3(plan[0].x,0,plan[0].z)
 	target.configure_motion(0,0)
 	target.force_update_transform()
 	await physics_frame
 	var victims: Array[Damageable] = [target.hurtbox()]
 	var space := actor.get_world_3d().direct_space_state
+	curtain.step(138,p,victims,space)
+	check(p.hits.is_empty() and p.active[0].position.y > 2,"airborne lob has no ground damage")
 	target.state.protected = true
-	curtain.step(121,p,victims,space)
-	check(p.hits.is_empty() and p.active.size() == 5,"protected victim never consumes bubbles")
+	curtain.step(156,p,victims,space)
+	check(p.hits.is_empty() and p.active[0].kind == &"bubble_field","protected victim ignores landed field damage")
 	target.state.protected = false
-	curtain.step(122,p,victims,space)
-	check(p.hits.size() == 2 and p.active.size() == 3,"one target takes at most two contacts")
-	var results := DamageResolver.new().resolve_batch(p.hits)
-	check(results.size() == 2 and target.state.hp == target.state.max_hp-70,"two bubble damage is exactly 70")
+	curtain.step(157,p,victims,space)
+	check(p.hits.size() == 1,"ground field first pulse")
+	DamageResolver.new().resolve_batch(p.hits)
+	check(target.state.hp == target.state.max_hp-20,"field pulse deals twenty damage")
 	p.hits.clear()
-	target.state.life_index += 1
-	curtain.step(123,p,victims,space)
-	check(p.hits.is_empty(),"hit cap belongs to entity across new life")
-	curtain.prune(299,p)
-	check(p.active.size() == 3,"field lives through tick before expiry")
-	curtain.prune(300,p)
-	check(p.active.is_empty(),"field expires exactly 180 ticks later")
+	curtain.step(186,p,victims,space)
+	check(p.hits.is_empty(),"no pulse before thirty ticks")
+	curtain.step(187,p,victims,space)
+	check(p.hits.size() == 1,"pulse repeats on exact boundary")
+	check(curtain.multiplier(target.position,1,187) == 0.65,"enemy inside field slowed")
+	check(curtain.multiplier(target.position,0,187) == 1.0,"friendly unaffected")
+	check(curtain.multiplier(target.position+Vector3.RIGHT*3,1,187) == 1.0,"leaving field immediately clears field slow")
+	curtain.prune(395,p)
+	check(p.active.size() == 1,"field lives through final active tick")
+	curtain.prune(396,p)
+	check(p.active.is_empty(),"field expires after exactly four seconds")
 	actor.position = Vector3(0,0,5)
 	check(curtain.prepare(actor,0,p).is_empty(),"prepare before dynamic obstruction")
 	var wall := StaticBody3D.new()
 	wall.collision_layer = 1
-	wall.position = curtain.plan_for(actor.state.entity_id)[2]
+	wall.position = curtain.plan_for(actor.state.entity_id)[0]
 	var collision := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = Vector3.ONE
@@ -191,7 +196,7 @@ func _test_session() -> void:
 	command.ability_request_id = 1
 	command.session_epoch = epoch
 	_step(sim,command)
-	check(actor.ability.phase == &"bubble" and sim.projectiles.reservations.get(actor.state.entity_id,0) == 5,"activation begins reserved preparation")
+	check(actor.ability.phase == &"bubble" and sim.projectiles.reservations.get(actor.state.entity_id,0) == 1,"activation begins reserved preparation")
 	var start := sim.tick
 	for i: int in range(20): _step(sim,PlayerCommand.new())
 	check(actor.ability.phase == &"bubble","preparation does not finish early")
@@ -199,7 +204,7 @@ func _test_session() -> void:
 	check(sim.tick == start+21 and actor.ability.phase == &"idle" and sim.projectiles.reservations.is_empty(),"preparation completes at 21 tick")
 	actor.health.hp = 0
 	sim.abilities.after_damage([],sim.tick,sim.projectiles,sim.events)
-	check(sim.projectiles.active.filter(func(s: ProjectileState) -> bool: return s.kind == &"bubble_barrier").is_empty(),"owner death clears curtain")
+	check(sim.projectiles.active.filter(func(s: ProjectileState) -> bool: return s.kind in [&"bubble_field",&"bubble_lob"]).is_empty(),"owner death clears curtain")
 	session.stop()
 	session.free()
 	await process_frame

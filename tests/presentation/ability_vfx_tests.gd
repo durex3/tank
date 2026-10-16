@@ -12,6 +12,46 @@ func check(value: bool, message: String) -> void:
 		push_error(message)
 
 func _run() -> void:
+	var frames := SkillFlipbookEffects.new()
+	root.add_child(frames)
+	var fact := {"kind":&"damage_applied","tick":1,"guarded":true,"position":Vector3.ZERO,"target_id":7}
+	frames.on_event(fact)
+	frames.on_event(fact)
+	check(frames._clips.size() == 1,"generated armor clip deduplicates committed fact")
+	var first: Texture2D = (frames._clips[0].node as Sprite3D).texture
+	for i: int in range(3): await process_frame
+	check((frames._clips[0].node as Sprite3D).texture == first,"flipbook freezes without simulation ticks")
+	frames.on_event({"kind":&"ability_zones","tick":4})
+	check((frames._clips[0].node as Sprite3D).texture != first,"flipbook advances by committed tick")
+	frames.on_event({"kind":&"ability_state","tick":5,"source_id":7,"alive":false})
+	check(frames._clips.is_empty(),"death clears generated chassis feedback")
+	var tank := TankView.new()
+	tank.entity_id = 7
+	root.add_child(tank)
+	var hit := {"kind":&"damage_applied","tick":20,"source_id":1,"target_id":7,"actual_damage":240,"ability_id":&"breach","projectile_id":99,"position":Vector3.ZERO}
+	frames.on_event(hit)
+	frames.on_event(hit)
+	tank.on_event(hit)
+	check(frames._clips.size() == 1,"real energy damage creates one impact per target")
+	check(not tank._hit_flash._surfaces.is_empty(),"energy damage applies instance-local armor flash")
+	tank.on_event({"kind":&"ability_zones","tick":28})
+	check(tank._hit_flash._surfaces.is_empty(),"armor flash restores overlays after eight committed ticks")
+	frames.clear()
+	hit.ability_id = &"storm"
+	hit.tick = 40
+	frames.on_event(hit)
+	tank.on_event(hit)
+	hit.tick = 43
+	hit.projectile_id = 100
+	frames.on_event(hit)
+	check(frames._clips.size() == 1,"storm hit sparks are throttled per target")
+	tank.on_event(hit)
+	check(tank._hit_flash._surfaces.is_empty(),"storm flash has a clear off interval between pulses")
+	hit.tick = 46
+	frames.on_event(hit)
+	check(frames._clips.size() == 2,"next storm spark allowed at six tick boundary")
+	tank.free()
+	frames.free()
 	var art := AbilitySpriteEffects.new()
 	root.add_child(art)
 	art.on_event({"kind":&"damage_applied","tick":1,"guarded":false,"position":Vector3.ZERO})

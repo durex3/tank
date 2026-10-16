@@ -7,7 +7,15 @@ var steering: TankSteeringRules = preload("res://content/rules/tank_steering.tre
 var _autonomous_velocity: Vector3 = Vector3.ZERO
 var _turn_sign: float = 1.0
 
-func step(actor: CharacterBody3D, state: TankState, move: Vector2, speed: float, delta: float, forced: Vector3 = Vector3.ZERO, turn_preference: int = 0) -> void:
+func step(actor: CharacterBody3D, state: TankState, move: Vector2, speed: float, delta: float, forced: Vector3 = Vector3.ZERO, turn_preference: int = 0, exclusive: bool = false) -> void:
+	if exclusive:
+		_autonomous_velocity = Vector3.ZERO
+		_turn(state,forced,delta,turn_preference)
+		actor.velocity = forced
+		actor.move_and_slide()
+		state.position = actor.position
+		state.velocity = actor.velocity
+		return
 	var direction := move.limit_length(1.0)
 	var target := Vector3(direction.x, 0.0, direction.y) * speed
 	_turn(state,target,delta,turn_preference)

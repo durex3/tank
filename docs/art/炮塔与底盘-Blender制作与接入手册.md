@@ -2,6 +2,19 @@
 
 适用项目：本仓库Godot坦克游戏。更新：2026-10-16。
 
+109更新：本轮三炮塔及两履带车壳已用Blender MCP原创制作，源文件source_art/mechanical-family-v2/mechanical_family.blend，组合检查源文件mechanical_family_review.blend；五份GLB为assets/derived/mechanical-family-v2，正式包装mechanical_v2。主炮/四轮仍为108版本；统一尺寸不变。两履带的轮子、闭合带体和循环履带片复用TrackRig，源目录runtime_tracks.glb只是该运行几何的检查快照。最终结果见109记录。
+
+109重建顺序（独立Blender实例，避免同名源对象冲突）：
+1. `blender --background --factory-startup --python tools/build_mechanical_family_109.py --python tools/finish_mechanical_family_109.py`：原创分件建模、保留源文件、导出副本按材质/运动父节点合批。
+2. Godot `--headless --editor --import --quit`，再`--headless --script tools/integrate_mechanical_family_109.gd`。
+3. `--headless --script tools/export_family_rigs_109.gd`导出准确运行轮带快照，再以Blender打开本批源文件运行`tools/render_mechanical_family_109.py`保存正背侧组合。
+4. Godot运行`tools/capture_mechanical_cards_109.gd`、`capture_mechanical_family_109.gd`、`capture_family_training_109.gd`，最后完整`node tools/check.mjs`。
+
+同一运动父节点内按材质合并；不可跨RecoilPivot/Right合并炮管。Blender源文件仍保留可编辑的分件，运行GLB为合批副本。渲染图不是模型，原105/108源文件仍只读保留。
+
+
+108更新：正式目录已迁移至mechanical_v1，主炮/四轮接入与七件统一外廓见108功能记录。最新炮塔1.038×0.594×1.708米，底盘1.704×0.911×1.904米；以part_size.tres为准。重建先运行prepare_mechanical_108.py，再Godot导入、integrate_mechanical_108.gd、capture_mechanical_cards_108.gd。原105资源保留。下文“尚未接入”描述为107历史状态；其他五件仅尺寸适配，仍需逐件Blender重制。
+
 ## 1. 已经确认的方向
 
 用户已认可105制作、106训练试玩中的**分块装甲主炮＋四轮底盘**，要求沿用此流程制作剩余炮塔和底盘。最新样板优先于更早的文字风格讨论与生图方案。
@@ -199,3 +212,11 @@ docs/development-plan.md、docs/art/炮塔与底盘-Blender制作与接入手册
 - 用户已授权正式机库替换；截至本手册写入，正式目录仍是family_v3，统一尺寸迁移与机库卡片替换尚未完成。后续以更高序号功能记录为准。
 - 生图参考v1保留；v2已否决并按授权删除PNG，提示词历史保留。
 - 不要把旧103的“进行中”说明、早期22/10目录历史数值或已经结束的Hyper3D任务当成当前交付状态。
+
+## 110 泡泡炮紧凑喷头
+
+用户否决109长杆悬环后，泡泡炮改用`tools/build_bubble_110.py`派生圆润一体喷头，源文件`source_art/bubble-compact-v1/bubble_compact.blend`，包装入口`tools/integrate_bubble_110.gd`。仅泡泡炮替换为`presentation/parts/bubble_compact_v1`；109其它件保持。旧109泡泡炮源与GLB只读保留；不要重跑109后将旧长杆模型重新映射为正式泡泡炮。
+
+## 112 最新泡泡炮
+
+圆盘长颈方案被否决，正式使用`tools/build_bubble_112.py`与`tools/integrate_bubble_112.gd`重建低矮装甲壳＋内嵌圆喷口。源文件`source_art/bubble-armored-v1/bubble_armored.blend`，卡片`capture_bubble_card_112.gd`。旧110与收细试样保留历史，不能映射正式目录。113机库按用户选择关闭实时投影，实战阴影不变。

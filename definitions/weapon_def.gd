@@ -22,3 +22,5 @@ class_name WeaponDef
 
 func nominal_dps() -> float:
 	return float(damage * pellet_count) / fire_interval_s
+
+@export var arc_height: float = 2.0

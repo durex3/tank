@@ -8,8 +8,9 @@ static func create(weapon: StringName, team: int, style: WeaponVisualStyle) -> N
 	var color: Color = style.friendly if team == 0 else style.enemy
 	match weapon:
 		&"autocannon":
-			rod(root,style.needle_radius,style.needle_length,0,Color("fff5d9"))
-			cone(root,style.needle_radius*1.6,style.needle_tail,style.needle_tail*0.5,color)
+			rod(root,style.needle_radius*1.35,style.needle_length,0,Color(Color("673e21"),0.45))
+			rod(root,style.needle_radius*0.75,style.needle_length*1.05,0,Color("f0c777"))
+			cone(root,style.needle_radius*1.6,style.needle_tail,style.needle_tail*0.7,Color(color,0.6))
 		&"scatter":
 			var pellet := MeshInstance3D.new()
 			var gem := PrismMesh.new()
@@ -20,16 +21,41 @@ static func create(weapon: StringName, team: int, style: WeaponVisualStyle) -> N
 			root.add_child(pellet)
 			rod(root,style.pellet_radius*0.25,style.pellet_tail,style.pellet_tail*0.7,Color("fff4dc"))
 		_:
-			rod(root,style.cannon_radius,style.cannon_length,0,color)
-			rod(root,style.cannon_radius*1.12,style.cannon_length*0.18,style.cannon_length*0.2,style.steel)
-			cone(root,style.cannon_radius,style.cannon_length*0.35,-style.cannon_length*0.65,Color("fff4d2"))
-			cone(root,style.cannon_radius*0.75,style.cannon_tail,style.cannon_tail*0.7,color)
+			var core := MeshInstance3D.new()
+			core.name = "ShellBody"
+			var shell := CapsuleMesh.new()
+			shell.radius = style.shell_radius
+			shell.height = style.shell_length
+			shell.radial_segments = 16
+			shell.rings = 4
+			core.mesh = shell
+			core.rotation.x = PI/2
+			core.material_override = material(Color("66503c"))
+			core.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			root.add_child(core)
+			rod(root,style.shell_radius*1.06,0.055,0.11,style.steel)
+			for angle: float in [0.0,PI/2]:
+				var trail := MeshInstance3D.new()
+				trail.name = "ShellTrail"+str(angle)
+				var quad := QuadMesh.new()
+				quad.size = Vector2(style.shell_radius*2.3,style.cannon_glow_tail)
+				trail.mesh = quad
+				var lateral := Vector3(cos(angle),sin(angle),0)
+				trail.basis = Basis(lateral,Vector3.BACK,lateral.cross(Vector3.BACK))
+				trail.position.z = style.shell_length*0.5+style.cannon_glow_tail*0.3
+				var glow := ShaderMaterial.new()
+				glow.shader = preload("res://presentation/shaders/projectile_glow.gdshader")
+				glow.set_shader_parameter("tint",Color("b85b23") if team == 0 else Color("a93a2b"))
+				trail.material_override = glow
+				trail.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+				root.add_child(trail)
 	return root
 
 static func material(color: Color) -> StandardMaterial3D:
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.albedo_color = color
+	if color.a < 1.0: mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	return mat
 
 static func rod(root: Node3D, radius: float, length_m: float, z: float, color: Color) -> void:

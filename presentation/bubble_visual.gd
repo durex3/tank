@@ -39,7 +39,7 @@ func configure(radius: float, team: int, field: bool, tuning: AbilityEffectStyle
 		ring.material = material
 		field_ring.mesh = ring
 		field_ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		field_ring.position.y = style.ground_height-ProjectileSystem.SHOT_HEIGHT
+		field_ring.position.y = style.ground_height-0.2
 		add_child(field_ring)
 	else:
 		trail = Sprite3D.new()
@@ -51,6 +51,14 @@ func present(shot: ProjectileState, tick: int) -> void:
 	position = shot.position
 	var age: int = maxi(0,tick-shot.spawn_tick)
 	var phase: float = age*style.bubble_bob_rate+shot.projectile_id*1.7
+	if shot.kind == &"bubble_field":
+		film.billboard = BaseMaterial3D.BILLBOARD_DISABLED
+		film.rotation.x = -PI/2
+		film.position.y = -0.15
+		film.scale = Vector3.ONE*(0.94+sin(phase)*0.025)
+		volume.scale = Vector3(1,0.07,1)
+		volume.position.y = -0.1
+		return
 	if shot.kind == &"bubble_barrier":
 		var grow: float = lerpf(style.bubble_start_scale,1.0,minf(1.0,float(age)/style.bubble_expand_ticks))
 		var fade: float = clampf(float(shot.spawn_tick+shot.lifetime_ticks-tick)/style.bubble_fade_ticks,0,1)

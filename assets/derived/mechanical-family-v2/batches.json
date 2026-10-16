@@ -1,0 +1,22 @@
+{
+  "autocannon": {
+    "render_meshes": 15,
+    "construction_meshes": 36
+  },
+  "scatter": {
+    "render_meshes": 9,
+    "construction_meshes": 23
+  },
+  "bubble_cannon": {
+    "render_meshes": 10,
+    "construction_meshes": 22
+  },
+  "light_tracks": {
+    "render_meshes": 7,
+    "construction_meshes": 40
+  },
+  "heavy_tracks": {
+    "render_meshes": 7,
+    "construction_meshes": 52
+  }
+}

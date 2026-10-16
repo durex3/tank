@@ -13,6 +13,7 @@ func _ready() -> void:
 	add_child(camera)
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 	camera.size = STYLE.camera_size
+	camera.far = STYLE.camera_far
 	camera.position = STYLE.camera_position
 	camera.look_at(Vector3(0, 0.45, 0))
 	camera.current = true
@@ -20,8 +21,11 @@ func _ready() -> void:
 	light.rotation_degrees = Vector3(-45, -30, 0)
 	light.light_energy = STYLE.key_energy
 	light.light_color = Color("fff1dd")
-	light.shadow_enabled = true
+	light.shadow_enabled = STYLE.shadows_enabled
+	light.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
+	light.shadow_opacity = STYLE.shadow_opacity
 	light.shadow_normal_bias = STYLE.shadow_normal_bias
+	light.shadow_bias = STYLE.shadow_bias
 	light.directional_shadow_max_distance = 12.0
 	add_child(light)
 	var fill := DirectionalLight3D.new()

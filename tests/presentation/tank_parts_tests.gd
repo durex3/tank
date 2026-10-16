@@ -137,13 +137,16 @@ func check(condition: bool, message: String) -> void:
 		push_error(message)
 
 func _test_finish_isolation() -> void:
-	var first := TankView.new()
-	var second := TankView.new()
+	# Keep testing the legacy textured polish with an explicit immutable fixture.
+	var fixture := load("res://presentation/parts/refined_v2/autocannon.tscn") as PackedScene
+	var first := fixture.instantiate() as Node3D
+	var second := fixture.instantiate() as Node3D
 	root.add_child(first)
 	root.add_child(second)
-	# Imported armor is the textured finish subject; an authored mount may precede it.
-	var a := first.get_node("TurretMount").find_child("Body", true, false) as MeshInstance3D
-	var b := second.get_node("TurretMount").find_child("Body", true, false) as MeshInstance3D
+	TankSurfacePolish.apply(first, &"autocannon")
+	TankSurfacePolish.apply(second, &"autocannon")
+	var a := first.find_child("Body", true, false) as MeshInstance3D
+	var b := second.find_child("Body", true, false) as MeshInstance3D
 	var finish := a.get_surface_override_material(0) as ShaderMaterial
 	check(finish != null, "sample paint treatment applied")
 	check(finish != b.get_surface_override_material(0), "paint overrides isolated between tank instances")
@@ -152,5 +155,7 @@ func _test_finish_isolation() -> void:
 	check(finish.get_shader_parameter("albedo_map") == texture, "sample retains original texture source")
 	finish.set_shader_parameter("cleanup_strength", 0.0)
 	check(is_equal_approx(float((b.get_surface_override_material(0) as ShaderMaterial).get_shader_parameter("cleanup_strength")), TankSurfacePolish.STYLE.cleanup_strength), "one instance cannot alter another finish")
+	TankSurfacePolish.clear(first)
+	TankSurfacePolish.clear(second)
 	first.free()
 	second.free()

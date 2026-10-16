@@ -29,3 +29,8 @@ var kind: StringName = &"normal"
 var slow_multiplier: float = 1.0
 var slow_ticks: int = 0
 var curtain_id: int = 0
+
+var arc_start: Vector3
+var arc_end: Vector3
+var arc_ticks: int = 0
+var arc_height: float = 0.0

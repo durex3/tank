@@ -5,6 +5,7 @@ class_name DesktopInputSource
 var continuous_fire: bool = false
 var _fire_contacts: Dictionary = {}
 var session_epoch: int = 0
+var aim_distance_cm: int = 600
 var aim_direction: Vector2 = Vector2.UP
 var _enabled: bool = true
 var _focused: bool = true
@@ -29,6 +30,7 @@ func sample(tick: int) -> PlayerCommand:
 	command.move_z = roundi(move.y * 127.0)
 	command.turn_preference = signi(command.move_x)
 	command.aim_yaw = roundi(fposmod(atan2(aim_direction.x, -aim_direction.y), TAU) / TAU * 65536.0) % 65536
+	command.aim_distance_cm = aim_distance_cm
 	command.fire_held = continuous_fire and not _fire_contacts.is_empty()
 	command.ability_request_id = _pending_ability
 	_pending_ability = 0

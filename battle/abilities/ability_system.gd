@@ -41,7 +41,7 @@ func before_move(actor: TankActor, command: PlayerCommand, tick: int, epoch: int
 		state.last_request = command.ability_request_id
 		var reason := _activate(actor,command,tick,projectiles)
 		events.publish(&"ability_rejected" if not reason.is_empty() else &"ability_started",tick,{"source_id":actor.state.entity_id,"reason":reason,"phase":state.phase})
-	actor.speed_multiplier = (rules.cruise_multiplier if state.cruise_active else 1.0)
+	actor.speed_multiplier = 1.0
 	if tick >= state.escape_start_tick and tick < state.escape_until_tick:
 		actor.speed_multiplier *= rules.escape_multiplier
 	if state.phase == &"breach": actor.speed_multiplier *= rules.breach_speed_multiplier
@@ -56,6 +56,13 @@ func before_move(actor: TankActor, command: PlayerCommand, tick: int, epoch: int
 			forced = false
 		else:
 			actor.forced_velocity = push.velocity
+	if state.phase == &"shock" and tick >= state.until_tick:
+		state.phase = &"dash"
+		state.dash_remaining = rules.dash_distance
+		events.publish(&"ability_fired",tick,{"source_id":actor.state.entity_id,"ability":&"dash","position":actor.position,"yaw":state.locked_yaw})
+	if state.phase == &"dash":
+		actor.forced_velocity = DashCharge.velocity(actor,tick,rules,projectiles,events)
+		forced = true
 	return forced
 
 func _activate(actor: TankActor, command: PlayerCommand, tick: int, projectiles: ProjectileSystem) -> String:
@@ -75,7 +82,7 @@ func _activate(actor: TankActor, command: PlayerCommand, tick: int, projectiles:
 		state.until_tick = tick+rules.storm_ticks
 	elif actor.weapon_id == &"bubble_cannon":
 		state.locked_yaw = float(command.aim_yaw)/65536.0*TAU
-		var reason := curtain.prepare(actor,state.locked_yaw,projectiles)
+		var reason := curtain.prepare(actor,state.locked_yaw,projectiles,float(command.aim_distance_cm)/100.0)
 		if not reason.is_empty(): return reason
 		state.reserved = true
 		state.phase = &"bubble"
@@ -98,6 +105,12 @@ func attack(actor: TankActor, gate: WeaponController, tick: int, projectiles: Pr
 	if state.phase == &"cooling":
 		gate.cancel_pending()
 		return true
+	if state.phase == &"dash":
+		gate.cancel_pending()
+		if state.dash_remaining <= 0.0001:
+			state.phase = &"idle"
+			actor.forced_velocity = Vector3.ZERO
+		return true
 	if state.phase not in [&"breach",&"shock",&"bubble"]: return false
 	gate.cancel_pending()
 	if tick < state.until_tick: return true
@@ -105,12 +118,12 @@ func attack(actor: TankActor, gate: WeaponController, tick: int, projectiles: Pr
 		_release(actor,projectiles)
 		var shot := projectiles.spawn_breach(actor.get_world_3d().direct_space_state,actor.position,actor.state.aim_yaw,actor.state.entity_id,actor.health.team_id,tick,rules,actor.health.life_index)
 		if shot != null:
-			events.publish(&"ability_fired",tick,{"source_id":actor.state.entity_id,"ability":&"breach","position":shot.position,"yaw":actor.state.aim_yaw,"projectile_id":shot.projectile_id})
+			events.publish(&"ability_fired",tick,{"source_id":actor.state.entity_id,"ability":&"breach","position":actor.position+Vector3.UP*ProjectileSystem.SHOT_HEIGHT+shot.direction*ProjectileSystem.MUZZLE_OFFSET,"end":shot.position,"yaw":actor.state.aim_yaw,"projectile_id":shot.projectile_id})
 	elif state.phase == &"bubble":
 		curtain.deploy(actor,tick,projectiles,events)
 		state.reserved = false
 	else:
-		ShockwaveAttack.execute(actor,state.locked_yaw,tick,rules,actors,targets,projectiles,events)
+		return true
 	state.phase = &"idle"
 	gate.next_fire_tick = maxi(gate.next_fire_tick,tick+actor.stats.interval_ticks)
 	return true
@@ -196,7 +209,7 @@ func _snapshot(actor: TankActor, tick: int, events: BattleEvents) -> void:
 	var ready: bool = actor.health.hp > 0 and not actor.health.protected and state.phase == &"idle" and state.energy >= rules.energy_max and tick >= state.next_use_tick
 	var reason: String = "出生保护" if actor.health.protected else ("等待重建" if actor.health.hp <= 0 else ("能量不足" if state.energy < rules.energy_max else "间隔 %.1f秒" % (maxi(0,state.next_use_tick-tick)/60.0)))
 	var progress: int = roundi(100.0*state.charge_ticks/(rules.cruise_charge if actor.chassis_id == &"light_tracks" else rules.guard_charge))
-	events.publish(&"ability_state",tick,{"ready":ready,"reason":reason,"passive_progress":progress,"source_id":actor.state.entity_id,"position":actor.position,"yaw":actor.state.aim_yaw,"body_yaw":actor.state.body_yaw,"energy":state.energy,"energy_max":rules.energy_max,"phase":state.phase,"remaining":maxi(0,state.until_tick-tick),"ready_in":maxi(0,state.next_use_tick-tick),"cruise":state.cruise_active,"guard":state.guard_active,"charge":state.charge_ticks,"chassis":actor.chassis_id,"weapon":actor.weapon_id,"locked_yaw":state.locked_yaw,"alive":actor.health.hp>0,"smoke_in":maxi(0,state.smoke_ready_tick-tick),"escape_remaining":maxi(0,state.escape_until_tick-maxi(tick,state.escape_start_tick)),"escape_active":state.escape_until_tick > tick and state.escape_until_tick > 0,"bubble_plan":curtain.plan_for(actor.state.entity_id)})
+	events.publish(&"ability_state",tick,{"ready":ready,"reason":reason,"passive_progress":progress,"source_id":actor.state.entity_id,"position":actor.position,"yaw":actor.state.aim_yaw,"body_yaw":actor.state.body_yaw,"energy":state.energy,"energy_max":rules.energy_max,"phase":state.phase,"remaining":maxi(0,state.until_tick-tick),"ready_in":maxi(0,state.next_use_tick-tick),"cruise":state.cruise_active,"guard":state.guard_active,"charge":state.charge_ticks,"chassis":actor.chassis_id,"weapon":actor.weapon_id,"locked_yaw":state.locked_yaw,"alive":actor.health.hp>0,"smoke_in":maxi(0,state.smoke_ready_tick-tick),"escape_remaining":maxi(0,state.escape_until_tick-maxi(tick,state.escape_start_tick)),"escape_active":state.escape_until_tick > tick and state.escape_until_tick > 0,"bubble_plan":curtain.plan_for(actor.state.entity_id),"bubble_aim":actor.position+Vector3(sin(actor.state.aim_yaw),0,-cos(actor.state.aim_yaw))*clampf(actor.aim_distance_m,1.5,curtain.rules.max_range)})
 
 func damage_multiplier(actor: TankActor) -> float:
 	return rules.storm_damage_multiplier if actors.has(actor) and actor.ability.phase == &"storm" else 1.0
@@ -211,7 +224,7 @@ func smoke_multiplier_at(position: Vector3, team_id: int, tick: int) -> float:
 	return 1.0
 
 func movement_multiplier(state: DamageableState, position: Vector3, tick: int) -> float:
-	return maxf(0.6,minf(smoke_multiplier_at(position,state.team_id,tick),slows.multiplier(state,tick)))
+	return maxf(0.6,minf(smoke_multiplier_at(position,state.team_id,tick),minf(slows.multiplier(state,tick),curtain.multiplier(position,state.team_id,tick))))
 
 func collect_fields(tick: int, projectiles: ProjectileSystem, targets: Array[TrainingTarget], space: PhysicsDirectSpaceState3D) -> void:
 	var victims: Array[Damageable] = []

@@ -13,6 +13,7 @@ var _guard_hits: Dictionary = {}
 var _tick: int = 0
 var _art := AbilitySpriteEffects.new()
 var _signatures := AbilitySignatureEffects.new()
+var _frames := SkillFlipbookEffects.new()
 
 func _ready() -> void:
 	_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -22,11 +23,13 @@ func _ready() -> void:
 	add_child(_zones)
 	add_child(_art)
 	add_child(_signatures)
+	add_child(_frames)
 
 func on_event(event: Dictionary) -> void:
 	_tick = event.tick
 	_art.on_event(event)
 	_signatures.on_event(event)
+	_frames.on_event(event)
 	if event.kind == &"damage_applied" and event.get("guarded",false):
 		_guard_hits[event.target_id] = _tick+style.guard_hit_ticks
 	if event.kind == &"ability_state":
@@ -41,6 +44,7 @@ func on_event(event: Dictionary) -> void:
 func clear() -> void:
 	_art.clear()
 	_signatures.clear()
+	_frames.clear()
 	for node: MeshInstance3D in _nodes.values(): node.mesh = null
 	_zones.mesh = null
 	_states.clear()
@@ -61,15 +65,8 @@ func _draw_actor(state: Dictionary) -> void:
 	var front := Vector3(sin(state.body_yaw),0,-cos(state.body_yaw))
 	var right := Vector3(-front.z,0,front.x)
 	if state.alive:
-		if state.cruise:
-			for side: int in [-1,1]:
-				var start: Vector3 = origin-front*0.6+right*side*0.32+Vector3.UP*0.2
-				_triangle(mesh,start+right*0.10,start-right*0.10,start-front*style.trail_length,style.cruise_color)
-			for i: int in range(3):
-				var phase: float = float(_tick % 18)/18.0
-				var p: Vector3 = origin-front*(0.9+(i+phase)*0.38)
-				_line(mesh,p+right*0.16-front*0.15,p,style.cruise_color)
-				_line(mesh,p-right*0.16-front*0.15,p,style.cruise_color)
+		if state.weapon == &"bubble_cannon" and state.source_id == 1 and state.phase == &"idle":
+			_ring(mesh,state.get("bubble_aim",state.position)+Vector3.UP*style.ground_height,0.3,style.bubble_color)
 		if state.get("escape_active",false):
 			for side: int in [-1,1]:
 				for i: int in range(3):
@@ -79,11 +76,11 @@ func _draw_actor(state: Dictionary) -> void:
 					_line(mesh,p-front*0.22-right*0.12,p,style.escape_color)
 		if state.guard:
 			var guard_color: Color = Color.WHITE if _tick < int(_guard_hits.get(state.source_id,0)) else style.guard_color
-			_arc(mesh,origin,style.guard_radius_m,state.body_yaw,deg_to_rad(rules.guard_half_angle),guard_color,style.guard_height_m)
+			_arc(mesh,origin,style.guard_radius_m,state.body_yaw,deg_to_rad(rules.guard_half_angle),guard_color,style.guard_height_m*0.15)
 			for i: int in range(5):
 				var angle: float = state.body_yaw+deg_to_rad(rules.guard_half_angle)*(i/2.0-1.0)
 				var edge: Vector3 = origin+Vector3(sin(angle),0,-cos(angle))*style.guard_radius_m
-				_line(mesh,edge,edge+Vector3.UP*style.guard_height_m,guard_color)
+				_line(mesh,edge,edge+Vector3.UP*style.guard_height_m*0.15,guard_color)
 
 		if state.phase == &"breach":
 			var aim := Vector3(sin(state.yaw),0,-cos(state.yaw))
@@ -95,11 +92,9 @@ func _draw_actor(state: Dictionary) -> void:
 				var angle: float = i*TAU/8.0+progress*0.5
 				var ray := Vector3(sin(angle),0,cos(angle))
 				_line(mesh,core+ray*style.charge_ray_m*(1.2-progress*0.5),core+ray*0.12,Color(style.breach_color,0.75))
-		elif state.phase == &"shock":
-			_sector(mesh,origin,rules.shock_range,state.locked_yaw,deg_to_rad(rules.shock_half_angle),Color(style.shock_color,0.17))
 		elif state.phase == &"bubble":
 			for p: Vector3 in state.get("bubble_plan",PackedVector3Array()):
-				_ring(mesh,Vector3(p.x,style.ground_height,p.z),style.bubble_plan_radius_m,style.bubble_color)
+				_ring(mesh,Vector3(p.x,style.ground_height,p.z),preload("res://content/rules/bubble.tres").field_radius,style.bubble_color)
 		elif state.phase in [&"storm",&"cooling"]:
 			_draw_storm(mesh,state)
 

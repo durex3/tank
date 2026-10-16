@@ -5,6 +5,7 @@ class_name TankView
 var weapon_id: StringName = &"cannon"
 var chassis_id: StringName = &"light_tracks"
 var entity_id: int = 0
+var _hit_flash := TankHitFlash.new()
 var _recoil := TankRecoil.new()
 var _right_recoil := TankRecoil.new()
 var _active_barrel: int = 0
@@ -86,6 +87,7 @@ func advance_visual_tick(tick: int) -> void:
 	_tracks.sample(_present_position, _present_yaw, tick)
 
 func reset_visual_motion() -> void:
+	_hit_flash.clear()
 	_recoil.reset()
 	_right_recoil.reset()
 	_active_barrel = 0
@@ -93,6 +95,9 @@ func reset_visual_motion() -> void:
 	_tracks.reset()
 
 func on_event(event: Dictionary) -> void:
+	if event.has("tick"): _hit_flash.advance(int(event.tick))
+	if event.kind == &"damage_applied" and event.get("target_id",-1) == entity_id and event.get("ability_id",&"") in [&"breach",&"storm"] and event.get("actual_damage",0) > 0:
+		_hit_flash.hit(self,int(event.tick),event.get("ability_id",&"") == &"storm")
 	if event.kind == &"match_finished":
 		reset_visual_motion()
 	elif event.kind in [&"entity_died", &"entity_respawned"] and event.get("target_id", -1) == entity_id:
@@ -117,6 +122,7 @@ func _replace_child(mount: Node3D, part: Node) -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
+		_hit_flash.clear()
 		TankSurfacePolish.clear(self)
 
 func _add_contact_shadow() -> void:

@@ -35,6 +35,11 @@ func _run() -> void:
 	check(rules.validate().is_empty(),"ability rules valid")
 	rules.smoke_multiplier = NAN
 	check(not rules.validate().is_empty(),"NaN ability tuning rejected")
+	var invalid := PlayerCommand.new()
+	invalid.aim_distance_cm = 149
+	check(not invalid.is_valid(),"undersized aim distance rejected")
+	invalid.aim_distance_cm = 1601
+	check(not invalid.is_valid(),"oversized aim distance rejected")
 	_test_guard()
 	_test_passive()
 	await _test_casts()
@@ -85,13 +90,23 @@ func _test_passive() -> void:
 	check(not actor.ability.cruise_active and actor.ability.charge_ticks == 0,"blocked movement clears boost")
 	for i: int in range(100): ChassisAbilities.after_move(actor,command,actor.position-Vector3(0.1,0,0),true,rules)
 	check(not actor.ability.cruise_active,"forced displacement cannot charge cruise")
+	var gate := WeaponController.new()
+	gate.next_fire_tick = 100
+	actor.magazine.reload_until = 100
+	actor.ability.cruise_active = true
+	for tick: int in range(1,5): ChassisAbilities.reload_step(actor,gate,tick,rules)
+	check(gate.next_fire_tick == 99 and actor.magazine.reload_until == 99,"four movement ticks grant exactly one reload tick")
+	actor.ability.phase = &"cooling"
+	for tick: int in range(5,13): ChassisAbilities.reload_step(actor,gate,tick,rules)
+	check(gate.next_fire_tick == 99,"reload passive cannot accelerate skill cooling")
+	actor.ability.phase = &"idle"
 	actor.chassis_id = &"heavy_tracks"
 	command.move_x = 0
 	for i: int in range(36): ChassisAbilities.after_move(actor,command,actor.position,false,rules)
 	check(actor.ability.guard_active,"stationary 36 ticks raises guard")
 	command.move_x = 1
 	ChassisAbilities.after_move(actor,command,actor.position,false,rules)
-	check(not actor.ability.guard_active,"tiny movement intent drops guard immediately")
+	check(actor.ability.guard_active,"mobile heavy keeps frontal guard")
 	actor.hurtbox.free()
 	actor.free()
 
@@ -128,6 +143,7 @@ func _test_casts() -> void:
 	var resolved := DamageResolver.new().resolve_batch(projectiles.hits)
 	check(resolved.size() == 3,"breach hits three distinct targets")
 	if resolved.size() == 3:
+		check(resolved[0].ability_id == &"breach" and resolved[0].projectile_id == resolved[1].projectile_id,"piercing damage preserves ability and projectile identity per target")
 		check(resolved[0].actual_damage == 240 and resolved[1].actual_damage == 144 and resolved[2].actual_damage == 86,"piercing falloff follows travel order")
 	projectiles.hits.clear()
 	# Budget rejection must not spend energy or set a phase.
@@ -353,18 +369,16 @@ func _test_target_push() -> void:
 	await physics_frame
 	var initial: Vector3 = target.position
 	check(sim.enqueue_command(_command(sim,1)),"training shock request accepted")
-	for i: int in range(16): sim.step()
-	check(target.state.hp == target.state.max_hp-150,"shock damages training target once")
-	check(target.position.is_equal_approx(initial),"training push waits until next tick after batch damage")
+	for i: int in range(40): sim.step()
+	check(target.state.hp == target.state.max_hp-80,"dash contact damages target exactly once")
+	check(target.position.is_equal_approx(initial),"dash does not push training target")
+	check(actor.position.z < -1.0 and actor.position.z > -3.0,"dash stops at enemy body")
+	check(actor.ability.phase == &"idle","contact terminates dash")
+	var stopped: Vector3 = actor.position
 	sim.set_paused(true)
 	for i: int in range(12): sim.step()
-	check(target.position.is_equal_approx(initial),"pause freezes pending training knockback")
+	check(actor.position.is_equal_approx(stopped),"pause freezes dash movement")
 	sim.set_paused(false)
-	for i: int in range(12): sim.step()
-	check(is_equal_approx(initial.z-target.position.z,1.2),"stationary training target is pushed full 1.2m")
-	var pushed: Vector3 = target.position
-	for i: int in range(12): sim.step()
-	check(target.position.is_equal_approx(pushed),"stationary target does not snap back after push")
 	target.reset_motion()
 	target.configure_motion(2.0,1.0)
 	target.commit_push(Vector3.FORWARD*1.2,12)
@@ -387,7 +401,7 @@ func _test_target_push() -> void:
 	target.commit_push(Vector3.FORWARD*1.2,12)
 	for i: int in range(12): target.step_motion()
 	check(target.position.z > -3.4 and target.position.z < -3.1,"training knockback stops at wall with body radius")
-	check(target.state.hp == target.state.max_hp-150,"wall contact adds no squeeze damage")
+	check(target.state.hp == target.state.max_hp-80,"wall contact adds no squeeze damage")
 	target.reset_motion()
 	target.state.hp = 0
 	target.commit_push(Vector3.FORWARD*1.2,12)

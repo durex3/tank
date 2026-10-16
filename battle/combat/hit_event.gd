@@ -21,3 +21,5 @@ var source_life: int = 0
 var slow_multiplier: float = 1.0
 var slow_ticks: int = 0
 var bubble_hits: int = 0
+
+var ability_id: StringName = &""

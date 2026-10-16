@@ -1,5 +1,13 @@
 # 项目强制开发规则
 
+112起泡泡炮正式采用bubble-armored-v1及presentation/parts/bubble_armored_v1，低矮装甲壳＋内嵌圆喷口替代110圆盘长颈。113机库按用户要求关闭实时投影，灯光与裁面配置仅作用于HangarPreview，不修改实战阴影。
+
+110起泡泡炮单独采用bubble-compact-v1派生GLB、presentation/parts/bubble_compact_v1包装；109长杆悬环保留历史只读。111升级箭头保持右上绿色圆标，在独立顶部留白区与等级对齐，不覆盖模型图；资格仍由服务判断。
+
+109起剩余速射/散射/泡泡炮塔及轻/重履带车壳采用原创Blender mechanical-family-v2，正式五件包装为presentation/parts/mechanical_v2；主炮/四轮继续108 mechanical_v1。履带滚动系统复用既有TrackRig，不能声称轮带也重新Blender建模。统一尺寸及权威挂点不变，双管/单管动作节点保留；建模、材质合批、装配与渲染入口见109记录。原105/108资产只读保留。
+
+108起正式目录为presentation/parts/mechanical_v1：主炮/四轮采用105 Blender样板，四轮胎纹派生修正至mechanical-production-v1；其余五件为保留原壳体比例/刚性轮组的共同外廓过渡适配，不能称为新Blender全套。统一尺寸仍只读content/presentation/part_size.tres，重建入口tools/prepare_mechanical_108.py与tools/integrate_mechanical_108.gd；旧101目录说明为历史记录。禁止覆盖105原GLB/blend，禁止重新加高白柱。
+
 101起正式模型目录为presentation/parts/refined_v1；新机炮/四轮采用用户确认的100修整模型，七件共同外廓统一迁移至content/presentation/part_size.tres。旧炮塔保持壳体等比，以独立装甲底座及炮管位移适配；履带轮组保持刚性。原资源只读，权威Muzzle/TurretSocket不动；重建入口tools/integrate_refined_parts.gd，详见101记录。
 
 089起保持用户确认的WASD屏幕方向移动、鼠标独立瞄准；180°反向的转弯偏好由PlayerCommand.turn_preference显式注入并校验，仅用于PI边界消歧。battle不读按键/相机，普通角度继续最短路、固定tick有限转速；不得擅自改成W/S前后、A/D相对转向操控。
@@ -94,3 +102,9 @@
 
 
 090—091：TankMotor有限转向后按朝向对齐比例调整自主目标速度，转向/松手制动来自TankSteeringRules；强制位移在自主速度之后合成，不受转向比例缩放。保持WASD方向移动与鼠标独立瞄准。卡片专用材质/摄影只用于离线派生，原模型/图不覆盖，不以非等比拉伸冒充体积；实际渲染与真人观感验收分别记录。
+
+114起四炮塔三底盘采用docs/features/114-四炮塔三底盘技能重设计.md：主炮蓄力后瞬时红色穿刺闪电；散弹大招锁定瞄准方向冲锋，由TankMotor提交位移，碰敌/墙停止，无无敌、不刷新普攻；泡泡普攻按命令落点抛物线扫掠，大招单预算抛投后落地区域减速/周期伤害，替代057—058横排五泡与两次接触上限。轻履带有效自主移动加速普攻装填，替代巡航增速；重履带移动也保留正面装甲，替代停稳触发；机炮风暴与侦察烟幕保持054/056。命令距离由输入/session注入并验证复制；表现仅消费提交tick与事件，不能决定伤害或距离。旧稳定ID保留兼容，不可据旧名恢复旧机制。
+
+115起主战炮大招视觉为连续红色能量炮，外围不规则断续螺旋电弧；替代114锯齿闪电主体。文案“邪能贯穿炮”，稳定ID与权威穿刺规则不变；表现按提交tick推进，参数放表现Resource。
+
+116起邪能贯穿炮主体采用粗细起伏、局部聚散的交织能量束，取消115等宽直线亮芯；外围断续电弧保留。视觉宽度不代表权威碰撞范围，仍按提交tick与命中终点表现。

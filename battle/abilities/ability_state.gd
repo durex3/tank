@@ -2,6 +2,8 @@ extends RefCounted
 class_name AbilityState
 ## One independent state per entity/life; no Resource is used as runtime storage.
 
+var reload_credit: float = 0.0
+var dash_remaining: float = 0.0
 var energy: float = 0.0
 var next_use_tick: int = 0
 var last_request: int = 0
@@ -22,6 +24,8 @@ var gained_this_tick: float = 0.0
 
 func reset_life(index: int) -> void:
 	life = index
+	reload_credit = 0.0
+	dash_remaining = 0.0
 	energy = 0.0
 	next_use_tick = 0
 	phase = &"idle"

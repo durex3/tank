@@ -26,7 +26,7 @@ func resolve_batch(hits: Array[HitEvent]) -> Array[Dictionary]:
 			continue
 		target.hp -= actual
 		results.append({"target_id": target.entity_id, "source_id": hit.source_id,
-			"actual_damage": actual, "hp": target.hp, "max_hp": target.max_hp,
+			"projectile_id":hit.projectile_id,"ability_id":hit.ability_id,"actual_damage": actual, "hp": target.hp, "max_hp": target.max_hp,
 			"life_index": target.life_index, "died": target.hp == 0, "position": hit.position, "training": target.is_training, "source_life": hit.source_life, "ability_damage": hit.ability_damage, "guarded": reduced, "push": hit.push, "slow_multiplier":hit.slow_multiplier, "slow_ticks":hit.slow_ticks,"bubble_hits":hit.bubble_hits})
 	return results
 

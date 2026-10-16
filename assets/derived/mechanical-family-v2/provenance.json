@@ -1,0 +1,7 @@
+{
+  "source": "Original Blender modeling based on approved 105 style and project handbook",
+  "tool": "tools/build_mechanical_family_109.py",
+  "external_meshes_copied": false,
+  "runtime_tracks": "Existing validated Godot TrackRig; Blender exports authored fixed chassis shells",
+  "bubble_revision": "User feedback: distinguish bubble from scatter. Round pressure vessel, exposed open spray ring, cyan circular pressure windows; no rear tank. Prior WIP retained in archived Blender scene."
+}
