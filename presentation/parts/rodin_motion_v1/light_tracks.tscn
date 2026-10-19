@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/derived/rodin-motion-v1/light_tracks.glb" id="1"]
+
+[node name="light_tracks" type="Node3D"]
+
+[node name="Visual" parent="." instance=ExtResource("1")]
+
+[node name="TurretSocket" type="Marker3D" parent="."]
+position = Vector3(0, 0.76, 0)

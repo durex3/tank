@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/derived/cannon-recoil-v1/cannon_split.glb" id="1"]
+
+[node name="cannon" type="Node3D"]
+
+[node name="Visual" parent="." instance=ExtResource("1")]
+position = Vector3(0, -0.3976, -0.225)
+rotation = Vector3(0, 3.14159265, 0)
+scale = Vector3(1.3, 1.2, 1.65)
+
+[node name="Muzzle" type="Marker3D" parent="."]
+position = Vector3(0, 0.02, -1.05)

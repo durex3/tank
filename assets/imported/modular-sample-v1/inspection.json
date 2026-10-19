@@ -1,0 +1,53 @@
+{
+  "parts": {
+    "t02": {
+      "source": "assets\\imported\\modular-sample-v1\\t02_pbr.glb",
+      "sha256": "2c8c2d627609157e7b0e25fad64fc362b89ac9c1554111aab9ab3c798db340ef",
+      "meshes": 1,
+      "triangles": 20000,
+      "minimum": [
+        -0.5525839924812317,
+        -0.4768456816673279,
+        -0.9407507181167603
+      ],
+      "maximum": [
+        0.5622678399085999,
+        0.4789726138114929,
+        0.9516472816467285
+      ],
+      "size": [
+        1.1148518323898315,
+        0.9558182954788208,
+        1.8923979997634888
+      ]
+    },
+    "c03": {
+      "source": "assets\\imported\\modular-sample-v1\\c03_pbr.glb",
+      "sha256": "4d806aeb584c47d7e03649cd5a02a092f7c8189c4e7b492f7a45e95324996d08",
+      "meshes": 1,
+      "triangles": 20000,
+      "minimum": [
+        -0.8129722476005554,
+        -0.48968830704689026,
+        -0.9463561177253723
+      ],
+      "maximum": [
+        0.8129575848579407,
+        0.4881381690502167,
+        0.946316659450531
+      ],
+      "size": [
+        1.625929832458496,
+        0.9778264760971069,
+        1.8926727771759033
+      ]
+    }
+  },
+  "status": "inspection_candidate_not_production",
+  "scale_policy": "uniform width-fit from part_size.tres, then candidate-only multiplier/seating from modular_sample_preview.tres; full-envelope NOT compliant yet",
+  "limitations": [
+    "single mesh per part",
+    "no independent recoil/wheel animation",
+    "rear geometry needs review"
+  ]
+}

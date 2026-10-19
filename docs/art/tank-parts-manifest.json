@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-11",
+  "source": "本轮原创原生Godot基础网格场景，未使用第三方模型或新增生图",
+  "status": "visual prototypes; Windows checked; Android pending",
+  "collision_role": "none",
+  "units": "meters",
+  "assets": [
+    {
+      "id": "light_tracks",
+      "path": "presentation/parts/light_tracks.tscn",
+      "type": "chassis"
+    },
+    {
+      "id": "scout_wheels",
+      "path": "presentation/parts/scout_wheels.tscn",
+      "type": "chassis"
+    },
+    {
+      "id": "heavy_tracks",
+      "path": "presentation/parts/heavy_tracks.tscn",
+      "type": "chassis"
+    },
+    {
+      "id": "cannon",
+      "path": "presentation/parts/cannon.tscn",
+      "type": "turret"
+    },
+    {
+      "id": "autocannon",
+      "path": "presentation/parts/autocannon.tscn",
+      "type": "turret"
+    },
+    {
+      "id": "scatter",
+      "path": "presentation/parts/scatter.tscn",
+      "type": "turret"
+    }
+  ]
+}

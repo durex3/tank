@@ -1,0 +1,66 @@
+{
+  "cannon": {
+    "triangles": 3312,
+    "blender_min": [
+      -0.5148000121116638,
+      -0.6976879835128784,
+      0.0
+    ],
+    "blender_max": [
+      0.5148000121116638,
+      1.0499999523162842,
+      0.8827279806137085
+    ],
+    "godot_size": [
+      1.0296000242233276,
+      0.8827279806137085,
+      1.7476879358291626
+    ],
+    "objects": [
+      "CannonModule.006",
+      "CannonModule.006_Body",
+      "RecoilPivot.006",
+      "Barrel.006",
+      "VisualMuzzle.006"
+    ]
+  },
+  "scout_wheels": {
+    "triangles": 7972,
+    "blender_min": [
+      -0.824999988079071,
+      -0.960345983505249,
+      -2.997716919139748e-08
+    ],
+    "blender_max": [
+      0.824999988079071,
+      0.960345983505249,
+      0.9923020601272583
+    ],
+    "godot_size": [
+      1.649999976158142,
+      0.9923020901044275,
+      1.920691967010498
+    ],
+    "objects": [
+      "ScoutWheelsModule.006",
+      "ScoutWheelsModule.006_Body",
+      "SteerLeftFront.006",
+      "WheelLeftFront.006",
+      "TireAssembly.023",
+      "SteerLeftRear.006",
+      "WheelLeftRear.006",
+      "TireAssembly.022",
+      "SteerRightFront.006",
+      "WheelRightFront.006",
+      "TireAssembly.021",
+      "SteerRightRear.006",
+      "WheelRightRear.006",
+      "TireAssembly.020"
+    ]
+  },
+  "blender": "5.2.2 LTS",
+  "source": "user screenshot and generated isolated references; authored meshes, no Hyper3D reuse",
+  "materials": "six shared procedural PBR colors; no invented image normal maps",
+  "status": "candidate_pending_visual_and_godot_review",
+  "triangle_budget_note": "User explicitly allowed more than 6000 tris on 2026-10-15; retain mechanical details."
+}

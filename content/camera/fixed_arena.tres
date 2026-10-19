@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CameraTuning" load_steps=2 format=3]
+[ext_resource type="Script" path="res://definitions/camera_tuning.gd" id="1"]
+[resource]
+script = ExtResource("1")
+orthographic_size = 13.2
+offset = Vector3(14, 19, 16)
+follow_rate = 8.0
+deadzone_m = 0.75
+cut_distance = 8.0
+focus_bounds = Vector2(14, 10)
+focus_offset = Vector3(0, 0, -5.5)

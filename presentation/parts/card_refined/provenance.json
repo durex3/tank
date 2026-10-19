@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-12",
+  "authoring": "native Godot procedural geometry; no external model generator",
+  "generator": "tools/build_refined_parts.gd",
+  "reuse": [
+    "tools/build_detailed_parts.gd",
+    "tools/build_card_aligned_parts.gd"
+  ],
+  "references": [
+    "assets/generated/parts/aligned-v2/cannon.png",
+    "assets/generated/parts/aligned-v2/autocannon.png",
+    "assets/generated/parts/aligned-v2/scatter.png",
+    "assets/generated/parts/chassis-atlas-v1.png"
+  ],
+  "purpose": "six independently replaceable display-only 3D modules, silhouette refinement",
+  "preserved_versions": [
+    "presentation/parts/card_detailed",
+    "presentation/parts/card_aligned",
+    "presentation/parts original scenes"
+  ],
+  "socket_contract": {
+    "TurretSocket": [
+      0,
+      0.76,
+      0
+    ],
+    "Muzzle": [
+      0,
+      0.02,
+      -1.05
+    ]
+  },
+  "changes": [
+    "tapered faceted turret housing and swept side armor",
+    "sloped roof and forward scatter armor",
+    "long tapered hull nose and narrower scout shoulders",
+    "inset wheel dishes, rubber sidewall and thicker spokes",
+    "six separated track wheels with new sizes and heights"
+  ],
+  "metrics": {
+    "autocannon": {
+      "surfaces": 7,
+      "triangles": 20696
+    },
+    "cannon": {
+      "surfaces": 7,
+      "triangles": 7656
+    },
+    "heavy_tracks": {
+      "surfaces": 6,
+      "triangles": 62380
+    },
+    "light_tracks": {
+      "surfaces": 6,
+      "triangles": 61356
+    },
+    "scatter": {
+      "surfaces": 7,
+      "triangles": 9000
+    },
+    "scout_wheels": {
+      "surfaces": 6,
+      "triangles": 46604
+    }
+  },
+  "acceptance_record": "docs/features/039-装配模型轮廓与比例对齐.md",
+  "limitations": "stylized procedural approximation; no texture baking; Android performance pending"
+}

@@ -1,0 +1,22 @@
+{
+  "tier": "Gen-2.5-High",
+  "mesh_mode": "Raw",
+  "quality_override": 20000,
+  "status": "prototype_not_integrated",
+  "prompts": {
+    "cannon": "One standalone modular cannon turret for a stylized mobile toy-tank game. NO vehicle chassis or wheels. Chunky charming readable silhouette, clean rounded manufactured armor, broad smooth surfaces, soft bevels. Compact low wide porcelain-white armored housing, charcoal lower mechanism, one straight thick dark gun barrel with a warm yellow muzzle ring and recessed black bore. Tiny cyan indicator. A THIN dark circular rotation bearing sits directly under the housing, no tall pedestal, no white cylinder support. Proportions whole turret width:length:height = 1:1.65:0.60 including barrel. Housing is squat and wide, barrel extends forward horizontally. Closed finished rear, symmetrical left/right. Restrained premium toy-like mobile game art, simple solid colors, matte materials, soft clean shading. NO damage, dents, wrinkles, noisy triangulated surfaces, grime, scratches, tiny screws, dense panel seams, cables, backpacks, extra guns, display base, text. Fully complete 360 degree model, underside closed.",
+    "scout_wheels": "One standalone modular four-wheel toy tank CHASSIS, NO turret, NO gun. Chunky charming mobile game style, rounded manufactured armor, broad smooth surfaces and generous bevels. Low wide porcelain-white body, four identical oversized charcoal rubber wheels with simple broad tread blocks, flat white wheel covers and warm yellow rim rings. Exactly two wheels per side. Four clean rounded white fenders. Thin dark circular turret mounting bearing centered on deck, closed deck underneath, NO deep open hole, NO tall pedestal. Small cyan front headlights, simple rear with tiny red lamps. Proportions overall width:length:height = 1:1.16:0.60 including tires. Symmetrical body and perfectly round wheels, axles horizontal. Pure solid colors, clean matte toy materials. NO dents, wrinkles, melted armor, jagged panels, dense seams, grime, scratches, tiny screws, rear backpack, cargo box, protruding fuel tank, wires, extra wheels, tracks, scenery, display stand, text. Complete closed underside, finished 360 degree model."
+  },
+  "jobs": {
+    "cannon": {
+      "generation_id": "3a4927de-bd6d-4f6b-b784-823ed38a4238",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/3a4927de-bd6d-4f6b-b784-823ed38a4238"
+    },
+    "scout_wheels": {
+      "generation_id": "36c929f4-a15b-455c-acf5-785ca2b08b80",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/36c929f4-a15b-455c-acf5-785ca2b08b80"
+    }
+  }
+}

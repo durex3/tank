@@ -1,0 +1,12 @@
+{
+  "feature": "099",
+  "created": "2026-10-15",
+  "method": "Blender MCP authored meshes; imagegen used for concept reference only",
+  "references": "source_art/blender-family-v1",
+  "source_blend": "source_art/blender-family-v1/tank_modules.blend",
+  "prompts": "source_art/blender-family-v1/prompts.json",
+  "license_note": "User supplied screenshot used for style guidance; third-party rights not independently verified. Meshes authored for this project.",
+  "triangle_budget": "User explicitly permits exceeding 6000 tris",
+  "status": "candidate: mesh QA and Godot import passed; user visual approval, production integration and Android pending",
+  "production_catalog_replaced": false
+}

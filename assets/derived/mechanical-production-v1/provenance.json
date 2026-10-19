@@ -1,0 +1,6 @@
+{
+  "source": "assets/derived/mechanical-sample-v1/scout_wheels.glb",
+  "tool": "tools/prepare_mechanical_108.py",
+  "change": "192 tread blocks: apply chevron tilt before radial wheel rotation; preserve round tire and all axle centers",
+  "original_modified": false
+}

@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-15",
+  "provider": "OpenAI built-in imagegen",
+  "role": "2D inventory illustrations from model generation references; not new 3D geometry",
+  "originals": "Preserved; gray-background source images untouched",
+  "normalization": "tools/normalize_reference_cards.gd; alpha>=0.1 bounds; fit 480x400 within centered transparent 512x512; aspect preserved",
+  "rights": "Inherited from source provenance; cannon/light_tracks source is user supplied game reference, authorization not newly established by this derivative",
+  "parts": [
+    {
+      "id": "autocannon",
+      "source": "assets/generated/rodin-family-v2/autocannon.png",
+      "generated_file": "C:\\Users\\liuge\\.codex\\generated_images\\01a13ac9-b830-7053-8b31-6efe0a4e4635\\exec-60e578b8-b9f8-4f25-b836-7fc066263a8b.png",
+      "output": "assets/generated/model-reference-cards-v1/autocannon.png",
+      "normalized": "assets/derived/model-reference-cards-v1/autocannon.png",
+      "prompt": "Use case: background-extraction. Extract this EXACT twin-barrel autocannon turret from its gray studio backdrop. Preserve its exact silhouette, proportions, two perforated gold-rim barrels, ivory armor, black fins, mint optics, round mounting bearing, original perspective, lighting and material details. Remove background and floor shadow only. One isolated full turret, generous transparent margins, actual transparent alpha, no redesign, no text, no pedestal added. Asset for game inventory card."
+    },
+    {
+      "id": "scatter",
+      "source": "assets/generated/rodin-family-v2/scatter.png",
+      "generated_file": "C:\\Users\\liuge\\.codex\\generated_images\\01a13ac9-b830-7053-8b31-6efe0a4e4635\\exec-a2c0e9eb-0fa9-4752-99ef-61f88c49d085.png",
+      "output": "assets/generated/model-reference-cards-v1/scatter.png",
+      "normalized": "assets/derived/model-reference-cards-v1/scatter.png",
+      "prompt": "Use case: background-extraction. Game inventory card. Extract the EXACT single scatter component shown in this image. Preserve exact shape, proportions, ivory armor, charcoal mechanisms, gold details, perspective, original studio lighting, surface detail and all holes. Remove ONLY gray background and floor shadow. Fully isolated entire component with true transparent alpha and generous margin. No redesign, no extra elements, no text. For chassis retain empty turret mounting socket and all wheels/tracks, no turret."
+    },
+    {
+      "id": "bubble_cannon",
+      "source": "assets/generated/rodin-family-v2/bubble_cannon.png",
+      "generated_file": "C:\\Users\\liuge\\.codex\\generated_images\\01a13ac9-b830-7053-8b31-6efe0a4e4635\\exec-a087b44d-4ee6-4771-9e4b-86249b830424.png",
+      "output": "assets/generated/model-reference-cards-v1/bubble_cannon.png",
+      "normalized": "assets/derived/model-reference-cards-v1/bubble_cannon.png",
+      "prompt": "Use case: background-extraction. Game inventory card. Extract the EXACT single bubble_cannon component shown in this image. Preserve exact shape, proportions, ivory armor, charcoal mechanisms, gold details, perspective, original studio lighting, surface detail and all holes. Remove ONLY gray background and floor shadow. Fully isolated entire component with true transparent alpha and generous margin. No redesign, no extra elements, no text. For chassis retain empty turret mounting socket and all wheels/tracks, no turret."
+    },
+    {
+      "id": "heavy_tracks",
+      "source": "assets/generated/rodin-family-v2/heavy_tracks.png",
+      "generated_file": "C:\\Users\\liuge\\.codex\\generated_images\\01a13ac9-b830-7053-8b31-6efe0a4e4635\\exec-8d403f3b-020c-4339-9f56-f17427ef0189.png",
+      "output": "assets/generated/model-reference-cards-v1/heavy_tracks.png",
+      "normalized": "assets/derived/model-reference-cards-v1/heavy_tracks.png",
+      "prompt": "Use case: background-extraction. Game inventory card. Extract the EXACT single heavy_tracks component shown in this image. Preserve exact shape, proportions, ivory armor, charcoal mechanisms, gold details, perspective, original studio lighting, surface detail and all holes. Remove ONLY gray background and floor shadow. Fully isolated entire component with true transparent alpha and generous margin. No redesign, no extra elements, no text. For chassis retain empty turret mounting socket and all wheels/tracks, no turret."
+    },
+    {
+      "id": "scout_wheels",
+      "source": "assets/generated/rodin-family-v2/scout_wheels.png",
+      "generated_file": "C:\\Users\\liuge\\.codex\\generated_images\\01a13ac9-b830-7053-8b31-6efe0a4e4635\\exec-3de92391-0d81-492a-9962-0bc783a23575.png",
+      "output": "assets/generated/model-reference-cards-v1/scout_wheels.png",
+      "normalized": "assets/derived/model-reference-cards-v1/scout_wheels.png",
+      "prompt": "Use case: background-extraction. Game inventory card. Extract the EXACT single scout_wheels component shown in this image. Preserve exact shape, proportions, ivory armor, charcoal mechanisms, gold details, perspective, original studio lighting, surface detail and all holes. Remove ONLY gray background and floor shadow. Fully isolated entire component with true transparent alpha and generous margin. No redesign, no extra elements, no text. For chassis retain empty turret mounting socket and all wheels/tracks, no turret."
+    },
+    {
+      "id": "cannon",
+      "source": "assets/generated/rodin-sample-v1/user_tank_reference.png",
+      "generated_file": "C:\\Users\\liuge\\.codex\\generated_images\\01a13ac9-b830-7053-8b31-6efe0a4e4635\\exec-751792a3-b2f6-403d-bd42-8a548b72d3b2.png",
+      "output": "assets/generated/model-reference-cards-v1/cannon.png",
+      "normalized": "assets/derived/model-reference-cards-v1/cannon.png",
+      "prompt": "Use case: precise-object-edit. Produce one isolated game inventory component from this image: upper cannon turret only; remove entire lower hull and tracks, retain original dark circular turret bearing. Preserve the broad flat white turret, thick single gold-rim gun barrel and black barrel bands. Preserve source design and proportions, same front-left three-quarter camera, clean detailed ivory matte armor, charcoal mechanisms and restrained gold. Improve image clarity without changing identity. Entire component visible, transparent alpha everywhere outside solid object, remove background and floor/display platform. No new components, no text. This is a 2D illustration derived from the model's original whole-tank reference, not a new 3D model."
+    },
+    {
+      "id": "light_tracks",
+      "source": "assets/generated/rodin-sample-v1/user_tank_reference.png",
+      "generated_file": "C:\\Users\\liuge\\.codex\\generated_images\\01a13ac9-b830-7053-8b31-6efe0a4e4635\\exec-1b9d981b-6876-45a5-abae-37ba76598db3.png",
+      "output": "assets/generated/model-reference-cards-v1/light_tracks.png",
+      "normalized": "assets/derived/model-reference-cards-v1/light_tracks.png",
+      "prompt": "Use case: precise-object-edit. Produce one isolated game inventory component from this image: lower tracked chassis only; remove the upper turret and barrel, reveal an EMPTY dark circular turret mounting socket where turret was attached. Preserve the exact ivory hull, two black track belts, three pale gold-rim wheels per side, frontal grille and lights. Preserve source design and proportions, same front-left three-quarter camera, clean detailed ivory matte armor, charcoal mechanisms and restrained gold. Improve image clarity without changing identity. Entire component visible, transparent alpha everywhere outside solid object, remove background and floor/display platform. No new components, no text. This is a 2D illustration derived from the model's original whole-tank reference, not a new 3D model."
+    }
+  ]
+}

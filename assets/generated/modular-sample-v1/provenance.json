@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-15",
+  "tool": "built-in image_gen",
+  "reference": "../modular-family-design-v1/family-board.png",
+  "status": "reference_images_only_pending_3d",
+  "tasks": [],
+  "images": [
+    {
+      "output": "t02-reference.png",
+      "prompt": "Extract and faithfully redraw ONLY T02, the SECOND turret in the TOP ROW of the supplied design board, as a clean standalone image-to-3D reference. One object only. Preserve its exact design and proportions: ivory matte rounded rectangular armored housing, exactly TWO parallel thick short charcoal barrels with yellow rings and genuinely open dark circular bores, low black circular mounting collar, small cyan rectangular indicator, paired side vents, top inset panel. Preserve same three-quarter orthographic camera facing lower left, identical shell shape, barrel spacing and lengths. Complete object and base visible, centered with 12 percent margin. Neutral white background, no ground plane mesh, no shadows beyond subtle self shading, no labels, no bounding box, no other parts, no tank chassis, no exploded view, no additional view. Clean smooth painted surfaces without scratches. This is a single turret module, not an assembled vehicle."
+    },
+    {
+      "output": "c03-reference.png",
+      "prompt": "Extract and faithfully redraw ONLY C03, the THIRD chassis in the BOTTOM ROW of the supplied design board, as a clean standalone image-to-3D reference. One chassis only, NO turret. Preserve exact squat ivory wedge hull, FOUR total large circular charcoal off-road tires (two on each side), yellow rim rings, independent ivory fenders, cyan narrow lights, central empty low circular turret mounting socket. Preserve same three-quarter orthographic camera facing lower left and exact body/tires proportions. Clearly separate front and back tires, tires and fenders with real air gaps; complete round wheels, no tracks. Entire chassis visible centered with 12 percent margin. Neutral white background, no ground plane mesh, no cast shadow beyond subtle self shading, no labels, no bounding box, no other models, no exploded view, no multiple views. Clean matte materials, broad beveled armor, no scratches or grime. Preserve C03 design, do not reinterpret as a generic car."
+    }
+  ],
+  "notes": [
+    "Images independently framed for reconstruction, pixel sizes must not define cross-module world scale.",
+    "No Hyper3D tools exposed in current session; no 3D task submitted.",
+    "Back and hidden wheel geometry require inspection; reference does not prove four separate wheels."
+  ]
+}

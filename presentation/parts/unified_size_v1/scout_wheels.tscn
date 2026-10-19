@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://presentation/parts/rodin_family_v2/scout_wheels.tscn" id="1"]
+
+[node name="scout_wheels" type="Node3D"]
+
+[node name="Geometry" parent="." instance=ExtResource("1")]
+position = Vector3(5.811453e-05, -0.022300437, -0.17334902)
+scale = Vector3(1.0565233, 1.1166402, 0.97775584)
+
+[node name="TurretSocket" type="Marker3D" parent="."]
+position = Vector3(0, 0.76, 0)

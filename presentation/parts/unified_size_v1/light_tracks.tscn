@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://presentation/parts/track_rig_v1/light_tracks.tscn" id="1"]
+
+[node name="light_tracks" type="Node3D"]
+
+[node name="Geometry" parent="." instance=ExtResource("1")]
+position = Vector3(0, 0, -5.9604645e-07)
+scale = Vector3(1, 1.0000004, 0.9999998)
+
+[node name="TurretSocket" type="Marker3D" parent="."]
+position = Vector3(0, 0.76, 0)

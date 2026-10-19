@@ -1,0 +1,1 @@
+基于081真实三维装配模型，经TankSurfacePolish及clean_armor.gdshader清理材质后，由tools/capture_finish_icons.gd渲染卡片图；原模型、原贴图与旧卡片只读保留。未使用外部生成服务。来源链见assets/derived/proportion-v1/SOURCE.md。

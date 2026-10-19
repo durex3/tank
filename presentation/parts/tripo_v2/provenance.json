@@ -1,0 +1,8 @@
+{
+  "source": "Existing user-provided Tripo GLBs referenced read-only; original provenance in assets/imported/tripo-v1/provenance.json",
+  "changes": "Local Godot scene wrappers: wider scout chassis, broader and taller heavy chassis, two low-poly dark metal mounting collars per chassis",
+  "new_generated_assets": false,
+  "collar_geometry": "Two CylinderMesh primitives, 32 radial segments, no collision or scripts",
+  "interfaces": "Root identity; TurretSocket (0,0.76,0); all weapon scenes and Muzzle unchanged",
+  "limitations": "Bubble glass remains opaque; no independently rigged wheels/tracks; Android pending"
+}

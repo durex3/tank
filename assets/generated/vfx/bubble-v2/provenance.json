@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-13",
+  "tool": "built-in image_gen",
+  "purpose": "059 bubble cannon film and watery burst sprites",
+  "prompt_file": "prompts.txt",
+  "transparent_background": true,
+  "source_files": ["bubble-source.png", "pop-source.png"],
+  "runtime_files": ["bubble.png", "pop.png"],
+  "runtime_dimensions": [512, 512],
+  "normalization": "tools/prepare_bubble_art.gd; Lanczos resize; preserved original alpha and source files",
+  "import": "lossless RGBA, mipmaps, alpha border fix, linear filtering",
+  "collision_role": "none",
+  "rights_note": "AI-generated project assets; no third-party source or license asserted",
+  "acceptance": "24/24 project checks PASS; actual Compatibility film, burst, reload and three-chassis model captures inspected; Android and player review pending"
+}

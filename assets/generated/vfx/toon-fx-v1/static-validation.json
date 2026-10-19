@@ -1,0 +1,13 @@
+{
+  "status": "desktop checks passed; Android/user acceptance pending",
+  "check_report": "artifacts/check-report.json",
+  "checks": 31,
+  "passed": true,
+  "render": [
+    "real production skill sessions, 32 captures",
+    "real production chassis sessions, 12 captures",
+    "sand/grass/night 32 cells at 48px",
+    "same tick pixel freeze",
+    "life change pixel erosion"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-15",
+  "source": "TankPartCatalog current real 3D modules; original assets preserved",
+  "tool": "tools/capture_volume_cards.gd, Godot 4.7.2 Compatibility",
+  "style": "content/presentation/part_cards.tres",
+  "process": "1024px 4x MSAA transparent orthographic rendering; 512px RGBA Lanczos derivative",
+  "use": "standalone hangar cards and upgrade/detail illustration",
+  "not": "new AI concept art or authority geometry",
+  "acceptance": "Windows Godot 4.7.2 Compatibility real game renders reviewed, final 29/29 checks PASS; Android/user continuous review pending"
+}

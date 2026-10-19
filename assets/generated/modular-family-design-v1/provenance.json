@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-15",
+  "tool": "built-in image_gen",
+  "kind": "concept_design_not_3d",
+  "status": "pending_user_review",
+  "output": "family-board.png",
+  "prompt": "prompt.txt",
+  "reference": "User supplied garage screenshot in conversation; visual direction translated to text, not passed as image input",
+  "original": "C:/Users/liuge/.codex/generated_images/01a13f80-b302-77b1-97db-7814e90b719e/exec-c387c472-ccf2-41d1-9085-84dac08a3ef7.png",
+  "limitations": [
+    "Generated bounding boxes do not certify dimensions",
+    "No Hyper3D task submitted",
+    "No runtime asset replacement"
+  ]
+}

@@ -1,0 +1,242 @@
+[
+  {
+    "file": "toon_bolt-0.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_bolt-1.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_bolt-2.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_bolt-3.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_bolt_2x2.png",
+    "image": "1024x1024 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_debris-0.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_debris-1.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_debris-2.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_debris-3.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_debris_2x2.png",
+    "image": "1024x1024 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_drop-0.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_drop-1.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_drop-2.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_drop-3.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_drop_2x2.png",
+    "image": "1024x1024 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_fire-0.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_fire-1.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_fire-2.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_fire-3.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_fire_2x2.png",
+    "image": "1024x1024 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_flash-0.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_flash-1.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_flash-2.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_flash-3.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_flash_2x2.png",
+    "image": "1024x1024 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_smoke-0.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_smoke-1.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_smoke-2.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_smoke-3.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_smoke_2x2.png",
+    "image": "1024x1024 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_streak-0.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_streak-1.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_streak-2.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_streak-3.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_streak_2x2.png",
+    "image": "1024x1024 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_zap-0.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_zap-1.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_zap-2.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_zap-3.png",
+    "image": "512x512 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  },
+  {
+    "file": "toon_zap_2x2.png",
+    "image": "1024x1024 srgba",
+    "alpha_range": "0 1",
+    "luminance_range": "0 1"
+  }
+]

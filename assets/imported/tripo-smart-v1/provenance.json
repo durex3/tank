@@ -1,0 +1,15 @@
+{
+  "source": "/Users/liugelong/Downloads/tank turret 3d model.glb",
+  "sha256": "bc89d76fb109b10da400b79d5f209e8ea506fbb24c09fe61de84a8e28cb372de",
+  "generator": "Tripo",
+  "triangles": 9341,
+  "textures": 0,
+  "material": "single gray material",
+  "status": "Evaluated only; user declined replacement. TankPartCatalog retains tripo-v1 cannon.",
+  "prompt_and_license": "Not provided",
+  "textured": {
+    "source": "/Users/liugelong/Downloads/tank turret 3d model (1).glb",
+    "sha256": "2ec0761094b8925abfda313ef1bf417c8d994d482324a66d3c988422a51318c3",
+    "images": 1
+  }
+}

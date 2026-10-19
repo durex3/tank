@@ -1,0 +1,45 @@
+{
+  "source": "assets/imported/rodin-v1/tank_bang_pbr.glb",
+  "source_sha256": "ccbada256c194b4be5d0835690ed6473fa1972099eb02b05dde484d6639bac02",
+  "generation_id": "a2b536e9-d910-40d5-b536-b811e0d575b4",
+  "triangles": {
+    "light_tracks": 23180,
+    "cannon": 9948
+  },
+  "wheel_faces": [
+    {
+      "name": "WheelFace1_0",
+      "triangles": 327
+    },
+    {
+      "name": "WheelFace1_1",
+      "triangles": 252
+    },
+    {
+      "name": "WheelFace1_2",
+      "triangles": 298
+    },
+    {
+      "name": "Track1",
+      "triangles": 7775
+    },
+    {
+      "name": "WheelFace-1_0",
+      "triangles": 333
+    },
+    {
+      "name": "WheelFace-1_1",
+      "triangles": 256
+    },
+    {
+      "name": "WheelFace-1_2",
+      "triangles": 298
+    },
+    {
+      "name": "Track-1",
+      "triangles": 7671
+    }
+  ],
+  "method": "32-plane circular face clipping with UV/normal interpolation; original embedded images retained. Sliding barrel length 80%, sleeve junction fixed.",
+  "limitations": "Stationary gold rims; rotating circular wheel faces. Belt rolling uses a cosmetic shader pattern, not individual tread links. Unused source buffers retained."
+}

@@ -1,0 +1,23 @@
+{
+  "source": "Hyper3D Rodin MCP",
+  "original_generation": "4dfce9b9-b0dc-4b5e-88ee-8cf2e1f3b26d",
+  "bang_generation": "a2b536e9-d910-40d5-b536-b811e0d575b4",
+  "bang_resolution": "Basic",
+  "reference": "User supplied MiniTanks screenshot (visual reference only)",
+  "files": {
+    "tank_pbr.glb": {
+      "sha256": "20d067a198e64c30227d63ddfcf0311c9ac0fb6ab732450b7a86bffa2792535f",
+      "bytes": 11055148,
+      "triangles": 30000,
+      "meshes": 1,
+      "embedded_images": 3
+    },
+    "tank_bang_pbr.glb": {
+      "sha256": "ccbada256c194b4be5d0835690ed6473fa1972099eb02b05dde484d6639bac02",
+      "bytes": 11304772,
+      "triangles": 30000,
+      "meshes": 6,
+      "embedded_images": 3
+    }
+  }
+}

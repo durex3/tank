@@ -1,0 +1,7 @@
+{
+  "source": "presentation/parts/unified_size_v1/calibration.json",
+  "renderer": "Godot 4.7.2 Compatibility",
+  "tool": "tools/capture_unified_icons.gd",
+  "purpose": "seven standalone left-facing part cards, common render camera and canvas",
+  "original_assets": "preserved"
+}

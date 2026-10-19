@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PartGrowthDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://definitions/part_growth_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"scatter"
+values = PackedInt32Array(32, 33, 34, 35, 36, 37, 38, 39, 40, 41)
+loads = PackedInt32Array(2, 2, 2, 2, 2, 2, 3, 3, 3, 3)
+costs = PackedInt32Array(20, 30, 40, 55, 70, 90, 115, 145, 180)
+unlock_cost = 100

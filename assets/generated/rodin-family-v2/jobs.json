@@ -1,0 +1,95 @@
+{
+  "provider": "Hyper3D Rodin MCP",
+  "status": "all_completed_not_integrated",
+  "jobs": [
+    {
+      "id": "autocannon",
+      "generation_id": "a84ff3be-933c-477d-b028-2186cc242927",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/a84ff3be-933c-477d-b028-2186cc242927",
+      "parameters": {
+        "geometry_file_format": "glb",
+        "mesh_mode": "Raw",
+        "quality_override": 12000,
+        "tier": "Gen-2.5-High",
+        "texture_delight": true,
+        "reference_upload_ids": [
+          "2f87f5fc-e8cf-4883-a866-33924a7fa951"
+        ],
+        "prompt": "One standalone modular tank part matching the reference exactly: upper left twin-barrel autocannon turret. Two short parallel dark barrels with perforated muzzle sleeves and gold rims, white armored housing, black rear cooling fins, round mounting base. Preserve silhouette, proportions, ivory matte armor, dark mechanics, gold accents and mint details. Complete symmetric hidden side. Turret only: no hull, wheels or tracks. Chassis only: no turret or weapon. No floor, backdrop, text or pedestal. Clean game-ready hard surfaces and PBR textures."
+      }
+    },
+    {
+      "id": "scatter",
+      "generation_id": "5219ca21-9600-495b-881c-9be2c8c82019",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/5219ca21-9600-495b-881c-9be2c8c82019",
+      "parameters": {
+        "geometry_file_format": "glb",
+        "mesh_mode": "Raw",
+        "quality_override": 12000,
+        "tier": "Gen-2.5-High",
+        "texture_delight": true,
+        "reference_upload_ids": [
+          "6a15a4f6-dd90-4e8e-878f-c047e75a00df"
+        ],
+        "prompt": "One standalone scatter cannon turret matching the reference exactly. One wide short hollow hexagonal muzzle with gold rim, ivory angular armored housing, two dark side recoil cylinders, round mounting base. Turret only, no hull, wheels, tracks, floor or pedestal. Preserve reference proportions and clean ivory matte, charcoal and gold materials. Symmetric complete hidden side, clean game-ready hard surfaces and PBR textures."
+      }
+    },
+    {
+      "id": "bubble_cannon",
+      "generation_id": "99e66725-7215-453e-8340-1bd028a305d4",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/99e66725-7215-453e-8340-1bd028a305d4",
+      "parameters": {
+        "geometry_file_format": "glb",
+        "mesh_mode": "Raw",
+        "quality_override": 12000,
+        "tier": "Gen-2.5-High",
+        "texture_delight": true,
+        "reference_upload_ids": [
+          "69a7833a-50d5-4e9d-ba48-93c9e17b6eba"
+        ],
+        "prompt": "One standalone modular tank part matching the reference exactly: upper right bubble cannon turret. Round short nozzle with gold rim and mint inner ring, large horizontal translucent turquoise liquid tank at rear, curved black hoses, small pressure gauge, white rounded housing and round mounting base. Preserve silhouette, proportions, ivory matte armor, dark mechanics, gold accents and mint details. Complete symmetric hidden side. Turret only: no hull, wheels or tracks. Chassis only: no turret or weapon. No floor, backdrop, text or pedestal. Clean game-ready hard surfaces and PBR textures."
+      }
+    },
+    {
+      "id": "scout_wheels",
+      "generation_id": "a56c1bf6-7fae-4922-8b1d-45b808ae4283",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/a56c1bf6-7fae-4922-8b1d-45b808ae4283",
+      "parameters": {
+        "geometry_file_format": "glb",
+        "mesh_mode": "Raw",
+        "quality_override": 12000,
+        "tier": "Gen-2.5-High",
+        "texture_delight": true,
+        "reference_upload_ids": [
+          "71668354-f083-4a0f-84eb-279d0ab8d4bf"
+        ],
+        "prompt": "One standalone modular tank part matching the reference exactly: lower left scout wheeled chassis. Low arrowhead white armored hull, FOUR chunky black rubber wheels in total, gold rim accents, visible suspension, empty circular turret mounting socket on deck. Preserve silhouette, proportions, ivory matte armor, dark mechanics, gold accents and mint details. Complete symmetric hidden side. Turret only: no hull, wheels or tracks. Chassis only: no turret or weapon. No floor, backdrop, text or pedestal. Clean game-ready hard surfaces and PBR textures."
+      }
+    },
+    {
+      "id": "heavy_tracks",
+      "generation_id": "3c01b7d9-5d8a-4efa-9783-2c48ffab04c9",
+      "status": "queued",
+      "display_url": "https://hyper3d.ai/workspace/rodin/3c01b7d9-5d8a-4efa-9783-2c48ffab04c9",
+      "parameters": {
+        "geometry_file_format": "glb",
+        "mesh_mode": "Raw",
+        "quality_override": 12000,
+        "tier": "Gen-2.5-High",
+        "texture_delight": true,
+        "reference_upload_ids": [
+          "68fe4d48-8569-4d12-8024-67ea73855512"
+        ],
+        "prompt": "One standalone modular tank part matching the reference exactly: lower right heavy tracked chassis. Wide thick white armored hull, TWO closed black track belts, FOUR large road wheels on EACH side with pale hubs and gold rims, white side fenders, empty circular turret mounting socket on deck. Preserve silhouette, proportions, ivory matte armor, dark mechanics, gold accents and mint details. Complete symmetric hidden side. Turret only: no hull, wheels or tracks. Chassis only: no turret or weapon. No floor, backdrop, text or pedestal. Clean game-ready hard surfaces and PBR textures."
+      }
+    }
+  ],
+  "notes": [
+    "散射首次校验图片大小失败，未创建任务；重新上传后成功。",
+    "生成完成不代表拆件、机械动画或装配验收通过。"
+  ]
+}

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PartSizeStyle" format=3]
+
+[ext_resource type="Script" path="res://presentation/part_size_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+turret_bounds = AABB(-0.519, 0.125, -1.16, 1.038, 0.594, 1.708)
+chassis_bounds = AABB(-0.852, -0.0019999954, -0.952, 1.704, 0.9109999, 1.904)

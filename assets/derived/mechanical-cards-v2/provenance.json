@@ -1,0 +1,7 @@
+{
+  "source": "TankPartCatalog: mechanical_v1 approved cannon/scout + mechanical_v2 five new modules",
+  "tool": "tools/capture_mechanical_cards_109.gd",
+  "renderer": "Godot 4.7.2 Compatibility",
+  "format": "512x512 transparent PNG",
+  "original_images_modified": false
+}

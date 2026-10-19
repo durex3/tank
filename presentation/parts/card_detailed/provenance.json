@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-12",
+  "tool": "Godot native procedural mesh authoring in GDScript, no external model service",
+  "generator": "tools/build_detailed_parts.gd",
+  "shared_packing": "tools/build_card_aligned_parts.gd",
+  "reference_turrets": "assets/generated/parts/aligned-v2/{cannon,autocannon,scatter}.png",
+  "reference_chassis": "assets/generated/parts/chassis-atlas-v1.png via measured PartIconFrames",
+  "purpose": "six independently replaceable real 3D modules; display-only geometry, no collision or combat data",
+  "original_scenes": "presentation/parts/card_aligned and presentation/parts originals preserved",
+  "socket_contract": {
+    "TurretSocket": [
+      0,
+      0.76,
+      0
+    ],
+    "Muzzle": [
+      0,
+      0.02,
+      -1.05
+    ]
+  },
+  "materials": [
+    "armor",
+    "edge",
+    "dark",
+    "rubber",
+    "metal",
+    "gold",
+    "green"
+  ],
+  "packing": "one indexed surface per material per part, seven surfaces; no texture dependency",
+  "metrics": {
+    "autocannon": {
+      "surfaces": 7,
+      "triangles": 21540
+    },
+    "cannon": {
+      "surfaces": 7,
+      "triangles": 8500
+    },
+    "heavy_tracks": {
+      "surfaces": 7,
+      "triangles": 57804
+    },
+    "light_tracks": {
+      "surfaces": 7,
+      "triangles": 56780
+    },
+    "scatter": {
+      "surfaces": 7,
+      "triangles": 9520
+    },
+    "scout_wheels": {
+      "surfaces": 7,
+      "triangles": 46124
+    }
+  },
+  "acceptance": "nine pairs, rotation and window resize actual Compatibility renders reviewed; final check results in docs/features/038-装配模型结构与材质细化.md",
+  "limitations": "procedural stylized second pass, not exact high-resolution concept reconstruction; Android performance pending"
+}

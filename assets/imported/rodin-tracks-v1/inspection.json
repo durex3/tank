@@ -1,0 +1,13 @@
+{
+  "source": "Hyper3D Rodin MCP",
+  "generation_id": "45223830-6a7a-4b11-a9bb-ab554b1a9675",
+  "sha256": "f24768a11f9fcf5798f826cc5ead575fd0c9196f62cee5614dba3ba81e4019fd",
+  "triangles": 12000,
+  "nodes": 1,
+  "meshes": 1,
+  "weld_precision_decimals": 5,
+  "connected_components_triangle_counts": [
+    12000
+  ],
+  "status": "Not accepted as isolated track module; generated whole chassis"
+}

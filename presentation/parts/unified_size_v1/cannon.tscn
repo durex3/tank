@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://presentation/parts/rodin_motion_v1/cannon.tscn" id="1"]
+
+[node name="cannon" type="Node3D"]
+
+[node name="Geometry" parent="." instance=ExtResource("1")]
+position = Vector3(0.0016995668, 0.008027539, 0.18911731)
+scale = Vector3(1.1964446, 1.4857165, 0.8718152)
+
+[node name="Muzzle" type="Marker3D" parent="."]
+position = Vector3(0, 0.02, -1.05)

@@ -1,0 +1,12 @@
+{
+  "creator": "Codex using local Blender 5.2.2 LTS",
+  "method": "Original scripted hard-surface geometry, authored solid-color PBR materials",
+  "reference": "User-provided MiniTanks screenshots and read-only inspection of extracted porcelain_workshop resources",
+  "reference_geometry_or_textures_copied": false,
+  "source_file": "source_art/mechanical-sample-v1/mechanical_sample.blend",
+  "rebuild_script": "tools/build_mechanical_sample_105.py",
+  "report": "report.json",
+  "status": "independent_prototype_not_integrated",
+  "validation": "Blender renders, Godot import and named rig nodes passed; full project check passed",
+  "limitations": ["Production size contract not accepted", "Runtime animations not wired", "Android untested", "Static object draw-call consolidation pending"]
+}

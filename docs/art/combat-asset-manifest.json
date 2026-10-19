@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-12",
+  "new_generation": true,
+  "assets": [
+    {
+      "id": "muzzle",
+      "path": "assets/effects/muzzle-v1.png",
+      "event": "weapon_fired",
+      "source": "用户提供的项目现有assets，原文件未修改",
+      "provenance_record": "assets/effects/provenance.md",
+      "provenance_status": "原记录未覆盖此文件，生成工具/许可元数据未补齐",
+      "pivot": "center",
+      "collision_role": "none",
+      "approval_status": "Windows Compatibility visual checked; Android pending"
+    },
+    {
+      "id": "impact",
+      "path": "assets/effects/shockwave-v1.png",
+      "event": "projectile_hit",
+      "source": "用户提供的项目现有assets，原文件未修改",
+      "provenance_record": "assets/effects/provenance.md",
+      "provenance_status": "原记录未覆盖此文件，生成工具/许可元数据未补齐",
+      "pivot": "center",
+      "collision_role": "none",
+      "approval_status": "Windows Compatibility visual checked; Android pending"
+    },
+    {
+      "id": "explosion",
+      "path": "assets/effects/explosion-v1.png",
+      "event": "entity_died",
+      "source": "用户提供的项目现有assets，原文件未修改",
+      "provenance_record": "assets/effects/provenance.md",
+      "provenance_status": "原记录注明2026-10-11内置生图工具生成",
+      "pivot": "center",
+      "collision_role": "none",
+      "approval_status": "Windows Compatibility visual checked; Android pending"
+    },
+    {
+      "id": "ability_smoke_v1",
+      "path": "assets/generated/vfx/abilities-v1/smoke.png",
+      "event": "ability_zones",
+      "source": "built-in image_gen; generated atlas and padding edit",
+      "provenance_record": "assets/generated/vfx/abilities-v1/provenance.json",
+      "pivot": "center",
+      "collision_role": "none",
+      "size": "512x512 RGBA, isolated sprite, mipmaps",
+      "approval_status": "desktop actual training render reviewed; Android pending"
+    },
+    {
+      "id": "ability_muzzle_v1",
+      "path": "assets/generated/vfx/abilities-v1/muzzle.png",
+      "event": "weapon_fired/ability_fired",
+      "source": "built-in image_gen; generated atlas and padding edit",
+      "provenance_record": "assets/generated/vfx/abilities-v1/provenance.json",
+      "pivot": "center",
+      "collision_role": "none",
+      "size": "512x512 RGBA, isolated sprite, mipmaps",
+      "approval_status": "desktop actual training render reviewed; Android pending"
+    },
+    {
+      "id": "ability_impact_v1",
+      "path": "assets/generated/vfx/abilities-v1/impact.png",
+      "event": "projectile_hit",
+      "source": "built-in image_gen; generated atlas and padding edit",
+      "provenance_record": "assets/generated/vfx/abilities-v1/provenance.json",
+      "pivot": "center",
+      "collision_role": "none",
+      "size": "512x512 RGBA, isolated sprite, mipmaps",
+      "approval_status": "desktop actual training render reviewed; Android pending"
+    },
+    {
+      "id": "ability_shockwave_v1",
+      "path": "assets/generated/vfx/abilities-v1/shockwave.png",
+      "event": "ability_fired:shock",
+      "source": "built-in image_gen; generated atlas and padding edit",
+      "provenance_record": "assets/generated/vfx/abilities-v1/provenance.json",
+      "pivot": "center",
+      "collision_role": "none",
+      "size": "512x512 RGBA, isolated sprite, mipmaps",
+      "approval_status": "desktop actual training render reviewed; Android pending"
+    }
+  ]
+}

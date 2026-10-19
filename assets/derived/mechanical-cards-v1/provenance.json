@@ -1,0 +1,7 @@
+{
+  "source": "presentation/parts/mechanical_v1",
+  "renderer": "Godot 4.7.2 Compatibility",
+  "tool": "tools/capture_mechanical_cards_108.gd",
+  "format": "512x512 transparent PNG",
+  "description": "Actual isolated part renders; original cards retained"
+}

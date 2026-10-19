@@ -1,0 +1,13 @@
+{
+  "feature": "100",
+  "date": "2026-10-15",
+  "method": "Hyper3D source meshes edited in Blender MCP; original PBR textures and corner UVs retained",
+  "sources": ["assets/imported/modular-sample-v1/t02_pbr.glb", "assets/imported/modular-sample-v1/c03_pbr.glb"],
+  "job_provenance": "assets/generated/modular-sample-v1/rodin-jobs.json",
+  "license_note": "Inherited source terms; no additional license claim. User supplied style references.",
+  "source_blend": "source_art/hyper3d-refined-v1/hyper3d_refined.blend",
+  "changes": ["split and cap twin barrels", "recoil sleeves and visual muzzle pivots", "reuse complete rear tires to replace fused front tires", "wheel envelope ellipticity correction", "four independent rolling pivots and axles"],
+  "validation": "30/30 project checks; Godot Compatibility import, independent recoil, four wheels, rigid axes, reset and renders passed",
+  "status": "candidate_pending_user_approval_production_integration_and_android",
+  "production_catalog_replaced": false
+}

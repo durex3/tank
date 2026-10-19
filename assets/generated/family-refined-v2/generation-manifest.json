@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-16",
+  "jobs": [
+    {
+      "part": "cannon",
+      "reference": "assets/generated/model-reference-cards-v1/cannon.png",
+      "prompt": "One modular MAIN BATTLE TURRET ONLY. Broad beveled angular housing, one medium length thick straight barrel with a hollow octagonal muzzle, dark recoil sleeve, two yellow lifting loops. No chassis, tracks or wheels. Barrel axis aligned to housing front. Complete rear, underside and low circular mounting collar. Match the provided reference identity, but use a cohesive stylized toy-like mobile game finish: neutral porcelain-white armor (not cream or beige), charcoal mechanisms, restrained warm yellow accents, tiny cyan lights. Large clean rounded bevels, crisp manufactured shapes, matte surfaces, no grime, scratches, baked lighting, ground, display plinth, text or labels. All sides fully modeled for 360 degree view. Keep round mechanical parts round. Prepare clear joints suitable for later Blender separation and animation.",
+      "reference_upload_ids": [
+        "e41f1780-2937-406c-86eb-4d2687967b6b"
+      ],
+      "tier": "Gen-2.5-Medium",
+      "mesh_mode": "Raw",
+      "quality_override": 20000,
+      "geometry_file_format": "glb",
+      "texture_delight": true,
+      "generation_id": "af1f54d3-d29c-451f-9e6e-dc97f3e1e0fc",
+      "status": "refinement_pending",
+      "display_url": "https://hyper3d.ai/workspace/rodin/af1f54d3-d29c-451f-9e6e-dc97f3e1e0fc"
+    },
+    {
+      "part": "scatter",
+      "reference": "assets/generated/rodin-family-v2/scatter.png",
+      "prompt": "One modular SHORT SHOTGUN TURRET ONLY. Broad chunky beveled housing, one short wide hollow hexagonal muzzle with yellow rim, two symmetric dark side recoil pistons. No chassis, wheels or tracks. Complete rear, underside and low circular mounting collar. Match the provided reference identity, but use a cohesive stylized toy-like mobile game finish: neutral porcelain-white armor (not cream or beige), charcoal mechanisms, restrained warm yellow accents, tiny cyan lights. Large clean rounded bevels, crisp manufactured shapes, matte surfaces, no grime, scratches, baked lighting, ground, display plinth, text or labels. All sides fully modeled for 360 degree view. Keep round mechanical parts round. Prepare clear joints suitable for later Blender separation and animation.",
+      "reference_upload_ids": [
+        "abd6c136-4aea-4980-bd90-ac4a0be4ab3b"
+      ],
+      "tier": "Gen-2.5-Medium",
+      "mesh_mode": "Raw",
+      "quality_override": 20000,
+      "geometry_file_format": "glb",
+      "texture_delight": true,
+      "generation_id": "5697a977-9232-41ce-9059-43df73325b06",
+      "status": "refinement_pending",
+      "display_url": "https://hyper3d.ai/workspace/rodin/5697a977-9232-41ce-9059-43df73325b06"
+    },
+    {
+      "part": "bubble_cannon",
+      "reference": "assets/generated/rodin-family-v2/bubble_cannon.png",
+      "prompt": "One modular BUBBLE CANNON TURRET ONLY. Compact rounded beveled armor housing, one short hollow circular nozzle with yellow rim, broad horizontal cyan fluid reservoir behind nozzle, two complete curved dark side hoses and small pressure gauge. No chassis, wheels or tracks. Full rear and underside with low circular mount. Reservoir must be a separate coherent enclosed cylinder shape. Match the provided reference identity, but use a cohesive stylized toy-like mobile game finish: neutral porcelain-white armor (not cream or beige), charcoal mechanisms, restrained warm yellow accents, tiny cyan lights. Large clean rounded bevels, crisp manufactured shapes, matte surfaces, no grime, scratches, baked lighting, ground, display plinth, text or labels. All sides fully modeled for 360 degree view. Keep round mechanical parts round. Prepare clear joints suitable for later Blender separation and animation.",
+      "reference_upload_ids": [
+        "0fd61ed9-44ce-442a-9b87-b0cc55a92418"
+      ],
+      "tier": "Gen-2.5-Medium",
+      "mesh_mode": "Raw",
+      "quality_override": 20000,
+      "geometry_file_format": "glb",
+      "texture_delight": true,
+      "generation_id": "3c0ca888-829b-47c8-a09c-25c5d79e6f94",
+      "status": "superseded_user_rejected_rear_reservoir",
+      "display_url": "https://hyper3d.ai/workspace/rodin/3c0ca888-829b-47c8-a09c-25c5d79e6f94"
+    },
+    {
+      "part": "light_tracks",
+      "reference": "assets/generated/model-reference-cards-v1/light_tracks.png",
+      "prompt": "One modular LIGHT TRACKED CHASSIS ONLY. Two complete closed charcoal track belts, exactly three circular road wheels per side, six wheels total, yellow hub rings. Compact squat beveled white armor hull, sloped front with paired cyan headlights, dark grille, centrally mounted empty turret socket. Rear is distinct from sloped front. No turret or cannon. Complete hidden side, rear and underside. Clear geometric separation between wheels, track belts and hull. Match the provided reference identity, but use a cohesive stylized toy-like mobile game finish: neutral porcelain-white armor (not cream or beige), charcoal mechanisms, restrained warm yellow accents, tiny cyan lights. Large clean rounded bevels, crisp manufactured shapes, matte surfaces, no grime, scratches, baked lighting, ground, display plinth, text or labels. All sides fully modeled for 360 degree view. Keep round mechanical parts round. Prepare clear joints suitable for later Blender separation and animation.",
+      "reference_upload_ids": [
+        "c575a2e5-8bc1-4a54-aa50-4545448f9bae"
+      ],
+      "tier": "Gen-2.5-Medium",
+      "mesh_mode": "Raw",
+      "quality_override": 20000,
+      "geometry_file_format": "glb",
+      "texture_delight": true,
+      "generation_id": "60661e3a-eb2b-4f87-a80b-75b4233ed80f",
+      "status": "refinement_pending",
+      "display_url": "https://hyper3d.ai/workspace/rodin/60661e3a-eb2b-4f87-a80b-75b4233ed80f"
+    },
+    {
+      "part": "heavy_tracks",
+      "reference": "assets/generated/rodin-family-v2/heavy_tracks.png",
+      "prompt": "A single modular HEAVY TRACKED CHASSIS ONLY matching reference. Two complete closed charcoal track belts, four circular road wheels per side (eight total), yellow hub rings. Layered thick beveled porcelain-white armor, broad sloped FRONT with paired cyan headlights, tow rings and dark grille. Central EMPTY turret socket. NO turret, gun, ground or display stand. Complete hidden side, rear and underside for 360 viewing. Clear wheel/belt/hull joints for Blender separation. Compact same size category as light chassis; express heaviness through armor panels. Clean toy-like mobile game hard-surface style, broad rounded bevels, neutral white not beige, charcoal mechanics, restrained warm-yellow details and tiny cyan lamps. No grime, scratches, baked shadows, text. All wheels truly round.",
+      "reference_upload_ids": [
+        "b23045bd-b7ca-423d-b405-e4836a3be71f"
+      ],
+      "tier": "Gen-2.5-Medium",
+      "mesh_mode": "Raw",
+      "quality_override": 20000,
+      "geometry_file_format": "glb",
+      "texture_delight": true,
+      "generation_id": "33646cb6-1946-4968-b6c3-8aca870fafe7",
+      "status": "refinement_pending",
+      "display_url": "https://hyper3d.ai/workspace/rodin/33646cb6-1946-4968-b6c3-8aca870fafe7"
+    },
+    {
+      "part": "bubble_cannon_redesign",
+      "reference": "assets/generated/family-refined-v2/bubble-reference.png",
+      "prompt": "One single compact BUBBLE CANNON TURRET exactly matching this NEW reference. Rounded neutral porcelain-white armored pod, very short LARGE circular nozzle with thick yellow lip and dark recessed bore, three small circular vents, tiny cyan indicator, dark side pivots and low mounting collar. The REAR is a closed smooth WHITE armored shell with a flush hatch. NO rear reservoir, NO blue tank, NO backpack, NO external hoses. NO chassis, wheels, ground or stand. Complete rear and underside for 360 degree use. Clean matte toy-like game hard-surface style, broad smooth panels and crisp narrow bevels, charcoal mechanics and warm yellow rings. No grime or baked shadows. Keep nozzle separate from housing at a clear dark joint suitable for Blender recoil separation. Cyan limited to one tiny lamp.",
+      "reference_upload_ids": [
+        "6549a03d-42f0-4d23-bf15-8eb93c24f9a4"
+      ],
+      "tier": "Gen-2.5-Medium",
+      "mesh_mode": "Raw",
+      "quality_override": 20000,
+      "geometry_file_format": "glb",
+      "texture_delight": true,
+      "generation_id": "568f8486-e036-47c6-a59a-dbe997ef7477",
+      "status": "refinement_pending",
+      "display_url": "https://hyper3d.ai/workspace/rodin/568f8486-e036-47c6-a59a-dbe997ef7477"
+    },
+    {
+      "part": "scout_wheels",
+      "reference": "assets/generated/modular-sample-v1/c03-reference.png",
+      "prompt": "Single FOUR WHEEL TANK CHASSIS ONLY, exactly match this reference silhouette. Four complete ROUND off-road tires, two per side, separate from fenders. Clean hard-surface manufactured armor: large PERFECTLY FLAT sloped front plate with two cyan lamps, flat horizontal top deck and circular empty turret socket. FOUR simple solid smooth fenders with regular bevels, no crumpled surfaces, dents, folds, triangulated ripples, melted edges or scratches. Symmetric left/right. Neutral porcelain-white panels, charcoal tires/mechanics, yellow hub rings. Clear tire-fender gaps and complete rear/underside for Blender separation and 360 viewing. Front slope and headlights define FRONT; flat rear grille defines REAR. No turret, gun, tracks, extra wheels, stand, floor or text. Clean matte toy-like game model, compact squat chassis, preserve circular wheels and crisp panel seams.",
+      "reference_upload_ids": [
+        "87db0e6c-5eb5-4e68-89d7-82314797631b"
+      ],
+      "tier": "Gen-2.5-High",
+      "mesh_mode": "Raw",
+      "quality_override": 40000,
+      "geometry_file_format": "glb",
+      "texture_delight": true,
+      "generation_id": "9d8b179a-d468-4951-bfbf-ed5ef848faab",
+      "status": "refinement_pending",
+      "display_url": "https://hyper3d.ai/workspace/rodin/9d8b179a-d468-4951-bfbf-ed5ef848faab"
+    }
+  ]
+}

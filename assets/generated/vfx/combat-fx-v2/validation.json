@@ -1,0 +1,947 @@
+[
+  {
+    "file": "ground_chevrons.png",
+    "width": 2017,
+    "height": 780,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1020324,
+    "opaque_pixels": 8651,
+    "partial_alpha_pixels": 544285,
+    "bbox": [
+      0,
+      72,
+      2017,
+      760
+    ],
+    "dominant_colors": [
+      [
+        "#fcb94f",
+        16431
+      ],
+      [
+        "#fdba50",
+        15950
+      ],
+      [
+        "#fdb94f",
+        14901
+      ],
+      [
+        "#fcba50",
+        12023
+      ],
+      [
+        "#fdba4f",
+        9976
+      ],
+      [
+        "#fcba4f",
+        8388
+      ]
+    ],
+    "edge_x_equal": false
+  },
+  {
+    "file": "ground_chevrons_escape.png",
+    "width": 1983,
+    "height": 793,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 885420,
+    "opaque_pixels": 4225,
+    "partial_alpha_pixels": 682874,
+    "bbox": [
+      0,
+      60,
+      1983,
+      779
+    ],
+    "dominant_colors": [
+      [
+        "#7af8c0",
+        21882
+      ],
+      [
+        "#79f8c0",
+        17625
+      ],
+      [
+        "#79f8bf",
+        15438
+      ],
+      [
+        "#e8fcf6",
+        12862
+      ],
+      [
+        "#7bf8c0",
+        11289
+      ],
+      [
+        "#78f8bf",
+        9864
+      ]
+    ],
+    "edge_x_equal": false
+  },
+  {
+    "file": "ground_guard_arc.png",
+    "width": 1774,
+    "height": 887,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1269466,
+    "opaque_pixels": 1232,
+    "partial_alpha_pixels": 302840,
+    "bbox": [
+      0,
+      29,
+      1738,
+      831
+    ],
+    "dominant_colors": [
+      [
+        "#67b6fc",
+        10693
+      ],
+      [
+        "#68b7fd",
+        5669
+      ],
+      [
+        "#68b7fc",
+        5511
+      ],
+      [
+        "#68b6fc",
+        5394
+      ],
+      [
+        "#67b6fd",
+        5383
+      ],
+      [
+        "#66b5fc",
+        4448
+      ]
+    ],
+    "edge_x_equal": false
+  },
+  {
+    "file": "ground_heat_ring.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1154865,
+    "opaque_pixels": 1954,
+    "partial_alpha_pixels": 415697,
+    "bbox": [
+      25,
+      33,
+      1233,
+      1230
+    ],
+    "dominant_colors": [
+      [
+        "#f9531b",
+        3974
+      ],
+      [
+        "#5c160b",
+        3755
+      ],
+      [
+        "#5b150b",
+        3704
+      ],
+      [
+        "#5c160c",
+        3493
+      ],
+      [
+        "#5b160b",
+        3353
+      ],
+      [
+        "#f9521b",
+        2944
+      ]
+    ],
+    "edge_x_equal": true
+  },
+  {
+    "file": "ground_lane.png",
+    "width": 2172,
+    "height": 724,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1234889,
+    "opaque_pixels": 6514,
+    "partial_alpha_pixels": 331125,
+    "bbox": [
+      0,
+      9,
+      2172,
+      698
+    ],
+    "dominant_colors": [
+      [
+        "#d3a358",
+        2186
+      ],
+      [
+        "#d2a257",
+        1920
+      ],
+      [
+        "#d3a459",
+        1828
+      ],
+      [
+        "#d2a358",
+        1806
+      ],
+      [
+        "#d3a359",
+        1611
+      ],
+      [
+        "#d4a459",
+        1399
+      ]
+    ],
+    "edge_x_equal": false
+  },
+  {
+    "file": "ground_ring.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1216277,
+    "opaque_pixels": 2137,
+    "partial_alpha_pixels": 354102,
+    "bbox": [
+      0,
+      59,
+      1222,
+      1254
+    ],
+    "dominant_colors": [
+      [
+        "#fda33b",
+        8791
+      ],
+      [
+        "#fda23b",
+        8103
+      ],
+      [
+        "#fda33c",
+        6863
+      ],
+      [
+        "#fca23b",
+        6354
+      ],
+      [
+        "#fca33b",
+        5466
+      ],
+      [
+        "#b44c1e",
+        5300
+      ]
+    ],
+    "edge_x_equal": false
+  },
+  {
+    "file": "ground_sector.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1318280,
+    "opaque_pixels": 2896,
+    "partial_alpha_pixels": 251340,
+    "bbox": [
+      17,
+      28,
+      1240,
+      1236
+    ],
+    "dominant_colors": [
+      [
+        "#fdb853",
+        6204
+      ],
+      [
+        "#b95125",
+        5909
+      ],
+      [
+        "#b95225",
+        5779
+      ],
+      [
+        "#b85225",
+        5424
+      ],
+      [
+        "#fdb954",
+        4943
+      ],
+      [
+        "#fdb952",
+        4192
+      ]
+    ],
+    "edge_x_equal": true
+  },
+  {
+    "file": "ground_smoke_stain.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1000061,
+    "opaque_pixels": 4250,
+    "partial_alpha_pixels": 568205,
+    "bbox": [
+      0,
+      49,
+      1224,
+      1194
+    ],
+    "dominant_colors": [
+      [
+        "#a7a999",
+        23077
+      ],
+      [
+        "#a8aa9a",
+        18598
+      ],
+      [
+        "#666862",
+        17588
+      ],
+      [
+        "#656761",
+        14172
+      ],
+      [
+        "#a6a898",
+        14086
+      ],
+      [
+        "#d7d5c4",
+        11864
+      ]
+    ],
+    "edge_x_equal": false
+  },
+  {
+    "file": "hit_cannon.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1217890,
+    "opaque_pixels": 2078,
+    "partial_alpha_pixels": 352548,
+    "bbox": [
+      41,
+      63,
+      1240,
+      1206
+    ],
+    "dominant_colors": [
+      [
+        "#fdaa32",
+        8479
+      ],
+      [
+        "#fda931",
+        8077
+      ],
+      [
+        "#fdaa31",
+        5369
+      ],
+      [
+        "#fca931",
+        4996
+      ],
+      [
+        "#fda932",
+        4855
+      ],
+      [
+        "#b4461b",
+        4358
+      ]
+    ],
+    "edge_x_equal": true
+  },
+  {
+    "file": "hit_guard.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1318506,
+    "opaque_pixels": 2943,
+    "partial_alpha_pixels": 251067,
+    "bbox": [
+      43,
+      53,
+      1200,
+      1198
+    ],
+    "dominant_colors": [
+      [
+        "#f2fdfd",
+        5014
+      ],
+      [
+        "#f2fcfd",
+        4417
+      ],
+      [
+        "#f3fdfd",
+        4071
+      ],
+      [
+        "#72c1fc",
+        3494
+      ],
+      [
+        "#71c0fc",
+        3282
+      ],
+      [
+        "#f2fcfc",
+        2902
+      ]
+    ],
+    "edge_x_equal": true
+  },
+  {
+    "file": "hit_heavy.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1037816,
+    "opaque_pixels": 2821,
+    "partial_alpha_pixels": 531879,
+    "bbox": [
+      0,
+      10,
+      1232,
+      1254
+    ],
+    "dominant_colors": [
+      [
+        "#3c312c",
+        2222
+      ],
+      [
+        "#3f332d",
+        1994
+      ],
+      [
+        "#3b302b",
+        1790
+      ],
+      [
+        "#40342e",
+        1661
+      ],
+      [
+        "#92816e",
+        1612
+      ],
+      [
+        "#392e29",
+        1574
+      ]
+    ],
+    "edge_x_equal": false
+  },
+  {
+    "file": "hit_needle.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1446314,
+    "opaque_pixels": 1410,
+    "partial_alpha_pixels": 124792,
+    "bbox": [
+      172,
+      168,
+      1131,
+      1152
+    ],
+    "dominant_colors": [
+      [
+        "#fdaa2a",
+        1722
+      ],
+      [
+        "#fdab2b",
+        1452
+      ],
+      [
+        "#fdab2a",
+        1326
+      ],
+      [
+        "#fdaa2b",
+        1109
+      ],
+      [
+        "#fcaa2a",
+        1103
+      ],
+      [
+        "#bd4218",
+        883
+      ]
+    ],
+    "edge_x_equal": true
+  },
+  {
+    "file": "hit_scatter.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1347377,
+    "opaque_pixels": 2468,
+    "partial_alpha_pixels": 222671,
+    "bbox": [
+      35,
+      33,
+      1240,
+      1230
+    ],
+    "dominant_colors": [
+      [
+        "#fda523",
+        3060
+      ],
+      [
+        "#fda624",
+        2836
+      ],
+      [
+        "#fda524",
+        2364
+      ],
+      [
+        "#b3461c",
+        2306
+      ],
+      [
+        "#fda623",
+        2222
+      ],
+      [
+        "#fca523",
+        2059
+      ]
+    ],
+    "edge_x_equal": true
+  },
+  {
+    "file": "hull_dust.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1279540,
+    "opaque_pixels": 1399,
+    "partial_alpha_pixels": 291577,
+    "bbox": [
+      0,
+      28,
+      1186,
+      1198
+    ],
+    "dominant_colors": [
+      [
+        "#dbd8c7",
+        12251
+      ],
+      [
+        "#a9a89c",
+        11157
+      ],
+      [
+        "#a8a79b",
+        9146
+      ],
+      [
+        "#70716c",
+        8361
+      ],
+      [
+        "#71726d",
+        8230
+      ],
+      [
+        "#a8a79c",
+        8184
+      ]
+    ],
+    "edge_x_equal": false
+  },
+  {
+    "file": "muzzle_bubble.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1276962,
+    "opaque_pixels": 1873,
+    "partial_alpha_pixels": 293681,
+    "bbox": [
+      81,
+      9,
+      1236,
+      1190
+    ],
+    "dominant_colors": [
+      [
+        "#80e3eb",
+        5629
+      ],
+      [
+        "#81e3eb",
+        4921
+      ],
+      [
+        "#81e3ec",
+        4462
+      ],
+      [
+        "#80e3ec",
+        3923
+      ],
+      [
+        "#80e2eb",
+        3528
+      ],
+      [
+        "#1fa5bc",
+        3469
+      ]
+    ],
+    "edge_x_equal": true
+  },
+  {
+    "file": "muzzle_cannon.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1170516,
+    "opaque_pixels": 2268,
+    "partial_alpha_pixels": 399732,
+    "bbox": [
+      49,
+      39,
+      1240,
+      1240
+    ],
+    "dominant_colors": [
+      [
+        "#fda724",
+        12570
+      ],
+      [
+        "#fda725",
+        10699
+      ],
+      [
+        "#fda624",
+        8873
+      ],
+      [
+        "#fca624",
+        7729
+      ],
+      [
+        "#fda825",
+        7223
+      ],
+      [
+        "#fca724",
+        7171
+      ]
+    ],
+    "edge_x_equal": true
+  },
+  {
+    "file": "muzzle_heavy.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 963964,
+    "opaque_pixels": 2760,
+    "partial_alpha_pixels": 605792,
+    "bbox": [
+      0,
+      29,
+      1230,
+      1254
+    ],
+    "dominant_colors": [
+      [
+        "#423531",
+        10994
+      ],
+      [
+        "#5e4e47",
+        9662
+      ],
+      [
+        "#5d4d46",
+        8146
+      ],
+      [
+        "#433632",
+        6542
+      ],
+      [
+        "#5d4e47",
+        6385
+      ],
+      [
+        "#433531",
+        6164
+      ]
+    ],
+    "edge_x_equal": false
+  },
+  {
+    "file": "muzzle_needle.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1491234,
+    "opaque_pixels": 869,
+    "partial_alpha_pixels": 80413,
+    "bbox": [
+      33,
+      47,
+      1224,
+      1212
+    ],
+    "dominant_colors": [
+      [
+        "#fca62c",
+        1574
+      ],
+      [
+        "#fca72d",
+        1382
+      ],
+      [
+        "#fda72d",
+        1216
+      ],
+      [
+        "#fca72c",
+        1161
+      ],
+      [
+        "#fca62b",
+        1055
+      ],
+      [
+        "#fda72c",
+        1006
+      ]
+    ],
+    "edge_x_equal": true
+  },
+  {
+    "file": "muzzle_scatter.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1340469,
+    "opaque_pixels": 2543,
+    "partial_alpha_pixels": 229504,
+    "bbox": [
+      41,
+      39,
+      1240,
+      1222
+    ],
+    "dominant_colors": [
+      [
+        "#b8471a",
+        3020
+      ],
+      [
+        "#fdac2b",
+        2268
+      ],
+      [
+        "#fdad2c",
+        2162
+      ],
+      [
+        "#fdac2c",
+        2046
+      ],
+      [
+        "#b7471a",
+        2010
+      ],
+      [
+        "#b9481a",
+        1907
+      ]
+    ],
+    "edge_x_equal": true
+  },
+  {
+    "file": "muzzle_storm.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1402522,
+    "opaque_pixels": 1501,
+    "partial_alpha_pixels": 168493,
+    "bbox": [
+      55,
+      59,
+      1156,
+      1150
+    ],
+    "dominant_colors": [
+      [
+        "#fdaa31",
+        4176
+      ],
+      [
+        "#fdab31",
+        3674
+      ],
+      [
+        "#b44b1a",
+        3085
+      ],
+      [
+        "#fdaa30",
+        3065
+      ],
+      [
+        "#fdf0c8",
+        2491
+      ],
+      [
+        "#fdab32",
+        2397
+      ]
+    ],
+    "edge_x_equal": true
+  },
+  {
+    "file": "track_dust.png",
+    "width": 1254,
+    "height": 1254,
+    "bit_depth": 8,
+    "color_type": 6,
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "transparent_pixels": 1301406,
+    "opaque_pixels": 1251,
+    "partial_alpha_pixels": 269859,
+    "bbox": [
+      45,
+      97,
+      1232,
+      1230
+    ],
+    "dominant_colors": [
+      [
+        "#b1b09e",
+        8068
+      ],
+      [
+        "#b2b19f",
+        7315
+      ],
+      [
+        "#b1b19e",
+        6659
+      ],
+      [
+        "#dedbc9",
+        6331
+      ],
+      [
+        "#6b6d66",
+        6219
+      ],
+      [
+        "#6a6c65",
+        5325
+      ]
+    ],
+    "edge_x_equal": true
+  }
+]

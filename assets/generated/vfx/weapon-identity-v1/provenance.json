@@ -1,0 +1,12 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-10-14",
+  "purpose": "cannon armor impact sprite",
+  "prompt": "prompt.txt",
+  "original": "impact-source.png",
+  "derived": "impact.png",
+  "normalization": "Pillow RGBA resize to 512x512, preserve alpha; original retained",
+  "collision": "none",
+  "license_note": "AI-generated project asset; no external game art copied",
+  "acceptance": "Windows Godot 4.7.2 Compatibility real game renders reviewed, final 29/29 checks PASS; Android/user continuous review pending"
+}

@@ -1,0 +1,12 @@
+{
+  "feature": "101",
+  "date": "2026-10-15",
+  "status": "production_catalog_integrated_desktop_passed_android_pending",
+  "approved_source": "assets/derived/hyper3d-refined-v1/provenance.json",
+  "rebuild": "tools/integrate_refined_parts.gd",
+  "size_source": "content/presentation/part_size.tres",
+  "new_models": ["autocannon", "scout_wheels"],
+  "legacy_shape_adaptations": ["cannon", "scatter", "bubble_cannon", "light_tracks", "heavy_tracks"],
+  "authority": "Root identity and original authoritative Muzzle/TurretSocket remain unchanged.",
+  "originals_preserved": true
+}

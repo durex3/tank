@@ -1,0 +1,5 @@
+{
+  "source": "109 original pressure body; 110 compact continuous nozzle replaces rejected open rails",
+  "generator": "tools/build_bubble_110.py",
+  "originals_preserved": true
+}

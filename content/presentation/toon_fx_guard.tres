@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3]
+[ext_resource type="Shader" path="res://presentation/shaders/toon_fx.gdshader" id="1"]
+[sub_resource type="Gradient" id="g"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.3, 0.65, 0.9)
+colors = PackedColorArray(0.1215686, 0.254902, 0.4313725, 1, 0.2980392, 0.5254902, 0.7843137, 1, 0.5607843, 0.7686275, 0.9490196, 1, 0.9333333, 0.9647059, 1.0, 1)
+[sub_resource type="GradientTexture1D" id="ramp"]
+gradient = SubResource("g")
+[resource]
+shader = ExtResource("1")
+shader_parameter/ramp = SubResource("ramp")
+shader_parameter/frames = Vector2(2, 2)
+shader_parameter/erode_start = 0.3
+shader_parameter/erode_softness = 0.08
+shader_parameter/ramp_shift = 0.12

@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-12",
+  "tool": "built-in image_gen",
+  "role": "static isolated turret card and composited hangar appearance; not 3D",
+  "original_assets": "unchanged",
+  "normalization": "tools/normalize_hangar_turrets.gd; alpha>=0.5 measured bounds +4px; 512x512 canvas; max dimension480; Lanczos; source pixels preserved",
+  "entries": {
+    "cannon": {
+      "prompt": "Use case: precise-object-edit. Edit target image 1: isolated tank turret. Image 2 is CAMERA/ASSEMBLY GUIDE ONLY, do not output a whole tank. Preserve exact existing angular ivory armor, charcoal mechanisms, gold muzzle rings and green optic identity. Re-render ONLY this detached turret with a higher camera elevation about 35 degrees, orthographic three-quarter front-left view, gun axis projecting diagonally DOWN-LEFT about 30 degrees from horizontal, aligned with the FRONT DIRECTION of the tank hull in image 2 (hulls currently point more toward viewer than turrets). Show more turret roof. Turret must be level, not tilted downward; change camera azimuth/elevation, not gun pitch. Compact low-profile body; remove the thick black display pedestal, use only one thin gold-edged dark circular mounting bearing at bottom. Same soft neutral key light upper left, no brown glow or ground shadows. Output exactly ONE isolated turret, fully visible with ample transparent margin on ALL sides, genuine transparent background, no text, chassis, wheels, extra parts or ground. Clean crisp stylized game asset. Keep proportions and details faithful to image 1. One short large central cannon barrel, angular cheek armor, slim antenna.",
+      "references": [
+        "artifacts/part-references/cannon.png",
+        "artifacts/hangar-composition-gallery-before-037.png"
+      ],
+      "output": "/Users/liugelong/.codex/generated_images/01a12dc6-c59d-78d3-b5f9-013a6117046c/exec-68c0d305-10e5-4967-a8b7-5daea7da0b73.png",
+      "status": "accepted after in-engine review",
+      "source": "sources/cannon.png",
+      "normalized": "cannon.png"
+    },
+    "autocannon": {
+      "prompt": "Use case: precise-object-edit. Edit target image 1: isolated tank turret. Image 2 is CAMERA/ASSEMBLY GUIDE ONLY, do not output a whole tank. Preserve exact existing angular ivory armor, charcoal mechanisms, gold muzzle rings and green optic identity. Re-render ONLY this detached turret with a higher camera elevation about 35 degrees, orthographic three-quarter front-left view, gun axis projecting diagonally DOWN-LEFT about 30 degrees from horizontal, aligned with the FRONT DIRECTION of the tank hull in image 2 (hulls currently point more toward viewer than turrets). Show more turret roof. Turret must be level, not tilted downward; change camera azimuth/elevation, not gun pitch. Compact low-profile body; remove the thick black display pedestal, use only one thin gold-edged dark circular mounting bearing at bottom. Same soft neutral key light upper left, no brown glow or ground shadows. Output exactly ONE isolated turret, fully visible with ample transparent margin on ALL sides, genuine transparent background, no text, chassis, wheels, extra parts or ground. Clean crisp stylized game asset. Keep proportions and details faithful to image 1. Exactly two long narrow parallel barrels, side gold ammunition belts, slim antenna.",
+      "references": [
+        "artifacts/part-references/autocannon.png",
+        "artifacts/hangar-composition-gallery-before-037.png"
+      ],
+      "output": "/Users/liugelong/.codex/generated_images/01a12dc6-c59d-78d3-b5f9-013a6117046c/exec-b0df82bb-3f20-4b94-8ba4-e4c87e743a60.png",
+      "status": "accepted after in-engine review",
+      "source": "sources/autocannon.png",
+      "normalized": "autocannon.png"
+    },
+    "scatter": {
+      "prompt": "Use case: precise-object-edit. Edit target image 1: isolated tank turret. Image 2 is CAMERA/ASSEMBLY GUIDE ONLY, do not output a whole tank. Preserve exact existing angular ivory armor, charcoal mechanisms, gold muzzle rings and green optic identity. Re-render ONLY this detached turret with a higher camera elevation about 35 degrees, orthographic three-quarter front-left view, gun axis projecting diagonally DOWN-LEFT about 30 degrees from horizontal, aligned with the FRONT DIRECTION of the tank hull in image 2 (hulls currently point more toward viewer than turrets). Show more turret roof. Turret must be level, not tilted downward; change camera azimuth/elevation, not gun pitch. Compact low-profile body; remove the thick black display pedestal, use only one thin gold-edged dark circular mounting bearing at bottom. Same soft neutral key light upper left, no brown glow or ground shadows. Output exactly ONE isolated turret, fully visible with ample transparent margin on ALL sides, genuine transparent background, no text, chassis, wheels, extra parts or ground. Clean crisp stylized game asset. Keep proportions and details faithful to image 1. Exactly two short thick parallel cannon barrels, chunky angular armored housing, no antenna.",
+      "references": [
+        "artifacts/part-references/scatter.png",
+        "artifacts/hangar-composition-gallery-before-037.png"
+      ],
+      "output": "/Users/liugelong/.codex/generated_images/01a12dc6-c59d-78d3-b5f9-013a6117046c/exec-d91118ba-f8f4-4d83-8790-d00f60b4260d.png",
+      "status": "initial candidate rejected for halo; final retry accepted",
+      "source": "sources/scatter.png",
+      "normalized": "scatter.png"
+    }
+  },
+  "scatter_cleanup": {
+    "prompt": "Use case: background-extraction. Edit this exact tank turret image. Remove ALL of the diffuse grey/brown/gold glowing background halo around the object. Preserve every solid turret pixel, original shape, perspective, colors, optic and two short thick barrels, mounting ring exactly unchanged. Output the identical isolated turret cutout on genuine fully transparent alpha everywhere outside the hard object silhouette. No atmospheric glow, no bloom beyond object, no ground shadow, no replacement background. Keep anti-aliased hard edges. Do not redesign or add anything.",
+    "result": "Rejected: diffuse glow remains",
+    "output": "/Users/liugelong/.codex/generated_images/01a12dc6-c59d-78d3-b5f9-013a6117046c/exec-f53ce5bd-5458-4b21-b29a-8bcc2a0e5b24.png"
+  },
+  "scatter_retry": {
+    "prompt": "Use case: precise-object-edit. Image 1 is turret identity to preserve: detached angular ivory turret with exactly TWO SHORT THICK gold-rimmed barrels, dark rear housing and green optic. Image 2 is the exact required rendering / camera reference: match its orthographic elevated front-left camera, barrel axis down-left, crisp hard cutout edges and soft light. Output ONE detached twin-short-barrel turret matching this camera, with one thin mounting bearing, fully isolated on actual transparent alpha. No atmosphere, NO GLOW, no haze, no shadows outside hard object silhouette, no gradient, no ground. Preserve the short stubby wide barrels and original design of image 1. All background pixels exactly alpha ZERO, clean hard object cutout. Generous margin, no other objects.",
+    "status": "accepted; crisp silhouette without diffuse halo",
+    "output": "/Users/liugelong/.codex/generated_images/01a12dc6-c59d-78d3-b5f9-013a6117046c/exec-3e21343f-6e31-4999-9e8d-fb2c276c740d.png"
+  },
+  "runtime": "Only three normalized512 PNGs; original source folder ignored by Godot; card and composition share same texture"
+}

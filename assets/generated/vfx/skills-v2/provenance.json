@@ -1,0 +1,8 @@
+{
+  "source": "OpenAI imagegen built-in",
+  "date": "2026-10-16",
+  "prompt": "4x4 transparent VFX sheet, rows red forked evil lightning impact, amber metal armor sparks, beige charge dust, cyan twin mechanical reload streaks, four chronological frames per row; no scene, text, tank or background",
+  "source_file": "source-sheet.png",
+  "normalization": "tools/prepare_skill_frames_114.gd; isolate into padded256px PNG, original preserved",
+  "role": "presentation only, not gameplay collision"
+}

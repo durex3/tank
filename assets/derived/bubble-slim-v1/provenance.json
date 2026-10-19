@@ -1,0 +1,5 @@
+{
+  "source": "109 original pressure body; 112 nozzle diameters reduced 28 percent from 110; pressure body and total envelope retained",
+  "generator": "tools/build_bubble_112.py",
+  "originals_preserved": true
+}

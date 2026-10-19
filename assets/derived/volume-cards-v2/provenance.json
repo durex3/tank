@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-15",
+  "source": "TankPartCatalog production modules; original source and volume-cards-v1 preserved",
+  "tool": "tools/capture_volume_cards_v2.gd; Godot 4.7.2 Compatibility",
+  "style": "content/presentation/part_cards.tres and PartCardRenderStyle",
+  "shader": "presentation/shaders/card_volume.gdshader; offline only",
+  "process": "1024px 4x MSAA transparent rendering to 512px RGBA",
+  "reference": "User supplied game screenshot for lighting analysis only; no reference pixels or models copied",
+  "acceptance": "30/30 desktop checks passed; real hangar screens reviewed; user aesthetic and Android acceptance pending"
+}
