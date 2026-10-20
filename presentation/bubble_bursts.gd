@@ -2,11 +2,13 @@ extends RefCounted
 class_name BubbleBursts
 ## Transient droplets and muzzle bubbles advance exclusively on committed ticks.
 
+const TOON_FX = preload("res://presentation/toon_fx_materials.gd")
+
 var active: Array[Dictionary] = []
 
 func spawn(parent: Node3D, position: Vector3, tick: int, style: AbilityEffectStyle, pop: bool) -> void:
 	if active.size() >= style.bubble_max_bursts: return
-	var sprite: Sprite3D = ToonFxMaterials.create(&"drop",&"water",0 if pop else 2,style.bubble_pop_width_m if pop else style.bubble_muzzle_width_m)
+	var sprite: Sprite3D = TOON_FX.create(&"drop",&"water",0 if pop else 2,style.bubble_pop_width_m if pop else style.bubble_muzzle_width_m)
 
 	sprite.position = position
 	var camera := parent.get_viewport().get_camera_3d()
@@ -25,7 +27,7 @@ func step(tick: int) -> void:
 			continue
 		var eased: float = 1.0-pow(1.0-fraction,2)
 		sprite.scale = Vector3.ONE*lerpf(0.40,1.20,eased)
-		ToonFxMaterials.advance(sprite,fraction)
+		TOON_FX.advance(sprite,fraction)
 		alive.append(entry)
 	active = alive
 

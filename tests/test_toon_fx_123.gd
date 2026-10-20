@@ -1,15 +1,17 @@
 extends SceneTree
 ## Run locally after import: godot --headless --path . --script tests/test_toon_fx_123.gd
 
+const TOON_FX = preload("res://presentation/toon_fx_materials.gd")
+
 func _initialize() -> void:
-	var first: Sprite3D = ToonFxMaterials.create(&"flash",&"warm",0,1.0)
-	var second: Sprite3D = ToonFxMaterials.create(&"flash",&"warm",1,1.0)
+	var first: Sprite3D = TOON_FX.create(&"flash",&"warm",0,1.0)
+	var second: Sprite3D = TOON_FX.create(&"flash",&"warm",1,1.0)
 	var a: ShaderMaterial = first.material_override
 	var b: ShaderMaterial = second.material_override
 	if a == b:
 		_fail("Instances share lifetime material")
 		return
-	ToonFxMaterials.advance(first,0.8)
+	TOON_FX.advance(first,0.8)
 	if not is_equal_approx(float(a.get_shader_parameter("life")),0.8) or not is_zero_approx(float(b.get_shader_parameter("life"))):
 		_fail("Erosion leaked to another instance")
 		return

@@ -2,6 +2,8 @@ extends Node3D
 class_name SkillFlipbookEffects
 ## Generated transparent frames; committed ticks own playback and pause behavior.
 
+const TOON_FX = preload("res://presentation/toon_fx_materials.gd")
+
 var style: SkillFlipbookStyle = preload("res://content/presentation/skill_flipbooks.tres")
 var _clips: Array[Dictionary] = []
 var _seen: Dictionary = {}
@@ -17,7 +19,7 @@ func on_event(event: Dictionary) -> void:
 		if frame >= 4 or (event.kind in [&"entity_died",&"entity_respawned"] and event.get("target_id",-1) == clip.owner) or (event.kind == &"ability_state" and not event.alive and event.source_id == clip.owner):
 			(clip.node as Node).queue_free()
 		else:
-			ToonFxMaterials.advance(clip.node as Sprite3D, float(tick-int(clip.start))/(style.frame_ticks*4))
+			TOON_FX.advance(clip.node as Sprite3D, float(tick-int(clip.start))/(style.frame_ticks*4))
 			keep.append(clip)
 	_clips = keep
 	if event.kind == &"match_finished":
@@ -75,7 +77,7 @@ func _spawn(art: String, center: Vector3, tick: int, owner: int, width: float, s
 			sheet = &"zap"
 			family = &"warm"
 			cell = 3
-	var sprite: Sprite3D = ToonFxMaterials.create(sheet,family,cell,width)
+	var sprite: Sprite3D = TOON_FX.create(sheet,family,cell,width)
 	sprite.modulate = tint if art == "lightning" else Color(1,1,1,tint.a)
 	sprite.position = center
 	add_child(sprite)

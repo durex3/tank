@@ -2,6 +2,8 @@ extends RefCounted
 class_name WeaponProjectileVisual
 ## Authored 3D silhouettes; local -Z is forward. No state mutation or collision.
 
+const TOON_FX = preload("res://presentation/toon_fx_materials.gd")
+
 static func create(weapon: StringName, team: int, style: WeaponVisualStyle) -> Node3D:
 	var root := Node3D.new()
 	root.name = "Projectile_"+String(weapon)
@@ -44,8 +46,8 @@ static func create(weapon: StringName, team: int, style: WeaponVisualStyle) -> N
 				trail.basis = Basis(lateral,Vector3.BACK,lateral.cross(Vector3.BACK))
 				trail.position.z = style.shell_length*0.5+style.cannon_glow_tail*0.3
 				var glow := ShaderMaterial.new()
-				glow = (ToonFxMaterials.MATERIALS[&"warm"] as ShaderMaterial).duplicate()
-				glow.set_shader_parameter("sheet",ToonFxMaterials.SHEETS[&"streak"])
+				glow = (TOON_FX.MATERIALS[&"warm"] as ShaderMaterial).duplicate()
+				glow.set_shader_parameter("sheet",TOON_FX.SHEETS[&"streak"])
 				glow.set_shader_parameter("cell",0.0)
 				glow.set_shader_parameter("billboard",false)
 				trail.material_override = glow

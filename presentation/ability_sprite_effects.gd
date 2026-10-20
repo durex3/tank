@@ -2,6 +2,8 @@ extends Node3D
 class_name AbilitySpriteEffects
 ## Toon sprites age only on committed ticks; persistent smoke is entity-scoped.
 
+const TOON_FX = preload("res://presentation/toon_fx_materials.gd")
+
 var style: AbilityEffectStyle = preload("res://content/presentation/ability_effects.tres")
 var weapon_style: WeaponVisualStyle = preload("res://content/presentation/weapon_visuals.tres")
 var rules: BasicAbilityRules = preload("res://content/rules/basic_abilities.tres")
@@ -45,7 +47,7 @@ func on_event(event: Dictionary) -> void:
 					width = weapon_style.scatter_muzzle_width
 					shape = weapon_style.scatter_flash_shape
 			var flash: Sprite3D = _flash(style.muzzle,event.position,style.storm_muzzle_width_m if storm else width,event.tick,style.storm_muzzle_ticks if storm else style.muzzle_ticks,shape)
-			if storm and flash != null: ToonFxMaterials.apply(flash,ToonFxMaterials.SHEETS[&"fire"],&"warm",1)
+			if storm and flash != null: TOON_FX.apply(flash,TOON_FX.SHEETS[&"fire"],&"warm",1)
 		&"projectile_hit":
 			if not event.get("bubble",false) and not event.get("ability_damage",false):
 				var weapon: StringName = event.get("weapon",&"")
@@ -86,8 +88,8 @@ func _flash(texture: Texture2D, position_value: Vector3, width: float, tick: int
 
 func _sprite(texture: Texture2D, width: float) -> Sprite3D:
 	if texture == style.smoke:
-		return ToonFxMaterials.create(&"smoke", &"dust", 1, width)
-	return ToonFxMaterials.create(&"flash", &"warm", 0 if texture == style.muzzle else 1, width)
+		return TOON_FX.create(&"smoke", &"dust", 1, width)
+	return TOON_FX.create(&"flash", &"warm", 0 if texture == style.muzzle else 1, width)
 
 func _age(tick: int) -> void:
 	var alive: Array[Dictionary] = []
@@ -98,7 +100,7 @@ func _age(tick: int) -> void:
 			var fraction: float = float(tick-effect.start)/(effect.until-effect.start)
 			var eased: float = 1.0-pow(1.0-fraction,2)
 			if node is Sprite3D:
-				ToonFxMaterials.advance(node as Sprite3D, fraction)
+				TOON_FX.advance(node as Sprite3D, fraction)
 				node.scale = effect.get("shape",Vector3.ONE)*(0.7+eased*0.5)
 			else:
 				(effect.material as ShaderMaterial).set_shader_parameter("opacity",1.0-fraction)
@@ -139,7 +141,7 @@ func _update_smoke(zones: Array, tick: int) -> void:
 			var offset := Vector3(cos(angle)*style.smoke_layer_spread_m,float(i)*0.13,sin(angle)*style.smoke_layer_spread_m)
 			sprite.position = zone.position+offset+Vector3.UP*(style.smoke_height_m+fraction*style.smoke_rise_m)
 			sprite.modulate = Color(1,1,1,style.smoke_opacity*fade)
-			ToonFxMaterials.advance(sprite, fraction)
+			TOON_FX.advance(sprite, fraction)
 			sprite.scale = Vector3.ONE*(0.8+minf(1.0,fraction*8)*0.2)
 	for id: int in _smoke.keys():
 		if not alive.has(id):
@@ -204,7 +206,7 @@ func _update_heat(event: Dictionary) -> void:
 		var camera := get_viewport().get_camera_3d()
 		if camera != null: plume.position += camera.global_basis.z*style.art_camera_offset_m
 		plume.modulate = Color(1,1,1,style.heat_smoke_opacity)
-		ToonFxMaterials.advance(plume, phase)
+		TOON_FX.advance(plume, phase)
 		plume.scale = Vector3.ONE*(0.6+phase*0.6)
 
 func _remove_owner(id: int) -> void:

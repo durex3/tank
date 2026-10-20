@@ -1,6 +1,8 @@
 extends SceneTree
 ## Event-to-visual contract, resource alpha, pause and disposal regression.
 
+const TOON_FX = preload("res://presentation/toon_fx_materials.gd")
+
 var failures: int = 0
 
 func _initialize() -> void:
@@ -65,7 +67,7 @@ func _test_bubble_visuals() -> void:
 	await process_frame
 	await process_frame
 	var bubble := view._visuals[1] as BubbleVisual
-	check(bubble != null and bubble.film.texture == ToonFxMaterials.SHEETS[&"drop"],"authoritative bubble creates generated film visual")
+	check(bubble != null and bubble.film.texture == TOON_FX.SHEETS[&"drop"],"authoritative bubble creates generated film visual")
 	view.on_event({"kind":&"ability_state","tick":16})
 	await process_frame
 	var position_before := bubble.film.position

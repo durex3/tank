@@ -2,6 +2,8 @@ extends Node3D
 class_name AbilitySignatureEffects
 ## Ultimates share toon data textures. All motion and erosion derive from event ticks.
 
+const TOON_FX = preload("res://presentation/toon_fx_materials.gd")
+
 var style: WeaponVisualStyle = preload("res://content/presentation/weapon_visuals.tres")
 var colors: AbilityEffectStyle = preload("res://content/presentation/ability_effects.tres")
 var rules: BasicAbilityRules = preload("res://content/rules/basic_abilities.tres")
@@ -33,7 +35,7 @@ func _draw_state(state: Dictionary) -> void:
 	if not actors.has(id):
 		var art: StringName = &"flash" if phase == &"breach" else (&"fire" if phase == &"storm" else &"drop")
 		var family: StringName = &"water" if phase == &"bubble" else &"warm"
-		var created: Sprite3D = ToonFxMaterials.create(art,family,2 if phase == &"breach" else 0,colors.breach_muzzle_width_m)
+		var created: Sprite3D = TOON_FX.create(art,family,2 if phase == &"breach" else 0,colors.breach_muzzle_width_m)
 		add_child(created)
 		actors[id] = {"node":created,"phase":phase,"start":state.tick}
 	var entry: Dictionary = actors[id]
@@ -45,7 +47,7 @@ func _draw_state(state: Dictionary) -> void:
 		sprite.scale = Vector3.ONE*lerpf(0.3,1.0,progress)
 	elif phase == &"storm":
 		sprite.position = state.position-aim*colors.storm_rail_offset_m+Vector3.UP*colors.vent_height_m
-		ToonFxMaterials.advance(sprite,float((state.tick-int(entry.start))%colors.storm_muzzle_ticks)/colors.storm_muzzle_ticks)
+		TOON_FX.advance(sprite,float((state.tick-int(entry.start))%colors.storm_muzzle_ticks)/colors.storm_muzzle_ticks)
 	else:
 		sprite.scale = Vector3.ONE*(0.8+0.2*sin(float(state.tick)*colors.bubble_bob_rate))
 
@@ -78,13 +80,13 @@ func _release(event: Dictionary) -> void:
 			root.add_child(beam)
 			burst.material = material
 			for i: int in range(1,mini(12,maxi(2,ceili(direction.length())))):
-				var arc: Sprite3D = ToonFxMaterials.create(&"zap",&"warm",i%2,style.breach_ring_radius)
+				var arc: Sprite3D = TOON_FX.create(&"zap",&"warm",i%2,style.breach_ring_radius)
 				arc.position = event.position+direction*float(i)/mini(12,maxi(2,ceili(direction.length())))
 				arc.modulate = colors.breach_color
 				root.add_child(arc)
 				burst.sprites.append(arc)
 	else:
-		var sprite: Sprite3D = ToonFxMaterials.create(&"drop" if event.ability == &"bubble" else &"smoke",&"water" if event.ability == &"bubble" else &"dust",0,colors.bubble_pop_width_m if event.ability == &"bubble" else colors.impact_width_m)
+		var sprite: Sprite3D = TOON_FX.create(&"drop" if event.ability == &"bubble" else &"smoke",&"water" if event.ability == &"bubble" else &"dust",0,colors.bubble_pop_width_m if event.ability == &"bubble" else colors.impact_width_m)
 		sprite.position = event.position
 		root.add_child(sprite)
 		burst.sprites.append(sprite)
@@ -100,7 +102,7 @@ func _age(tick: int) -> void:
 			continue
 		var life: float = clampf(float(tick-int(burst.start))/maxi(1,int(burst.until)-int(burst.start)),0,1)
 		for sprite: Sprite3D in burst.sprites:
-			ToonFxMaterials.advance(sprite,life)
+			TOON_FX.advance(sprite,life)
 			sprite.scale = Vector3.ONE*lerpf(0.7,1.2,life)
 		if burst.has("material"):
 			var material: ShaderMaterial = burst.material

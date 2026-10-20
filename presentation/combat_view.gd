@@ -2,6 +2,8 @@ extends Node3D
 class_name CombatView
 ## Disposable visual nodes track authoritative projectile data.
 
+const TOON_FX = preload("res://presentation/toon_fx_materials.gd")
+
 @export var style: CombatEffectStyle = preload("res://content/presentation/default_vfx.tres")
 var weapon_style: WeaponVisualStyle = preload("res://content/presentation/weapon_visuals.tres")
 var ability_style: AbilityEffectStyle = preload("res://content/presentation/ability_effects.tres")
@@ -96,7 +98,7 @@ func on_event(event: Dictionary) -> void:
 func _flash(texture: Texture2D, center: Vector3, width: float, duration: float) -> void:
 	if _effects.size() >= style.max_active: return
 	var cell: int = 3 if texture == style.explosion else (0 if texture == style.muzzle else 1)
-	var flash: Sprite3D = ToonFxMaterials.create(&"flash",&"warm",cell,width)
+	var flash: Sprite3D = TOON_FX.create(&"flash",&"warm",cell,width)
 	flash.position = center
 	var camera := get_viewport().get_camera_3d()
 	if camera != null: flash.position += camera.global_basis.z*style.camera_offset_m
@@ -110,7 +112,7 @@ func _age_flashes(tick: int) -> void:
 		if life >= 1.0: (entry.node as Node).queue_free()
 		else:
 			var sprite: Sprite3D = entry.node
-			ToonFxMaterials.advance(sprite,life)
+			TOON_FX.advance(sprite,life)
 			sprite.scale = Vector3.ONE*lerpf(0.65,1.12,life)
 			keep.append(entry)
 	_effects = keep
@@ -134,13 +136,13 @@ func set_paused(value: bool) -> void:
 
 func _breach_projectile(_color: Color) -> Node3D:
 	var root := Node3D.new()
-	var tracer: Sprite3D = ToonFxMaterials.create(&"bolt",&"warm",2,ability_style.breach_trail_m)
+	var tracer: Sprite3D = TOON_FX.create(&"bolt",&"warm",2,ability_style.breach_trail_m)
 	tracer.modulate = ability_style.breach_color
 	root.add_child(tracer)
 	return root
 
 func _storm_projectile(_team_color: Color) -> Node3D:
 	var root := Node3D.new()
-	var tracer: Sprite3D = ToonFxMaterials.create(&"streak",&"warm",0,ability_style.storm_trail_m)
+	var tracer: Sprite3D = TOON_FX.create(&"streak",&"warm",0,ability_style.storm_trail_m)
 	root.add_child(tracer)
 	return root

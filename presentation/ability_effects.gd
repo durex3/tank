@@ -2,11 +2,13 @@ extends Node3D
 class_name AbilityEffects
 ## Session facts own lifetime. Ground cues are flat stencils; sprites own volume.
 
+const GROUND_GEOMETRY = preload("res://presentation/toon_ground_geometry.gd")
+
 var style: AbilityEffectStyle = preload("res://content/presentation/ability_effects.tres")
 var rules: BasicAbilityRules = preload("res://content/rules/basic_abilities.tres")
 var _nodes: Dictionary = {}
 var _zones := MeshInstance3D.new()
-var _material: StandardMaterial3D = ToonGroundGeometry.material()
+var _material: StandardMaterial3D = GROUND_GEOMETRY.material()
 var _art := AbilitySpriteEffects.new()
 var _signatures := AbilitySignatureEffects.new()
 var _frames := SkillFlipbookEffects.new()
@@ -33,7 +35,7 @@ func on_event(event: Dictionary) -> void:
 func _mesh() -> ImmediateMesh:
 	var mesh := ImmediateMesh.new()
 	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES,_material)
-	ToonGroundGeometry.triangle(mesh,Vector3.ZERO,Vector3.RIGHT*0.001,Vector3.BACK*0.001,Color(0,0,0,0))
+	GROUND_GEOMETRY.triangle(mesh,Vector3.ZERO,Vector3.RIGHT*0.001,Vector3.BACK*0.001,Color(0,0,0,0))
 	return mesh
 
 func _draw_actor(state: Dictionary) -> void:
@@ -48,37 +50,37 @@ func _draw_actor(state: Dictionary) -> void:
 	var right := Vector3(-front.z,0,front.x)
 	if state.guard:
 		var color: Color = Color("eef6ff") if state.tick < int(_guard_hits.get(state.source_id,0)) else style.guard_color
-		ToonGroundGeometry.arc(mesh,origin,style.guard_radius_m,state.body_yaw,deg_to_rad(rules.guard_half_angle),style.storm_ring_width_m,color,7)
+		GROUND_GEOMETRY.arc(mesh,origin,style.guard_radius_m,state.body_yaw,deg_to_rad(rules.guard_half_angle),style.storm_ring_width_m,color,7)
 	if state.get("escape_active",false) or state.get("cruise",false):
 		var color: Color = style.escape_color if state.get("escape_active",false) else style.cruise_color
 		for side: int in [-1,1]:
 			for i: int in range(3):
 				var p: Vector3 = origin+right*side*style.escape_arrow_span_m-front*(i+float(state.tick%18)/18.0)*style.escape_arrow_spacing_m
-				ToonGroundGeometry.chevron(mesh,p,front,style.escape_arrow_spacing_m*0.55,color)
+				GROUND_GEOMETRY.chevron(mesh,p,front,style.escape_arrow_spacing_m*0.55,color)
 	if state.phase == &"breach":
 		var aim := Vector3(sin(state.yaw),0,-cos(state.yaw))
 		for i: int in range(1,int(rules.breach_range)):
-			ToonGroundGeometry.chevron(mesh,origin+aim*i,aim,style.line_width*3,Color(style.breach_color,0.7))
+			GROUND_GEOMETRY.chevron(mesh,origin+aim*i,aim,style.line_width*3,Color(style.breach_color,0.7))
 	elif state.phase in [&"shock",&"dash"]:
 		var aim := Vector3(sin(state.locked_yaw),0,-cos(state.locked_yaw))
 		for i: int in range(1,int(rules.dash_distance)):
-			ToonGroundGeometry.chevron(mesh,origin+aim*i,aim,style.escape_arrow_spacing_m,style.shock_color)
+			GROUND_GEOMETRY.chevron(mesh,origin+aim*i,aim,style.escape_arrow_spacing_m,style.shock_color)
 	elif state.phase in [&"storm",&"cooling"]:
 		var color: Color = style.storm_color if state.phase == &"storm" else style.cooling_color
 		var duration: int = rules.storm_ticks if state.phase == &"storm" else rules.storm_cooldown
 		var half: float = PI*clampf(float(state.remaining)/maxi(1,duration),0,1)
-		ToonGroundGeometry.arc(mesh,origin,style.storm_ring_radius_m,half,half,style.storm_ring_width_m,color,style.storm_segments)
+		GROUND_GEOMETRY.arc(mesh,origin,style.storm_ring_radius_m,half,half,style.storm_ring_width_m,color,style.storm_segments)
 	if state.weapon == &"bubble_cannon" and state.source_id == 1:
 		var center: Vector3 = state.get("bubble_aim",state.position)+Vector3.UP*style.ground_height
 		var radius: float = preload("res://content/rules/bubble.tres").field_radius if state.phase == &"bubble" else style.bubble_plan_radius_m
-		ToonGroundGeometry.arc(mesh,center,radius,0,PI,style.line_width*2,style.bubble_color)
+		GROUND_GEOMETRY.arc(mesh,center,radius,0,PI,style.line_width*2,style.bubble_color)
 	mesh.surface_end()
 	(_nodes[state.source_id] as MeshInstance3D).mesh = mesh
 
 func _draw_zones(zones: Array) -> void:
 	var mesh: ImmediateMesh = _mesh()
 	for zone: Dictionary in zones:
-		ToonGroundGeometry.arc(mesh,zone.position+Vector3.UP*style.ground_height,rules.smoke_radius,0,PI,style.line_width*2,style.escape_color)
+		GROUND_GEOMETRY.arc(mesh,zone.position+Vector3.UP*style.ground_height,rules.smoke_radius,0,PI,style.line_width*2,style.escape_color)
 	mesh.surface_end()
 	_zones.mesh = mesh
 
