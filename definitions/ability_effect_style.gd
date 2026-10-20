@@ -108,3 +108,12 @@ class_name AbilityEffectStyle
 @export var bubble_droplet_width_m: float = 0.26
 @export var bubble_droplet_speed: float = 2.4
 @export var bubble_droplet_gravity: float = 7.0
+
+@export var storm_indicator_width_m: float = 1.3
+@export var bubble_ultimate_scale: float = 2.0
+@export var bubble_field_fill: float = 0.44
+@export var bubble_field_edge: float = 0.90
+@export var bubble_landing_ticks: int = 26
+@export var bubble_landing_width_m: float = 3.1
+@export var bubble_landing_drop_width_m: float = 0.48
+@export var bubble_landing_drop_speed: float = 3.4

@@ -8,9 +8,9 @@ const ACCENTS = preload("res://presentation/toon_accent_group.gd")
 
 var active: Array[Dictionary] = []
 
-func spawn(parent: Node3D, position: Vector3, tick: int, style: AbilityEffectStyle, pop: bool) -> void:
+func spawn(parent: Node3D, position: Vector3, tick: int, style: AbilityEffectStyle, pop: bool, field: bool = false) -> void:
 	if active.size() >= style.bubble_max_bursts: return
-	var sprite: Sprite3D = TOON_FX.create(&"drop",&"water",0,style.bubble_pop_width_m) if pop else TOON_FX.water(style.bubble_muzzle_width_m)
+	var sprite: Sprite3D = TOON_FX.create(&"drop",&"water",0,style.bubble_landing_width_m if field else style.bubble_pop_width_m) if pop else TOON_FX.water(style.bubble_muzzle_width_m)
 
 	sprite.position = position
 	var camera := parent.get_viewport().get_camera_3d()
@@ -19,11 +19,26 @@ func spawn(parent: Node3D, position: Vector3, tick: int, style: AbilityEffectSty
 	parent.add_child(group)
 	group.add_child(sprite)
 	var droplets: Node3D = null
+	var wave: MeshInstance3D = null
+	var duration: int = style.bubble_landing_ticks if field else style.bubble_pop_ticks if pop else style.bubble_muzzle_ticks
+	if field:
+		wave = MeshInstance3D.new()
+		var quad := QuadMesh.new()
+		var radius: float = preload("res://content/rules/bubble.tres").field_radius
+		quad.size = Vector2.ONE*radius*2
+		wave.mesh = quad
+		wave.rotation.x = -PI/2
+		wave.position = Vector3(position.x,style.ground_height+0.015,position.z)
+		wave.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		var material := ShaderMaterial.new()
+		material.shader = preload("res://presentation/shaders/toon_water_landing.gdshader")
+		wave.material_override = material
+		group.add_child(wave)
 	if pop:
 		droplets = ACCENTS.new()
 		group.add_child(droplets)
-		droplets.configure(&"water",sprite.position,Vector3.FORWARD,style.bubble_droplet_count,style.bubble_droplet_width_m,style.bubble_droplet_speed,style.bubble_pop_ticks,style.bubble_droplet_gravity)
-	active.append({"root":group,"droplets":droplets,"sprite":sprite,"start":tick,"duration":style.bubble_pop_ticks if pop else style.bubble_muzzle_ticks,"pop":pop})
+		droplets.configure(&"water",sprite.position,Vector3.FORWARD,style.bubble_droplet_count,style.bubble_landing_drop_width_m if field else style.bubble_droplet_width_m,style.bubble_landing_drop_speed if field else style.bubble_droplet_speed,duration,style.bubble_droplet_gravity)
+	active.append({"root":group,"droplets":droplets,"sprite":sprite,"start":tick,"duration":duration,"wave":wave,"pop":pop})
 	step(tick)
 
 func step(tick: int) -> void:
@@ -38,6 +53,7 @@ func step(tick: int) -> void:
 		sprite.scale = Vector3.ONE*lerpf(0.40,1.20,eased)
 		TOON_FX.advance(sprite,fraction)
 		if entry.droplets != null: entry.droplets.step(tick-entry.start)
+		if entry.wave != null: (entry.wave.material_override as ShaderMaterial).set_shader_parameter("life",fraction)
 		alive.append(entry)
 	active = alive
 

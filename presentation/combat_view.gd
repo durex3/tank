@@ -32,7 +32,7 @@ func _process(_delta: float) -> void:
 			if shot.kind in [&"bubble_round",&"bubble_barrier",&"bubble_lob",&"bubble_field"]:
 				visual.free()
 				var bubble := BubbleVisual.new()
-				bubble.configure(shot.radius,shot.team_id,shot.kind in [&"bubble_barrier",&"bubble_field"],ability_style)
+				bubble.configure(shot.radius,shot.team_id,shot.kind in [&"bubble_barrier",&"bubble_field"],ability_style,shot.kind == &"bubble_lob")
 				visual = bubble
 			elif shot.ability_damage and not shot.pierce_damage.is_empty():
 				visual.free()
@@ -83,7 +83,7 @@ func on_event(event: Dictionary) -> void:
 			_flash(style.muzzle, event.position, style.muzzle_width_m, style.muzzle_duration_s)
 		&"projectile_hit":
 			if event.get("bubble",false):
-				_bubble_bursts.spawn(self,event.position,_tick,ability_style,true)
+				_bubble_bursts.spawn(self,event.position,_tick,ability_style,true,event.get("field",false))
 				return
 			if ability_art_enabled: return
 			_flash(style.impact, event.position, style.impact_width_m, style.impact_duration_s)

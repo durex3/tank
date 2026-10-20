@@ -59,6 +59,33 @@ func _run() -> void:
 	check(drops.particles.size() == 3 and drops.particles[0].node.position != drops.particles[2].node.position,"One splash has three distinct moving droplets")
 	bursts.step(40+tuning.bubble_pop_ticks)
 	check(bursts.active.is_empty(),"Water burst root and all droplets expire together")
+	var normal := BubbleVisual.new()
+	var lob := BubbleVisual.new()
+	normal.configure(0.45,0,false,tuning)
+	lob.configure(0.45,0,false,tuning,true)
+	var shot := ProjectileState.new()
+	shot.kind = &"bubble_lob"
+	shot.radius = 0.45
+	shot.arc_ticks = 36
+	shot.spawn_tick = 100
+	shot.previous_position = Vector3(0,1,-1)
+	shot.position = Vector3(0,2,-2)
+	lob.present(shot,118)
+	check(float((lob.film.material_override as ShaderMaterial).get_shader_parameter("life")) < 0.9,"Lob with unset field lifetime remains visible halfway through its flight")
+	check(lob.film.scale.x > normal.film.scale.x and is_equal_approx(shot.radius,0.45),"Only ultimate film grows; authoritative geometry stays unchanged")
+	var lob_position: Vector3 = lob.trail.position
+	lob.present(shot,118)
+	check(lob.trail.position == lob_position and lob_position.y < 0,"Lob trail follows the committed arc without integrating duplicate ticks")
+	shot.kind = &"bubble_round"
+	shot.lifetime_ticks = 200
+	normal.present(shot,118)
+	check(is_equal_approx(float((normal.film.material_override as ShaderMaterial).get_shader_parameter("life")),0.09) and normal.film.scale.x < 1.04,"Accepted ordinary bubble retains its original lifetime and scale")
+	normal.free()
+	lob.free()
+	bursts.spawn(art,Vector3.ZERO,150,tuning,true,true)
+	check(bursts.active[0].wave != null,"Actual field landing owns one expanding flat impact wave")
+	bursts.step(150+tuning.bubble_landing_ticks)
+	check(bursts.active.is_empty(),"Landing wave and larger droplets expire with the same root")
 	art.free()
 	frame.free()
 	await process_frame

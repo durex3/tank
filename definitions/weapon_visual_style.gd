@@ -55,3 +55,9 @@ class_name WeaponVisualStyle
 @export var storm_trace_length: float = 0.9
 @export var shell_radius: float = 0.12
 @export var shell_length: float = 0.46
+
+@export var breach_trace_width_m: float = 0.38
+@export var breach_trace_strength: float = 0.92
+@export var pellet_trace_width_m: float = 0.32
+@export var pellet_trace_length_m: float = 0.65
+@export var pellet_body_color: Color = Color("cf7c20")

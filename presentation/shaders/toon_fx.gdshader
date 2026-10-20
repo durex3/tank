@@ -13,6 +13,8 @@ uniform float ramp_shift = 0.12;
 uniform float life = 0.0;
 uniform float uv_zoom = 1.18;
 uniform bool ground_pool = false;
+uniform float pool_fill = 0.22;
+uniform float pool_edge = 0.65;
 varying vec2 local_uv;
 uniform float camera_pull = 0.0;
 uniform float spin = 0.0;
@@ -56,9 +58,9 @@ void fragment() {
 		float edge = smoothstep(rim-0.018,rim-0.010,d)*disk;
 		float foam_radius = 0.34+sin(angle*3.0+life*4.0)*0.012;
 		float arc = (1.0-smoothstep(0.006,0.013,abs(d-foam_radius)))*step(0.65,sin(angle*2.0+life*1.2));
-		float foam = max(edge*0.65,arc*0.45);
-		ALBEDO = texture(ramp,vec2(foam>0.1 ? 0.95 : 0.5,0.5)).rgb*COLOR.rgb;
-		ALPHA = disk*max(0.22,foam)*COLOR.a*opacity;
+		float foam = max(edge*pool_edge,arc*0.65);
+		ALBEDO = texture(ramp,vec2(foam>0.1 ? 0.95 : 0.32,0.5)).rgb*COLOR.rgb;
+		ALPHA = disk*max(pool_fill,foam)*COLOR.a*opacity;
 	} else {
 		ALPHA = coverage * keep * COLOR.a * opacity;
 	}

@@ -16,12 +16,24 @@ static func create(weapon: StringName, team: int, style: WeaponVisualStyle) -> N
 		&"scatter":
 			var pellet := MeshInstance3D.new()
 			var gem := PrismMesh.new()
-			gem.size = Vector3(style.pellet_radius*2,style.pellet_radius*1.5,style.pellet_radius*3)
+			gem.size = Vector3(style.pellet_radius*2,style.pellet_radius*1.5,style.pellet_radius*1.6)
 			pellet.mesh = gem
-			pellet.material_override = material(color)
+			pellet.material_override = material(style.pellet_body_color if team == 0 else color)
 			pellet.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			root.add_child(pellet)
-			rod(root,style.pellet_radius*0.25,style.pellet_tail,style.pellet_tail*0.7,Color("fff4dc"))
+			rod(root,style.pellet_radius*0.45,style.pellet_tail,style.pellet_tail*0.7,Color("fff4dc"))
+			var trace := MeshInstance3D.new()
+			trace.name = "PelletTrace"
+			var quad := QuadMesh.new()
+			quad.size = Vector2(style.pellet_trace_width_m,style.pellet_trace_length_m)
+			trace.mesh = quad
+			trace.rotation.x = -PI/2
+			trace.position.z = style.pellet_trace_length_m*0.35
+			trace.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			var trace_material := ShaderMaterial.new()
+			trace_material.shader = preload("res://presentation/shaders/toon_needle_trace.gdshader")
+			trace.material_override = trace_material
+			root.add_child(trace)
 		_:
 			var core := MeshInstance3D.new()
 			core.name = "ShellBody"

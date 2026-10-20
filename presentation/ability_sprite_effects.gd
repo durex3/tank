@@ -43,7 +43,7 @@ func on_event(event: Dictionary) -> void:
 				&"cannon": width = weapon_style.cannon_muzzle_width
 				&"autocannon":
 					width = weapon_style.needle_muzzle_width
-					duration = style.needle_muzzle_ticks
+					duration = style.storm_muzzle_ticks if storm else style.needle_muzzle_ticks
 					shape = weapon_style.needle_flash_shape
 				&"scatter":
 					width = weapon_style.scatter_muzzle_width
