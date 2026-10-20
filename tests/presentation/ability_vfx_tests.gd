@@ -32,7 +32,7 @@ func _run() -> void:
 	frames.on_event(hit)
 	frames.on_event(hit)
 	tank.on_event(hit)
-	check(frames._clips.size() == 1,"real energy damage creates one impact per target")
+	check(frames._clips.size() == 2,"one real penetrating hit creates one impact plus debris group")
 	check(not tank._hit_flash._surfaces.is_empty(),"energy damage applies instance-local armor flash")
 	tank.on_event({"kind":&"ability_zones","tick":28})
 	check(tank._hit_flash._surfaces.is_empty(),"armor flash restores overlays after eight committed ticks")

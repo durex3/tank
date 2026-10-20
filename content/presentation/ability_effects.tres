@@ -4,3 +4,15 @@
 
 [resource]
 script = ExtResource("1")
+muzzle_ticks = 9
+impact_ticks = 15
+storm_muzzle_width_m = 1.35
+storm_muzzle_ticks = 6
+breach_muzzle_width_m = 1.8
+smoke_opacity = 0.25
+smoke_layers = 2
+bubble_pop_width_m = 1.8
+bubble_muzzle_width_m = 0.85
+bubble_pop_ticks = 18
+bubble_muzzle_ticks = 10
+breach_color = Color(1, 0.75, 0.30, 1)

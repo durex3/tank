@@ -31,6 +31,23 @@ func _initialize() -> void:
 		_fail("Dead owner retains ultimate burst")
 		return
 	layer.clear()
+	var bubble := BubbleVisual.new()
+	var tuning: AbilityEffectStyle = preload("res://content/presentation/ability_effects.tres")
+	bubble.configure(1.4,0,true,tuning)
+	var shot := ProjectileState.new()
+	shot.kind = &"bubble_field"
+	shot.radius = 1.4
+	shot.spawn_tick = 0
+	shot.lifetime_ticks = 180
+	bubble.present(shot,160)
+	if not is_equal_approx(bubble.film.pixel_size*bubble.film.texture.get_width(),shot.radius*2) or not is_equal_approx(bubble.film.modulate.a,1.0):
+		_fail("Field boundary must match real diameter and stay readable before final fade")
+		return
+	bubble.present(shot,180)
+	if not is_zero_approx(bubble.film.modulate.a) or not is_equal_approx(shot.radius,1.4):
+		_fail("Expired field remains visible or presentation changes authoritative radius")
+		return
+	bubble.free()
 	first.free()
 	second.free()
 	layer.queue_free()

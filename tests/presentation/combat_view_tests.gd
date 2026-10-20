@@ -79,12 +79,12 @@ func _test_bubble_visuals() -> void:
 	view.set_paused(false)
 	for i: int in range(3): view.on_event({"kind":&"projectile_hit","tick":20,"bubble":true,"position":shot.position})
 	check(view._bubble_bursts.active.size() == 2,"burst budget drops only cosmetic overload")
-	view.on_event({"kind":&"ability_state","tick":34})
+	view.on_event({"kind":&"ability_state","tick":20+view.ability_style.bubble_pop_ticks})
 	await process_frame
 	check(view._bubble_bursts.active.is_empty(),"burst expires at committed tick boundary")
-	view.on_event({"kind":&"weapon_fired","tick":35,"weapon":&"bubble_cannon","position":shot.position})
+	view.on_event({"kind":&"weapon_fired","tick":21+view.ability_style.bubble_pop_ticks,"weapon":&"bubble_cannon","position":shot.position})
 	check(view._bubble_bursts.active.size() == 1,"bubble muzzle uses film instead of gunfire art")
-	view.on_event({"kind":&"match_finished","tick":36})
+	view.on_event({"kind":&"match_finished","tick":22+view.ability_style.bubble_pop_ticks})
 	check(view._bubble_bursts.active.is_empty(),"match completion clears droplets")
 	view.free()
 	await process_frame

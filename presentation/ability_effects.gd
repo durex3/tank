@@ -54,12 +54,12 @@ func _draw_actor(state: Dictionary) -> void:
 	if state.get("escape_active",false) or state.get("cruise",false):
 		var color: Color = style.escape_color if state.get("escape_active",false) else style.cruise_color
 		for side: int in [-1,1]:
-			for i: int in range(3):
+			for i: int in range(2):
 				var p: Vector3 = origin+right*side*style.escape_arrow_span_m-front*(i+float(state.tick%18)/18.0)*style.escape_arrow_spacing_m
 				GROUND_GEOMETRY.chevron(mesh,p,front,style.escape_arrow_spacing_m*0.55,color)
 	if state.phase == &"breach":
 		var aim := Vector3(sin(state.yaw),0,-cos(state.yaw))
-		for i: int in range(1,int(rules.breach_range)):
+		for i: int in range(2,int(rules.breach_range),2):
 			GROUND_GEOMETRY.chevron(mesh,origin+aim*i,aim,style.line_width*3,Color(style.breach_color,0.7))
 	elif state.phase in [&"shock",&"dash"]:
 		var aim := Vector3(sin(state.locked_yaw),0,-cos(state.locked_yaw))
@@ -69,7 +69,7 @@ func _draw_actor(state: Dictionary) -> void:
 		var color: Color = style.storm_color if state.phase == &"storm" else style.cooling_color
 		var duration: int = rules.storm_ticks if state.phase == &"storm" else rules.storm_cooldown
 		var half: float = PI*clampf(float(state.remaining)/maxi(1,duration),0,1)
-		GROUND_GEOMETRY.arc(mesh,origin,style.storm_ring_radius_m,half,half,style.storm_ring_width_m,color,style.storm_segments)
+		GROUND_GEOMETRY.arc(mesh,origin,style.storm_ring_radius_m,half,half,style.storm_ring_width_m,Color(color,0.5),12)
 	if state.weapon == &"bubble_cannon" and state.source_id == 1:
 		var center: Vector3 = state.get("bubble_aim",state.position)+Vector3.UP*style.ground_height
 		var radius: float = preload("res://content/rules/bubble.tres").field_radius if state.phase == &"bubble" else style.bubble_plan_radius_m

@@ -33,9 +33,9 @@ func _draw_state(state: Dictionary) -> void:
 		return
 	if actors.has(id) and actors[id].phase != phase: _remove_state(id)
 	if not actors.has(id):
-		var art: StringName = &"flash" if phase == &"breach" else (&"fire" if phase == &"storm" else &"drop")
+		var art: StringName = &"flash" if phase == &"breach" else (&"flash" if phase == &"storm" else &"drop")
 		var family: StringName = &"water" if phase == &"bubble" else &"warm"
-		var created: Sprite3D = TOON_FX.create(art,family,2 if phase == &"breach" else 0,colors.breach_muzzle_width_m)
+		var created: Sprite3D = TOON_FX.create(art,family,0,colors.breach_muzzle_width_m if phase != &"storm" else colors.storm_muzzle_width_m)
 		add_child(created)
 		actors[id] = {"node":created,"phase":phase,"start":state.tick}
 	var entry: Dictionary = actors[id]
@@ -44,7 +44,7 @@ func _draw_state(state: Dictionary) -> void:
 	sprite.position = state.get("visual_muzzle_position",state.position+aim*ProjectileSystem.MUZZLE_OFFSET+Vector3.UP*ProjectileSystem.SHOT_HEIGHT)
 	if phase == &"breach":
 		var progress: float = clampf(1.0-float(state.remaining)/rules.breach_charge,0,1)
-		sprite.scale = Vector3.ONE*lerpf(0.3,1.0,progress)
+		sprite.scale = Vector3.ONE*lerpf(0.55,1.0,progress)
 	elif phase == &"storm":
 		sprite.position = state.position-aim*colors.storm_rail_offset_m+Vector3.UP*colors.vent_height_m
 		TOON_FX.advance(sprite,float((state.tick-int(entry.start))%colors.storm_muzzle_ticks)/colors.storm_muzzle_ticks)
@@ -73,18 +73,18 @@ func _release(event: Dictionary) -> void:
 			beam.position = (event.position+end)*0.5
 			beam.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			var material := ShaderMaterial.new()
-			material.shader = preload("res://presentation/shaders/toon_energy_beam.gdshader")
+			material.shader = preload("res://presentation/shaders/armor_piercing_trace.gdshader")
 			material.set_shader_parameter("life",0.0)
 			material.set_shader_parameter("phase",0.0)
 			beam.material_override = material
 			root.add_child(beam)
 			burst.material = material
-			for i: int in range(1,mini(12,maxi(2,ceili(direction.length())))):
-				var arc: Sprite3D = TOON_FX.create(&"zap",&"warm",i%2,style.breach_ring_radius)
-				arc.position = event.position+direction*float(i)/mini(12,maxi(2,ceili(direction.length())))
-				arc.modulate = colors.breach_color
-				root.add_child(arc)
-				burst.sprites.append(arc)
+			var muzzle: Sprite3D = TOON_FX.create(&"flash",&"warm",0,style.breach_release_radius*1.6)
+			muzzle.position = event.position
+			muzzle.modulate = Color.WHITE
+			root.add_child(muzzle)
+			burst.sprites.append(muzzle)
+
 	else:
 		var sprite: Sprite3D = TOON_FX.create(&"drop" if event.ability == &"bubble" else &"smoke",&"water" if event.ability == &"bubble" else &"dust",0,colors.bubble_pop_width_m if event.ability == &"bubble" else colors.impact_width_m)
 		sprite.position = event.position
@@ -103,7 +103,9 @@ func _age(tick: int) -> void:
 		var life: float = clampf(float(tick-int(burst.start))/maxi(1,int(burst.until)-int(burst.start)),0,1)
 		for sprite: Sprite3D in burst.sprites:
 			TOON_FX.advance(sprite,life)
-			sprite.scale = Vector3.ONE*lerpf(0.7,1.2,life)
+			sprite.scale = Vector3.ONE*lerpf(0.85,1.25,life)
+			if burst.event.ability == &"breach":
+				sprite.modulate.a = 1.0-smoothstep(0.14,0.65,life)
 		if burst.has("material"):
 			var material: ShaderMaterial = burst.material
 			material.set_shader_parameter("life",life)

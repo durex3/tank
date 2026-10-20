@@ -11,6 +11,9 @@ uniform float erode_start = 0.35;
 uniform float erode_softness = 0.06;
 uniform float ramp_shift = 0.12;
 uniform float life = 0.0;
+uniform float uv_zoom = 1.18;
+uniform bool ground_pool = false;
+varying vec2 local_uv;
 uniform float camera_pull = 0.0;
 uniform float spin = 0.0;
 uniform float lift = 0.0;
@@ -31,7 +34,8 @@ void vertex() {
 			vec4(MODEL_MATRIX[3].xyz + cam_z * camera_pull, 1.0));
 	}
 	float index = use_instance_cell ? floor(clamp(INSTANCE_CUSTOM.z, 0.0, 0.999) * frames.x * frames.y) : cell;
-	UV = (UV + vec2(mod(index, frames.x), floor(index / frames.x))) / frames;
+	local_uv = UV;
+	UV = ((UV-0.5)/uv_zoom+0.5 + vec2(mod(index, frames.x), floor(index / frames.x))) / frames;
 }
 
 void fragment() {
@@ -39,7 +43,17 @@ void fragment() {
 	float value = clamp(texel.r - ramp_shift * life, 0.0, 1.0);
 	vec3 colour = texture(ramp, vec2(value, 0.5)).rgb;
 	float threshold = smoothstep(erode_start, 1.0, life);
-	float keep = smoothstep(threshold, threshold + erode_softness, texel.g);
+	float keep = life <= erode_start ? 1.0 : smoothstep(threshold, threshold + erode_softness, texel.g);
 	ALBEDO = colour * COLOR.rgb;
-	ALPHA = texel.a * keep * COLOR.a * opacity;
+	float coverage = smoothstep(0.25,0.8,texel.a);
+	if (ground_pool) {
+		float d = length(local_uv-0.5);
+		float disk = 1.0-step(0.49,d);
+		float edge = step(0.43,d)*disk;
+		vec3 water = texture(ramp,vec2(0.7,0.5)).rgb;
+		ALBEDO = mix(water,colour,coverage)*COLOR.rgb;
+		ALPHA = disk*max(0.18,max(edge*0.75,coverage*0.8))*COLOR.a*opacity;
+	} else {
+		ALPHA = coverage * keep * COLOR.a * opacity;
+	}
 }

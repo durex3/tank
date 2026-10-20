@@ -35,6 +35,7 @@ func on_event(event: Dictionary) -> void:
 		var camera := get_viewport().get_camera_3d()
 		if camera != null: center += camera.global_basis.z*style.hit_camera_offset
 		_spawn("lightning",center,tick,event.target_id,style.energy_hit_width,int(event.get("projectile_id",0)),style.energy_hit_tint)
+		_spawn("breach_debris",center,tick,event.target_id,style.energy_hit_width*0.8,int(event.get("projectile_id",0)))
 	if event.kind == &"damage_applied" and event.get("ability_id",&"") == &"storm" and event.get("actual_damage",0) > 0:
 		var target: int = event.target_id
 		if tick >= int(_storm_until.get(target,-1)):
@@ -61,6 +62,10 @@ func _spawn(art: String, center: Vector3, tick: int, owner: int, width: float, s
 	var family: StringName = &"metal"
 	var cell: int = 1
 	match art:
+		"breach_debris":
+			sheet = &"debris"
+			family = &"metal"
+			cell = 3
 		"guard":
 			sheet = &"zap"
 			family = &"guard"
@@ -74,9 +79,9 @@ func _spawn(art: String, center: Vector3, tick: int, owner: int, width: float, s
 			family = &"warm"
 			cell = 1
 		"lightning":
-			sheet = &"zap"
+			sheet = &"flash"
 			family = &"warm"
-			cell = 3
+			cell = 1
 	var sprite: Sprite3D = TOON_FX.create(sheet,family,cell,width)
 	sprite.modulate = tint if art == "lightning" else Color(1,1,1,tint.a)
 	sprite.position = center

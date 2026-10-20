@@ -12,10 +12,12 @@ var _field: bool = false
 func configure(radius: float, team: int, field: bool, tuning: AbilityEffectStyle) -> void:
 	style = tuning
 	_field = field
-	film = TOON_FX.create(&"drop",&"water",2 if field else 1,radius*2/style.bubble_texture_fill,not field)
+	film = TOON_FX.create(&"drop",&"water",2 if field else 1,radius*2 if field else radius*2/style.bubble_texture_fill,not field)
 	film.modulate = Color.WHITE if team == 0 else style.bubble_enemy_tint
 	add_child(film)
 	if field:
+		(film.material_override as ShaderMaterial).set_shader_parameter("ground_pool",true)
+		(film.material_override as ShaderMaterial).set_shader_parameter("uv_zoom",1.0)
 		film.rotation.x = -PI/2
 		film.position.y = style.ground_height-0.2
 	else:
@@ -30,7 +32,8 @@ func present(shot: ProjectileState, tick: int) -> void:
 	TOON_FX.advance(film,life)
 	var phase: float = age*style.bubble_bob_rate+shot.projectile_id*1.7
 	if _field:
-		film.scale = Vector3.ONE*(0.94+sin(phase)*0.025)
+		film.scale = Vector3.ONE
+		film.modulate.a = clampf(float(shot.lifetime_ticks-age)/style.bubble_fade_ticks,0,1)
 	else:
 		film.scale = Vector3(1+sin(phase)*style.bubble_wobble,1-sin(phase)*style.bubble_wobble,1)
 		trail.position = -shot.direction*style.bubble_trail_distance_m

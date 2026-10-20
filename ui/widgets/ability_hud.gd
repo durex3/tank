@@ -73,7 +73,7 @@ func on_event(event: Dictionary) -> void:
 		_ammo.text = "弹匣 %d/%d" % [event.rounds,event.capacity]
 		if event.remaining > 0: _ammo.text += " · 填弹 %.1f秒" % (event.remaining/60.0)
 	if event.kind != &"ability_state" or event.source_id != 1: return
-	var names: Dictionary = {&"cannon":"邪能贯穿炮",&"autocannon":"火力风暴",&"scatter":"突击冲锋",&"bubble_cannon":"腐蚀泡池"}
+	var names: Dictionary = {&"cannon":"重型穿甲炮",&"autocannon":"火力风暴",&"scatter":"突击冲锋",&"bubble_cannon":"腐蚀泡池"}
 	var phases: Dictionary = {&"idle":"就绪" if event.ready else event.reason,&"breach":"蓄力中",&"shock":"准备中",&"dash":"冲锋中",&"storm":"强化 %.1fs" % (event.remaining/60.0),&"cooling":"红温禁火 %.1fs" % (event.remaining/60.0)}
 	_status.text = "%s · %s" % [names.get(event.weapon,"未开放"),phases.get(event.phase,"")]
 	if event.phase == &"bubble": _status.text = "腐蚀泡池 · 准备 %.1f秒" % (event.remaining/60.0)

@@ -6,3 +6,12 @@
 script = ExtResource("1")
 signature_width = 0.12
 shock_height = 0.8
+cannon_muzzle_width = 1.65
+needle_muzzle_width = 0.95
+scatter_muzzle_width = 1.60
+needle_impact_width = 1.10
+scatter_impact_width = 1.25
+needle_flash_shape = Vector3(0.9, 1.05, 1)
+scatter_flash_shape = Vector3(1.2, 0.85, 1)
+impact_ticks = 15
+energy_beam_width = 1.8

@@ -12,6 +12,8 @@ __pycache__/
 # Local Godot user data and GPU logs
 /Godot/
 /NVIDIA Corporation/
+# Finder metadata
+.DS_Store
 
 # BEGIN managed local-only art payloads (tools/audit_git_assets.py)
 /assets/derived/bubble-compact-cards-v1/bubble_cannon.png
@@ -282,6 +284,20 @@ __pycache__/
 /assets/derived/volume-cards-v3/scatter.png.import
 /assets/derived/volume-cards-v3/scout_wheels.png
 /assets/derived/volume-cards-v3/scout_wheels.png.import
+/assets/effects/electric-source.png.import
+/assets/effects/electric-v1.png.import
+/assets/effects/explosion-source.png.import
+/assets/effects/explosion-v1.png.import
+/assets/effects/muzzle-source.png.import
+/assets/effects/muzzle-v1.png.import
+/assets/effects/railbeam-source.png.import
+/assets/effects/railbeam-v1.png.import
+/assets/effects/shield-source.png.import
+/assets/effects/shield-v1.png.import
+/assets/effects/shockwave-source.png.import
+/assets/effects/shockwave-v1.png.import
+/assets/effects/turbo-source.png.import
+/assets/effects/turbo-v1.png.import
 /assets/generated/family-refined-v2/bubble-reference.png
 /assets/generated/family-refined-v2/bubble-reference.png.import
 /assets/generated/hangar/autocannon-scout-hero-v1.png
@@ -342,6 +358,35 @@ __pycache__/
 /assets/generated/rounded-tank-reference-v1/cannon.png.import
 /assets/generated/rounded-tank-reference-v1/scout_wheels.png
 /assets/generated/rounded-tank-reference-v1/scout_wheels.png.import
+/assets/generated/vfx/abilities-v1/atlas-v2.png.import
+/assets/generated/vfx/abilities-v1/atlas.png.import
+/assets/generated/vfx/abilities-v1/impact.png.import
+/assets/generated/vfx/abilities-v1/muzzle.png.import
+/assets/generated/vfx/abilities-v1/shockwave.png.import
+/assets/generated/vfx/abilities-v1/smoke.png.import
+/assets/generated/vfx/bubble-v2/bubble-source.png.import
+/assets/generated/vfx/bubble-v2/bubble.png.import
+/assets/generated/vfx/bubble-v2/pop-source.png.import
+/assets/generated/vfx/bubble-v2/pop.png.import
+/assets/generated/vfx/skills-v2/armor-0.png.import
+/assets/generated/vfx/skills-v2/armor-1.png.import
+/assets/generated/vfx/skills-v2/armor-2.png.import
+/assets/generated/vfx/skills-v2/armor-3.png.import
+/assets/generated/vfx/skills-v2/dust-0.png.import
+/assets/generated/vfx/skills-v2/dust-1.png.import
+/assets/generated/vfx/skills-v2/dust-2.png.import
+/assets/generated/vfx/skills-v2/dust-3.png.import
+/assets/generated/vfx/skills-v2/lightning-0.png.import
+/assets/generated/vfx/skills-v2/lightning-1.png.import
+/assets/generated/vfx/skills-v2/lightning-2.png.import
+/assets/generated/vfx/skills-v2/lightning-3.png.import
+/assets/generated/vfx/skills-v2/reload-0.png.import
+/assets/generated/vfx/skills-v2/reload-1.png.import
+/assets/generated/vfx/skills-v2/reload-2.png.import
+/assets/generated/vfx/skills-v2/reload-3.png.import
+/assets/generated/vfx/skills-v2/source-sheet.png.import
+/assets/generated/vfx/weapon-identity-v1/impact-source.png.import
+/assets/generated/vfx/weapon-identity-v1/impact.png.import
 /assets/imported/family-refined-v2/bubble_cannon.glb
 /assets/imported/family-refined-v2/bubble_cannon.glb.import
 /assets/imported/family-refined-v2/bubble_cannon_texture_diffuse.png
@@ -693,6 +738,3 @@ __pycache__/
 /assets/tanks/wind_time-hero-v1.png
 /assets/tanks/wind_time-hero-v1.png.import
 # END managed local-only art payloads
-
-# Finder metadata
-.DS_Store
