@@ -98,3 +98,13 @@ class_name AbilityEffectStyle
 @export var muzzle_smoke_width_m: float = 0.65
 @export var muzzle_smoke_alpha: float = 0.24
 @export var muzzle_smoke_drift_m: float = 0.35
+
+# Family-specific contact cadence and water accents (presentation only).
+@export var needle_muzzle_ticks: int = 3
+@export var needle_impact_ticks: int = 5
+@export var scatter_muzzle_ticks: int = 5
+@export var scatter_impact_ticks: int = 7
+@export var bubble_droplet_count: int = 3
+@export var bubble_droplet_width_m: float = 0.26
+@export var bubble_droplet_speed: float = 2.4
+@export var bubble_droplet_gravity: float = 7.0

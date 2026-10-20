@@ -47,12 +47,18 @@ void fragment() {
 	ALBEDO = colour * COLOR.rgb;
 	float coverage = smoothstep(0.25,0.8,texel.a);
 	if (ground_pool) {
-		float d = length(local_uv-0.5);
-		float disk = 1.0-step(0.49,d);
-		float edge = step(0.43,d)*disk;
-		vec3 water = texture(ramp,vec2(0.7,0.5)).rgb;
-		ALBEDO = mix(water,colour,coverage)*COLOR.rgb;
-		ALPHA = disk*max(0.18,max(edge*0.75,coverage*0.8))*COLOR.a*opacity;
+		vec2 p = local_uv-0.5;
+		float d = length(p);
+		float angle = atan(p.y,p.x);
+		float rim = 0.474+sin(angle*5.0+life*2.0)*0.010;
+		float aa = max(fwidth(d),0.001);
+		float disk = 1.0-smoothstep(rim-aa,rim+aa,d);
+		float edge = smoothstep(rim-0.018,rim-0.010,d)*disk;
+		float foam_radius = 0.34+sin(angle*3.0+life*4.0)*0.012;
+		float arc = (1.0-smoothstep(0.006,0.013,abs(d-foam_radius)))*step(0.65,sin(angle*2.0+life*1.2));
+		float foam = max(edge*0.65,arc*0.45);
+		ALBEDO = texture(ramp,vec2(foam>0.1 ? 0.95 : 0.5,0.5)).rgb*COLOR.rgb;
+		ALPHA = disk*max(0.22,foam)*COLOR.a*opacity;
 	} else {
 		ALPHA = coverage * keep * COLOR.a * opacity;
 	}

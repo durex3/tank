@@ -69,6 +69,7 @@ if (run('script import', ['--headless', '--path', root, '--editor', '--import', 
   run('training lifecycle tests', ['--headless', '--path', root, '--script', 'res://tests/battle/training_lifecycle_tests.gd'], 'TRAINING LIFECYCLE TESTS: PASS');
   run('combat view tests', ['--headless', '--path', root, '--script', 'res://tests/presentation/combat_view_tests.gd'], 'COMBAT VIEW TESTS: PASS');
   run('reference style tests', ['--headless', '--path', root, '--script', 'res://tests/presentation/reference_style_tests.gd'], 'REFERENCE STYLE TESTS: PASS');
+  run('family polish tests', ['--headless', '--path', root, '--script', 'res://tests/presentation/family_polish_tests.gd'], 'FAMILY POLISH TESTS: PASS');
   run('toon fx tests', ['--headless', '--path', root, '--script', 'res://tests/test_toon_fx_123.gd'], 'PASS toon material isolation');
   run('ability vfx tests', ['--headless', '--path', root, '--script', 'res://tests/presentation/ability_vfx_tests.gd'], 'ABILITY VFX TESTS: PASS');
   run('weapon identity tests', ['--headless', '--path', root, '--script', 'res://tests/presentation/weapon_identity_tests.gd'], 'WEAPON IDENTITY TESTS: PASS');

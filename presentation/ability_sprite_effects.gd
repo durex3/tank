@@ -38,15 +38,20 @@ func on_event(event: Dictionary) -> void:
 			var weapon: StringName = event.get("weapon",&"")
 			var width: float = style.muzzle_width_m
 			var shape := Vector3.ONE
+			var duration: int = style.storm_muzzle_ticks if storm else style.muzzle_ticks
 			match weapon:
 				&"cannon": width = weapon_style.cannon_muzzle_width
 				&"autocannon":
 					width = weapon_style.needle_muzzle_width
+					duration = style.needle_muzzle_ticks
 					shape = weapon_style.needle_flash_shape
 				&"scatter":
 					width = weapon_style.scatter_muzzle_width
+					duration = style.scatter_muzzle_ticks
 					shape = weapon_style.scatter_flash_shape
-			_flash(style.muzzle,event.position,style.storm_muzzle_width_m if storm else width,event.tick,style.storm_muzzle_ticks if storm else style.muzzle_ticks,shape)
+			var flash: Sprite3D = _flash(style.muzzle,event.position,style.storm_muzzle_width_m if storm else width,event.tick,duration,shape)
+			if weapon == &"scatter" and flash != null:
+				(flash.material_override as ShaderMaterial).set_shader_parameter("variant",3)
 			if weapon == &"cannon": _muzzle_smoke(event)
 
 		&"projectile_hit":
@@ -62,7 +67,8 @@ func on_event(event: Dictionary) -> void:
 				elif weapon == &"scatter":
 					width = weapon_style.scatter_impact_width
 					shape = weapon_style.scatter_flash_shape
-				_flash(texture,event.position,width,event.tick,weapon_style.impact_ticks,shape)
+				var duration: int = style.needle_impact_ticks if weapon == &"autocannon" else style.scatter_impact_ticks if weapon == &"scatter" else weapon_style.impact_ticks
+				_flash(texture,event.position,width,event.tick,duration,shape)
 		&"damage_applied":
 			if event.get("bubble_hits",0) > 0:
 				_guard_message(event,"泡泡命中 · 减速")
@@ -142,6 +148,7 @@ func _update_smoke(zones: Array, tick: int) -> void:
 		while cloud.size() < layers:
 			var sprite := _sprite(style.smoke,rules.smoke_radius*style.smoke_art_scale)
 			add_child(sprite)
+			(sprite.material_override as ShaderMaterial).set_shader_parameter("cell",float((cloud.size()+1)%4))
 			cloud.append(sprite)
 		var fraction: float = clampf(1.0-float(zone.until_tick-tick)/rules.smoke_ticks,0,1)
 		var fade: float = minf(1.0,float(zone.until_tick-tick)/style.smoke_fade_ticks)
@@ -150,9 +157,9 @@ func _update_smoke(zones: Array, tick: int) -> void:
 			var angle: float = float(i)*TAU/cloud.size()+fraction*0.3
 			var offset := Vector3(cos(angle)*style.smoke_layer_spread_m,float(i)*0.13,sin(angle)*style.smoke_layer_spread_m)
 			sprite.position = zone.position+offset+Vector3.UP*(style.smoke_height_m+fraction*style.smoke_rise_m)
-			sprite.modulate = Color(1,1,1,style.smoke_opacity*fade)
-			TOON_FX.advance(sprite, fraction)
-			sprite.scale = Vector3.ONE*(0.8+minf(1.0,fraction*8)*0.2)
+			sprite.modulate = Color(1,1,1,style.smoke_opacity*fade*(1.0 if i == 0 else 0.55))
+			TOON_FX.advance(sprite, fraction*0.65)
+			sprite.scale = Vector3.ONE*(0.8+minf(1.0,fraction*8)*0.2)*(1.0 if i == 0 else 0.65)
 	for id: int in _smoke.keys():
 		if not alive.has(id):
 			for sprite: Sprite3D in _smoke[id]: sprite.queue_free()

@@ -51,7 +51,7 @@ func _draw_actor(state: Dictionary) -> void:
 	if state.guard:
 		var color: Color = Color("eef6ff") if state.tick < int(_guard_hits.get(state.source_id,0)) else style.guard_color
 		GROUND_GEOMETRY.arc(mesh,origin,style.guard_radius_m,state.body_yaw,deg_to_rad(rules.guard_half_angle),style.storm_ring_width_m,color,7)
-	if state.get("escape_active",false) or state.get("cruise",false):
+	if state.get("escape_active",false):
 		var color: Color = style.escape_color if state.get("escape_active",false) else style.cruise_color
 		for side: int in [-1,1]:
 			for i: int in range(2):

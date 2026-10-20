@@ -31,3 +31,15 @@ class_name SkillFlipbookStyle
 @export var debris_spread: float = 0.85
 @export var debris_smoke_width: float = 0.72
 @export var debris_smoke_opacity: float = 0.28
+
+@export var accent_count: int = 2
+@export var guard_spark_width: float = 0.48
+@export var guard_spark_speed: float = 3.2
+@export var guard_spark_ticks: int = 12
+@export var dash_dust_speed: float = 1.7
+@export var dash_dust_opacity: float = 0.28
+@export var reload_lift_speed: float = 1.0
+@export var reload_ticks: int = 10
+@export var guard_contact_forward_m: float = 0.95
+@export var guard_contact_height_m: float = 0.65
+@export var reload_height_m: float = 1.05

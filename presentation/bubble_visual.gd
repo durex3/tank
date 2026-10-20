@@ -12,7 +12,7 @@ var _field: bool = false
 func configure(radius: float, team: int, field: bool, tuning: AbilityEffectStyle) -> void:
 	style = tuning
 	_field = field
-	film = TOON_FX.create(&"drop",&"water",2 if field else 1,radius*2 if field else radius*2/style.bubble_texture_fill,not field)
+	film = TOON_FX.create(&"drop",&"water",2,radius*2,false) if field else TOON_FX.water(radius*2/style.bubble_texture_fill)
 	film.modulate = Color.WHITE if team == 0 else style.bubble_enemy_tint
 	add_child(film)
 	if field:
@@ -21,7 +21,7 @@ func configure(radius: float, team: int, field: bool, tuning: AbilityEffectStyle
 		film.rotation.x = -PI/2
 		film.position.y = style.ground_height-0.2
 	else:
-		trail = TOON_FX.create(&"drop",&"water",3,radius*style.bubble_trail_ratio)
+		trail = TOON_FX.water(radius*style.bubble_trail_ratio)
 		trail.modulate = Color(1,1,1,0.55)
 		add_child(trail)
 

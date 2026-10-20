@@ -4,15 +4,22 @@ class_name SkillFlipbookEffects
 
 const TOON_FX = preload("res://presentation/toon_fx_materials.gd")
 
+const ACCENTS = preload("res://presentation/toon_accent_group.gd")
+const PARTICLE_GROUP = preload("res://presentation/toon_particle_group.gd")
+
 var style: SkillFlipbookStyle = preload("res://content/presentation/skill_flipbooks.tres")
 var _clips: Array[Dictionary] = []
 var _seen: Dictionary = {}
 var _storm_until: Dictionary = {}
 var _shot_directions: Dictionary = {}
-const PARTICLE_GROUP = preload("res://presentation/toon_particle_group.gd")
-
+var _body_yaws: Dictionary = {}
 func on_event(event: Dictionary) -> void:
 	var tick: int = event.tick
+	if event.kind == &"ability_state" and event.alive:
+		_body_yaws[event.source_id] = event.get("body_yaw",event.get("yaw",0.0))
+		for clip: Dictionary in _clips:
+			if clip.art == "reload" and clip.owner == event.source_id:
+				clip.node.origin = event.position+Vector3.UP*style.reload_height_m
 	if event.kind == &"ability_fired" and event.ability == &"breach":
 		_shot_directions[int(event.get("projectile_id",-1))] = {"direction":Vector3(sin(event.yaw),0,-cos(event.yaw)),"until":tick+style.debris_ticks}
 	for id: int in _shot_directions.keys():
@@ -26,11 +33,15 @@ func on_event(event: Dictionary) -> void:
 		if age >= duration or (event.kind in [&"entity_died",&"entity_respawned"] and event.get("target_id",-1) == clip.owner) or (event.kind == &"ability_state" and not event.alive and event.source_id == clip.owner):
 			(clip.node as Node).queue_free()
 		else:
-			if clip.art == "breach_debris": clip.node.step(age)
+			if clip.get("motion",false): clip.node.step(age)
 			else:
-				TOON_FX.advance(clip.node as Sprite3D,float(age)/duration)
+				TOON_FX.advance(clip.node as Sprite3D,float(age)/(style.contact_ticks if clip.art == "guard" else duration))
 				var progress: float = float(age)/duration
 				(clip.node as Node3D).scale = Vector3.ONE*(lerpf(0.65,1.0,progress/0.18) if progress < 0.18 else lerpf(1.0,0.5,(progress-0.18)/0.82))
+			if clip.has("accents"):
+				var accents: Node3D = clip.accents
+				accents.scale = Vector3.ONE/(clip.node as Node3D).scale
+				accents.step(age)
 			keep.append(clip)
 	_clips = keep
 	if event.kind == &"match_finished":
@@ -56,14 +67,17 @@ func on_event(event: Dictionary) -> void:
 			if camera != null: center += camera.global_basis.z*style.hit_camera_offset
 			_spawn("armor",center,tick,target,style.storm_hit_width,int(event.get("projectile_id",0)),Color(1,0.65,0.35,0.9))
 	if event.kind == &"damage_applied" and event.get("guarded",false):
-		_spawn("guard",event.position,tick,event.target_id,style.armor_width)
+		var yaw: float = _body_yaws.get(event.target_id,0.0)
+		var front := Vector3(sin(yaw),0,-cos(yaw))
+		var center: Vector3 = event.position+front*style.guard_contact_forward_m+Vector3.UP*style.guard_contact_height_m
+		_spawn("guard",center,tick,event.target_id,style.armor_width)
 	elif event.kind == &"ability_state" and event.alive:
 		if event.phase == &"dash" and tick % style.trail_interval == 0:
-			_spawn("dust",event.position+Vector3.UP*0.3,tick,event.source_id,style.dust_width)
+			var yaw: float = event.get("locked_yaw",event.get("yaw",0.0))
+			_spawn_motion(&"dust",event.position+Vector3.UP*0.15,Vector3(-sin(yaw),0,cos(yaw)),tick,event.source_id,style.dust_width,style.dash_dust_speed,style.frame_ticks*4,style.dash_dust_opacity)
 		elif event.get("cruise",false) and tick % style.reload_interval == 0:
-			var lateral := Vector3(cos(event.body_yaw),0,sin(event.body_yaw))
-			for side: int in [-1,1]:
-				_spawn("reload",event.position+Vector3.UP*0.35+lateral*side*0.85,tick,event.source_id,style.reload_width,side)
+			var yaw: float = event.body_yaw
+			_spawn_motion(&"reload",event.position+Vector3.UP*style.reload_height_m,Vector3(sin(yaw),0,-cos(yaw)),tick,event.source_id,style.reload_width,style.reload_lift_speed,style.reload_ticks)
 
 func _spawn(art: String, center: Vector3, tick: int, owner: int, width: float, slot: int = 0, tint: Color = Color.WHITE) -> void:
 	var key: String = "%s:%d:%d:%d" % [art,tick,owner,slot]
@@ -74,7 +88,7 @@ func _spawn(art: String, center: Vector3, tick: int, owner: int, width: float, s
 		var direction: Vector3 = _shot_directions.get(slot,{}).get("direction",Vector3.FORWARD)
 		group.configure(center,direction,style,absi(slot))
 		add_child(group)
-		_clips.append({"node":group,"art":art,"start":tick,"owner":owner,"duration":style.debris_ticks})
+		_clips.append({"node":group,"art":art,"start":tick,"owner":owner,"duration":style.debris_ticks,"motion":true})
 		return
 	var sheet: StringName = &"flash"
 	var family: StringName = &"metal"
@@ -104,7 +118,15 @@ func _spawn(art: String, center: Vector3, tick: int, owner: int, width: float, s
 	sprite.modulate = tint if art == "lightning" else Color(1,1,1,tint.a)
 	sprite.position = center
 	add_child(sprite)
-	_clips.append({"node":sprite,"art":art,"start":tick,"owner":owner,"duration":style.contact_ticks if art in ["armor","lightning","guard"] else style.frame_ticks*4})
+	var clip := {"node":sprite,"art":art,"start":tick,"owner":owner,"duration":style.contact_ticks if art in ["armor","lightning","guard"] else style.frame_ticks*4}
+	if art == "guard":
+		var yaw: float = _body_yaws.get(owner,0.0)
+		var accents := ACCENTS.new()
+		sprite.add_child(accents)
+		accents.configure(&"guard",Vector3.ZERO,Vector3(sin(yaw),0,-cos(yaw)),style.accent_count,style.guard_spark_width,style.guard_spark_speed,style.guard_spark_ticks)
+		clip.accents = accents
+		clip.duration = style.guard_spark_ticks
+	_clips.append(clip)
 
 func clear() -> void:
 	for clip: Dictionary in _clips: (clip.node as Node).queue_free()
@@ -112,3 +134,13 @@ func clear() -> void:
 	_seen.clear()
 	_storm_until.clear()
 	_shot_directions.clear()
+	_body_yaws.clear()
+
+func _spawn_motion(kind: StringName, center: Vector3, direction: Vector3, tick: int, owner: int, width: float, speed: float, duration: int, opacity: float = 1.0) -> void:
+	var key: String = "%s:%d:%d" % [kind,tick,owner]
+	if _seen.has(key) or _clips.size() >= style.max_clips: return
+	_seen[key] = tick+duration
+	var group := ACCENTS.new()
+	add_child(group)
+	group.configure(kind,center,direction,style.accent_count,width,speed,duration,0.0,opacity)
+	_clips.append({"node":group,"art":String(kind),"start":tick,"owner":owner,"duration":duration,"motion":true})

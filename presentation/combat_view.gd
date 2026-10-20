@@ -143,6 +143,15 @@ func _breach_projectile(_color: Color) -> Node3D:
 
 func _storm_projectile(_team_color: Color) -> Node3D:
 	var root := Node3D.new()
-	var tracer: Sprite3D = TOON_FX.create(&"streak",&"warm",0,ability_style.storm_trail_m)
+	var tracer := MeshInstance3D.new()
+	var quad := QuadMesh.new()
+	quad.size = Vector2(ability_style.storm_core_width_m*2,ability_style.storm_trail_m)
+	tracer.mesh = quad
+	tracer.rotation.x = -PI/2
+	tracer.position.z = ability_style.storm_trail_m*0.2
+	tracer.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var material := ShaderMaterial.new()
+	material.shader = preload("res://presentation/shaders/toon_needle_trace.gdshader")
+	tracer.material_override = material
 	root.add_child(tracer)
 	return root

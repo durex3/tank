@@ -57,3 +57,12 @@ static func contact(width: float, family: StringName = &"warm", variant: int = 1
 	material.set_shader_parameter("life",0.0)
 	sprite.material_override = material
 	return sprite
+
+static func water(width: float) -> Sprite3D:
+	var sprite: Sprite3D = create(&"drop",&"water",0,width)
+	var material := ShaderMaterial.new()
+	material.shader = preload("res://presentation/shaders/toon_water.gdshader")
+	material.set_shader_parameter("ramp",(MATERIALS[&"water"] as ShaderMaterial).get_shader_parameter("ramp"))
+	material.set_shader_parameter("life",0.0)
+	sprite.material_override = material
+	return sprite

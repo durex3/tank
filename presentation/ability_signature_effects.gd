@@ -33,9 +33,7 @@ func _draw_state(state: Dictionary) -> void:
 		return
 	if actors.has(id) and actors[id].phase != phase: _remove_state(id)
 	if not actors.has(id):
-		var art: StringName = &"flash" if phase == &"breach" else (&"flash" if phase == &"storm" else &"drop")
-		var family: StringName = &"water" if phase == &"bubble" else &"warm"
-		var created: Sprite3D = TOON_FX.contact(colors.charge_core_m*1.4,&"warm",2) if phase == &"breach" else TOON_FX.contact(colors.storm_muzzle_width_m*0.65) if phase == &"storm" else TOON_FX.create(art,family,0,colors.breach_muzzle_width_m)
+		var created: Sprite3D = TOON_FX.contact(colors.charge_core_m*1.4,&"warm",2) if phase == &"breach" else TOON_FX.contact(colors.charge_core_m,&"warm",2) if phase == &"storm" else TOON_FX.water(colors.bubble_muzzle_width_m)
 		add_child(created)
 		actors[id] = {"node":created,"phase":phase,"start":state.tick}
 	var entry: Dictionary = actors[id]
@@ -47,7 +45,8 @@ func _draw_state(state: Dictionary) -> void:
 		sprite.scale = Vector3.ONE*lerpf(0.55,1.0,progress)
 	elif phase == &"storm":
 		sprite.position = state.position-aim*colors.storm_rail_offset_m+Vector3.UP*colors.vent_height_m
-		TOON_FX.advance(sprite,float((state.tick-int(entry.start))%colors.storm_muzzle_ticks)/colors.storm_muzzle_ticks)
+		sprite.modulate.a = 0.5
+		sprite.scale = Vector3.ONE*(0.8+0.15*sin(float(state.tick-int(entry.start))*0.35))
 	else:
 		sprite.scale = Vector3.ONE*(0.8+0.2*sin(float(state.tick)*colors.bubble_bob_rate))
 
