@@ -3,12 +3,13 @@
 [resource]
 script = ExtResource("1")
 frame_ticks = 4
-armor_width = 1.4
+armor_width = 1.15
 dust_width = 1.3
-energy_hit_width = 2.1
+energy_hit_width = 1.6
 energy_hit_tint = Color(1, 1, 1, 1)
 storm_hit_width = 1.15
 trail_interval = 8
 reload_interval = 24
 reload_width = 0.85
 hit_flash_color = Color(1, 0.84, 0.50, 0.55)
+debris_width = 0.42

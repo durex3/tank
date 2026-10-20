@@ -92,3 +92,9 @@ class_name AbilityEffectStyle
 @export var bubble_muzzle_ticks: int = 8
 @export var bubble_muzzle_width_m: float = 0.5
 @export var bubble_max_bursts: int = 24
+
+@export var muzzle_smoke_delay_ticks: int = 2
+@export var muzzle_smoke_ticks: int = 19
+@export var muzzle_smoke_width_m: float = 0.65
+@export var muzzle_smoke_alpha: float = 0.24
+@export var muzzle_smoke_drift_m: float = 0.35

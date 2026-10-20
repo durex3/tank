@@ -1,0 +1,38 @@
+{
+  "reference_root": "/Users/liugelong/MiniTanks-extracted/resources",
+  "mode": "read-only analysis; no reference image/shader/material copied into project",
+  "files": [
+    {
+      "path": "assets/shaders/toon_fx_particle.gdshader",
+      "sha256": "fce2dd6bb57cbb48241fc253037680e43cbef648501a17a62d14d88c021da682"
+    },
+    {
+      "path": "assets/shaders/ballistic_streak.gdshader",
+      "sha256": "ec504acb662fcdefd5148ef03a7f947e914c1745b99139a4989f17ee3190879f"
+    },
+    {
+      "path": "assets/shaders/ult_precision_beam.gdshader",
+      "sha256": "62c916e141d8f10cd5d51a54f33ed4449f6257885838b329b1e3ed8040b243a1"
+    },
+    {
+      "path": "assets/shaders/soft_muzzle_smoke.gdshader",
+      "sha256": "df7f7177a63483c5a7e14f2da87e784449c33acc87d0c0d51c493dca2c93d617"
+    },
+    {
+      "path": "data/feel/presentation_t01_vfx.tres",
+      "sha256": "f2aaaefa67ce11b90f5d96d7309e822ef3e4b284e56057621a6130b6e22507c1"
+    },
+    {
+      "path": "data/feel/presentation_t02_vfx.tres",
+      "sha256": "5413550bb936e2e5d0a9e10b466f74b96fa065c79fc0901e84f6907ee85682d3"
+    },
+    {
+      "path": "data/feel/primary_t01_flash.tres",
+      "sha256": "adb06857f64531b551c9096b168972217a6f71b14f954a7b3c1d62481c676975"
+    },
+    {
+      "path": "data/feel/primary_t01_debris.tres",
+      "sha256": "425fe346a12d63b406091c0f65fca036123c2a7c11e241ba3cba1b539778fad9"
+    }
+  ]
+}

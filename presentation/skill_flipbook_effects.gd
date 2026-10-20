@@ -8,18 +8,29 @@ var style: SkillFlipbookStyle = preload("res://content/presentation/skill_flipbo
 var _clips: Array[Dictionary] = []
 var _seen: Dictionary = {}
 var _storm_until: Dictionary = {}
+var _shot_directions: Dictionary = {}
+const PARTICLE_GROUP = preload("res://presentation/toon_particle_group.gd")
 
 func on_event(event: Dictionary) -> void:
 	var tick: int = event.tick
+	if event.kind == &"ability_fired" and event.ability == &"breach":
+		_shot_directions[int(event.get("projectile_id",-1))] = {"direction":Vector3(sin(event.yaw),0,-cos(event.yaw)),"until":tick+style.debris_ticks}
+	for id: int in _shot_directions.keys():
+		if tick > int(_shot_directions[id].until): _shot_directions.erase(id)
 	for key: String in _seen.keys():
 		if tick > int(_seen[key]): _seen.erase(key)
 	var keep: Array[Dictionary] = []
 	for clip: Dictionary in _clips:
-		var frame: int = (tick-int(clip.start))/style.frame_ticks
-		if frame >= 4 or (event.kind in [&"entity_died",&"entity_respawned"] and event.get("target_id",-1) == clip.owner) or (event.kind == &"ability_state" and not event.alive and event.source_id == clip.owner):
+		var duration: int = int(clip.get("duration",style.frame_ticks*4))
+		var age: int = tick-int(clip.start)
+		if age >= duration or (event.kind in [&"entity_died",&"entity_respawned"] and event.get("target_id",-1) == clip.owner) or (event.kind == &"ability_state" and not event.alive and event.source_id == clip.owner):
 			(clip.node as Node).queue_free()
 		else:
-			TOON_FX.advance(clip.node as Sprite3D, float(tick-int(clip.start))/(style.frame_ticks*4))
+			if clip.art == "breach_debris": clip.node.step(age)
+			else:
+				TOON_FX.advance(clip.node as Sprite3D,float(age)/duration)
+				var progress: float = float(age)/duration
+				(clip.node as Node3D).scale = Vector3.ONE*(lerpf(0.65,1.0,progress/0.18) if progress < 0.18 else lerpf(1.0,0.5,(progress-0.18)/0.82))
 			keep.append(clip)
 	_clips = keep
 	if event.kind == &"match_finished":
@@ -58,6 +69,13 @@ func _spawn(art: String, center: Vector3, tick: int, owner: int, width: float, s
 	var key: String = "%s:%d:%d:%d" % [art,tick,owner,slot]
 	if _seen.has(key) or _clips.size() >= style.max_clips: return
 	_seen[key] = tick+style.frame_ticks*4
+	if art == "breach_debris":
+		var group := PARTICLE_GROUP.new()
+		var direction: Vector3 = _shot_directions.get(slot,{}).get("direction",Vector3.FORWARD)
+		group.configure(center,direction,style,absi(slot))
+		add_child(group)
+		_clips.append({"node":group,"art":art,"start":tick,"owner":owner,"duration":style.debris_ticks})
+		return
 	var sheet: StringName = &"flash"
 	var family: StringName = &"metal"
 	var cell: int = 1
@@ -82,14 +100,15 @@ func _spawn(art: String, center: Vector3, tick: int, owner: int, width: float, s
 			sheet = &"flash"
 			family = &"warm"
 			cell = 1
-	var sprite: Sprite3D = TOON_FX.create(sheet,family,cell,width)
+	var sprite: Sprite3D = TOON_FX.contact(width,family) if art in ["armor","lightning","guard"] else TOON_FX.create(sheet,family,cell,width)
 	sprite.modulate = tint if art == "lightning" else Color(1,1,1,tint.a)
 	sprite.position = center
 	add_child(sprite)
-	_clips.append({"node":sprite,"art":art,"start":tick,"owner":owner})
+	_clips.append({"node":sprite,"art":art,"start":tick,"owner":owner,"duration":style.contact_ticks if art in ["armor","lightning","guard"] else style.frame_ticks*4})
 
 func clear() -> void:
 	for clip: Dictionary in _clips: (clip.node as Node).queue_free()
 	_clips.clear()
 	_seen.clear()
 	_storm_until.clear()
+	_shot_directions.clear()

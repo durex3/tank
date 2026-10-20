@@ -46,8 +46,9 @@ func on_event(event: Dictionary) -> void:
 				&"scatter":
 					width = weapon_style.scatter_muzzle_width
 					shape = weapon_style.scatter_flash_shape
-			var flash: Sprite3D = _flash(style.muzzle,event.position,style.storm_muzzle_width_m if storm else width,event.tick,style.storm_muzzle_ticks if storm else style.muzzle_ticks,shape)
-			if storm and flash != null: TOON_FX.apply(flash,TOON_FX.SHEETS[&"fire"],&"warm",1)
+			_flash(style.muzzle,event.position,style.storm_muzzle_width_m if storm else width,event.tick,style.storm_muzzle_ticks if storm else style.muzzle_ticks,shape)
+			if weapon == &"cannon": _muzzle_smoke(event)
+
 		&"projectile_hit":
 			if not event.get("bubble",false) and not event.get("ability_damage",false):
 				var weapon: StringName = event.get("weapon",&"")
@@ -89,7 +90,7 @@ func _flash(texture: Texture2D, position_value: Vector3, width: float, tick: int
 func _sprite(texture: Texture2D, width: float) -> Sprite3D:
 	if texture == style.smoke:
 		return TOON_FX.create(&"smoke", &"dust", 1, width)
-	return TOON_FX.create(&"flash", &"warm", 0 if texture == style.muzzle else 1, width)
+	return TOON_FX.contact(width,&"warm")
 
 func _age(tick: int) -> void:
 	var alive: Array[Dictionary] = []
@@ -97,11 +98,20 @@ func _age(tick: int) -> void:
 		var node: Node3D = effect.sprite
 		if tick >= effect.until: node.queue_free()
 		else:
-			var fraction: float = float(tick-effect.start)/(effect.until-effect.start)
+			var fraction: float = clampf(float(tick-effect.start)/(effect.until-effect.start),0,1)
+			if effect.has("drift"):
+				var smoke: Sprite3D = node
+				smoke.visible = tick >= effect.start
+				smoke.position = effect.origin+effect.drift*fraction
+				smoke.scale = Vector3.ONE*lerpf(0.4,1.15,fraction)
+				smoke.modulate.a = style.muzzle_smoke_alpha*sin(fraction*PI)
+				TOON_FX.advance(smoke,fraction)
+				alive.append(effect)
+				continue
 			var eased: float = 1.0-pow(1.0-fraction,2)
 			if node is Sprite3D:
 				TOON_FX.advance(node as Sprite3D, fraction)
-				node.scale = effect.get("shape",Vector3.ONE)*(0.7+eased*0.5)
+				node.scale = effect.get("shape",Vector3.ONE)*(0.65+sin(fraction*PI)*0.4)
 			else:
 				(effect.material as ShaderMaterial).set_shader_parameter("opacity",1.0-fraction)
 				node.scale = Vector3.ONE*(0.35+eased*0.65)
@@ -222,3 +232,12 @@ func _remove_owner(id: int) -> void:
 			for node: Node in value: node.queue_free()
 		else: (value as Node).queue_free()
 		cache.erase(id)
+
+func _muzzle_smoke(event: Dictionary) -> void:
+	if _effects.size() >= style.max_sprites: return
+	var smoke: Sprite3D = TOON_FX.create(&"smoke",&"dust",2,style.muzzle_smoke_width_m)
+	smoke.position = event.position
+	smoke.visible = false
+	add_child(smoke)
+	var direction: Vector3 = event.get("direction",Vector3.FORWARD)
+	_effects.append({"sprite":smoke,"owner":_owner,"start":event.tick+style.muzzle_smoke_delay_ticks,"until":event.tick+style.muzzle_smoke_delay_ticks+style.muzzle_smoke_ticks,"origin":event.position,"drift":direction*style.muzzle_smoke_drift_m+Vector3.UP*style.muzzle_smoke_drift_m})
