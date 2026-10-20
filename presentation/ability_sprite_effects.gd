@@ -90,7 +90,7 @@ func _flash(texture: Texture2D, position_value: Vector3, width: float, tick: int
 func _sprite(texture: Texture2D, width: float) -> Sprite3D:
 	if texture == style.smoke:
 		return TOON_FX.create(&"smoke", &"dust", 1, width)
-	return TOON_FX.contact(width,&"warm")
+	return TOON_FX.contact(width,&"warm",0 if texture == style.muzzle else 1)
 
 func _age(tick: int) -> void:
 	var alive: Array[Dictionary] = []

@@ -35,7 +35,7 @@ func _draw_state(state: Dictionary) -> void:
 	if not actors.has(id):
 		var art: StringName = &"flash" if phase == &"breach" else (&"flash" if phase == &"storm" else &"drop")
 		var family: StringName = &"water" if phase == &"bubble" else &"warm"
-		var created: Sprite3D = TOON_FX.contact(colors.charge_core_m*1.4) if phase == &"breach" else TOON_FX.contact(colors.storm_muzzle_width_m*0.65) if phase == &"storm" else TOON_FX.create(art,family,0,colors.breach_muzzle_width_m)
+		var created: Sprite3D = TOON_FX.contact(colors.charge_core_m*1.4,&"warm",2) if phase == &"breach" else TOON_FX.contact(colors.storm_muzzle_width_m*0.65) if phase == &"storm" else TOON_FX.create(art,family,0,colors.breach_muzzle_width_m)
 		add_child(created)
 		actors[id] = {"node":created,"phase":phase,"start":state.tick}
 	var entry: Dictionary = actors[id]
@@ -74,12 +74,13 @@ func _release(event: Dictionary) -> void:
 			beam.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			var material := ShaderMaterial.new()
 			material.shader = preload("res://presentation/shaders/armor_piercing_trace.gdshader")
+			material.set_shader_parameter("length_m",direction.length())
 			material.set_shader_parameter("life",0.0)
 			material.set_shader_parameter("phase",0.0)
 			beam.material_override = material
 			root.add_child(beam)
 			burst.material = material
-			var muzzle: Sprite3D = TOON_FX.contact(style.breach_release_radius*1.1,&"warm")
+			var muzzle: Sprite3D = TOON_FX.contact(style.breach_release_radius*1.1,&"warm",0)
 			muzzle.position = event.position
 			muzzle.modulate = Color.WHITE
 			root.add_child(muzzle)

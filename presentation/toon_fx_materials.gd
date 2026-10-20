@@ -47,10 +47,11 @@ static func advance(node: Sprite3D, life: float) -> void:
 	if node.material_override is ShaderMaterial:
 		(node.material_override as ShaderMaterial).set_shader_parameter("life", clampf(life, 0.0, 1.0))
 
-static func contact(width: float, family: StringName = &"warm") -> Sprite3D:
+static func contact(width: float, family: StringName = &"warm", variant: int = 1) -> Sprite3D:
 	var sprite: Sprite3D = create(&"flash",family,0,width)
 	var material := ShaderMaterial.new()
 	material.shader = preload("res://presentation/shaders/toon_contact.gdshader")
+	material.set_shader_parameter("variant",variant)
 	var palette: ShaderMaterial = MATERIALS[family]
 	material.set_shader_parameter("ramp",palette.get_shader_parameter("ramp"))
 	material.set_shader_parameter("life",0.0)

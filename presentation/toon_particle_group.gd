@@ -17,7 +17,7 @@ func configure(center: Vector3, direction: Vector3, style: SkillFlipbookStyle, s
 		add_child(sprite)
 		var speed: float = tuning.debris_speed*(0.8+float((seed_value+i*7)%5)*0.1)
 		var velocity: Vector3 = (forward+right*split*tuning.debris_spread).normalized()*speed+Vector3.UP*(0.7+float(i)*0.35)
-		particles.append({"node":sprite,"velocity":velocity,"spin":float(i*2-2),"dust":false})
+		particles.append({"node":sprite,"velocity":velocity,"spin":float(1 if i%2 == 0 else -1)*(2.5+float(i)*1.2),"dust":false})
 	var smoke: Sprite3D = FX.create(&"smoke",&"dust",1,tuning.debris_smoke_width)
 	add_child(smoke)
 	particles.append({"node":smoke,"velocity":forward*0.3+Vector3.UP*0.35,"spin":0.2,"dust":true})
@@ -36,7 +36,7 @@ func step(age: int) -> void:
 		else:
 			sprite.position = origin+velocity*seconds+Vector3.DOWN*tuning.debris_gravity*seconds*seconds*0.5
 			sprite.position.y = maxf(0.08,sprite.position.y)
-			sprite.scale = Vector3.ONE*lerpf(1.0,0.55,life)
+			sprite.scale = Vector3.ONE*lerpf(1.0,0.85,life)
 			sprite.modulate.a = 1.0-smoothstep(0.7,1.0,life)
 			(sprite.material_override as ShaderMaterial).set_shader_parameter("spin",particle.spin*seconds)
 		FX.advance(sprite,life)
