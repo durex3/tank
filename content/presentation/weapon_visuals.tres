@@ -18,3 +18,4 @@ energy_beam_width = 1.8
 pellet_radius = 0.19
 pellet_tail = 0.52
 breach_release_radius = 2.0
+energy_release_ticks = 36

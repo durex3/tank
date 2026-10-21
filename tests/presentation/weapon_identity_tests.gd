@@ -108,7 +108,14 @@ func _stages() -> void:
 	signatures.on_event({"kind":&"ability_zones","tick":47})
 	check(float(energy.get_shader_parameter("life")) > peak,"energy blast contracts after its initial peak")
 	signatures.on_event({"kind":&"ability_zones","tick":54})
-	check(signatures.bursts.is_empty(),"energy blast expires after fourteen ticks")
+	check(signatures.bursts.size() == 1,"Heavy cannon afterimage remains visible past the old fourteen-tick cutoff")
+	var frozen_life: float = energy.get_shader_parameter("life")
+	for i: int in range(3): await process_frame
+	check(is_equal_approx(float(energy.get_shader_parameter("life")),frozen_life),"Longer afterimage remains frozen without simulation ticks")
+	signatures.on_event({"kind":&"ability_zones","tick":40+signatures.style.energy_release_ticks-1})
+	check(signatures.bursts.size() == 1,"Afterimage persists until its configured boundary")
+	signatures.on_event({"kind":&"ability_zones","tick":40+signatures.style.energy_release_ticks})
+	check(signatures.bursts.is_empty(),"Afterimage expires at its configured visual boundary")
 	signatures.free()
 	await process_frame
 	check(root.get_child_count() == 0,"new visual owners dispose completely")

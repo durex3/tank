@@ -15,7 +15,7 @@ void fragment() {
 	float distance=(front-along)*length_m;
 	float cap=sqrt(max(0.0,1.0-pow((distance-0.28)/0.42,2.0)));
 	float tail=step(0.45,distance)*max(0.0,1.0-(distance-0.45)/1.45);
-	float residue=step(along,min(front,1.0))*pow(max(0.0,1.0-life),0.8);
+	float residue=step(along,min(front,1.0))*pow(max(0.0,1.0-smoothstep(0.25,1.0,life)),0.65);
 	float width=max(cap*0.19,tail*0.08)+residue*wake_half_width;
 	float d=abs(UV.x-0.5)/max(0.001,width);
 	float coverage=1.0-smoothstep(0.90,1.0,d);

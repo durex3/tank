@@ -107,7 +107,7 @@ func _age(tick: int) -> void:
 			TOON_FX.advance(sprite,life)
 			sprite.scale = Vector3.ONE*(0.65+sin(life*PI)*0.45)
 			if burst.event.ability == &"breach":
-				sprite.modulate.a = 1.0-smoothstep(0.18,0.5,life)
+				sprite.modulate.a = 1.0-smoothstep(0.0,float(style.breach_flash_ticks),float(tick-int(burst.start)))
 		if burst.has("material"):
 			var material: ShaderMaterial = burst.material
 			material.set_shader_parameter("life",life)

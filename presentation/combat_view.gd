@@ -143,15 +143,28 @@ func _breach_projectile(_color: Color) -> Node3D:
 
 func _storm_projectile(_team_color: Color) -> Node3D:
 	var root := Node3D.new()
+	var head := MeshInstance3D.new()
+	head.name = "StormBulletHead"
+	var capsule := CapsuleMesh.new()
+	capsule.radius = ability_style.storm_head_radius_m
+	capsule.height = ability_style.storm_head_length_m
+	capsule.radial_segments = 8
+	capsule.rings = 2
+	head.mesh = capsule
+	head.rotation.x = PI/2
+	head.material_override = WeaponProjectileVisual.material(Color("ffe49b"))
+	head.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.add_child(head)
 	var tracer := MeshInstance3D.new()
+	tracer.name = "StormBulletTail"
 	var quad := QuadMesh.new()
 	quad.size = Vector2(ability_style.storm_core_width_m*2,ability_style.storm_trail_m)
 	tracer.mesh = quad
 	tracer.rotation.x = -PI/2
-	tracer.position.z = ability_style.storm_trail_m*0.2
+	tracer.position.z = ability_style.storm_head_length_m*0.15+ability_style.storm_trail_m*0.5
 	tracer.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	var material := ShaderMaterial.new()
-	material.shader = preload("res://presentation/shaders/toon_needle_trace.gdshader")
+	material.shader = preload("res://presentation/shaders/toon_ballistic_tail.gdshader")
 	tracer.material_override = material
 	root.add_child(tracer)
 	return root

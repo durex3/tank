@@ -61,3 +61,4 @@ class_name WeaponVisualStyle
 @export var pellet_trace_width_m: float = 0.32
 @export var pellet_trace_length_m: float = 0.65
 @export var pellet_body_color: Color = Color("cf7c20")
+@export var breach_flash_ticks: int = 6
