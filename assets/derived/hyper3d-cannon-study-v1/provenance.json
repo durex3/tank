@@ -1,0 +1,17 @@
+{
+  "status": "experimental candidate; not production mapped",
+  "source": "/Users/liugelong/Downloads/487d6b33-e68a-4f2b-ae8f-654fd32c2452/base_basic_pbr.glb",
+  "source_sha256": "499b71af6e9f984dfcde8a3742bf1ffbdb581602e472c9aa6d46fbcdbecbb220",
+  "generation_id": "487d6b33-e68a-4f2b-ae8f-654fd32c2452",
+  "reference": "Third-party MiniTanks turret icon, user-authorized shape reference. Not original artwork. No production rights claim.",
+  "tool": "tools/refine_hyper3d_cannon_136.py",
+  "operations": [
+    "Native-proportion flat-color study",
+    "Armor-only structural height adaptation; circular mechanical parts rebuilt rigidly",
+    "Low strength local relaxation; receiver/roof/base cuts sealed",
+    "Original recolor maps and normal maps replaced with independent materials",
+    "Independent rigid barrel with genuine bore and RecoilPivot/VisualMuzzle",
+    "16-direction geometric local AO"
+  ],
+  "authority": "No gameplay or catalog mapping changes; original Downloads files untouched"
+}

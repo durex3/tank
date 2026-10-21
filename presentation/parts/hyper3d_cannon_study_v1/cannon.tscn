@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/derived/hyper3d-cannon-study-v1/cannon.glb" id="1"]
+
+[node name="cannon" type="Node3D"]
+metadata/soft_workshop = true
+metadata/soft_workshop_style = "res://content/presentation/classic_toy_v1.tres"
+
+[node name="Geometry" type="Node3D" parent="." instance=ExtResource("1")]
+position = Vector3(0, 0.125, 0)
+
+[node name="Muzzle" type="Marker3D" parent="."]
+position = Vector3(0, 0.02, -1.05)
