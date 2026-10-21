@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/derived/classic-toy-v1/light_tracks.glb" id="1_d36rl"]
+[ext_resource type="Script" path="res://presentation/track_rig.gd" id="2_k3tmt"]
+[ext_resource type="Script" path="res://presentation/track_rig_style.gd" id="3_q0t6t"]
+
+[sub_resource type="Resource" id="Resource_qecp0"]
+script = ExtResource("3_q0t6t")
+axle_x = 0.6819999980926513
+front_z = -0.6446047830581665
+rear_z = 0.6446047830581665
+face = Color(0.91, 0.925, 0.92, 1)
+sculpted_wheels = true
+
+[node name="light_tracks" type="Node3D" unique_id=203949752]
+metadata/soft_workshop = true
+metadata/soft_workshop_style = "res://content/presentation/classic_toy_v1.tres"
+
+[node name="Geometry" type="Node3D" parent="." unique_id=919534634 instance=ExtResource("1_d36rl")]
+
+[node name="TrackRig" type="Node3D" parent="." unique_id=309264994]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0019999954, 0)
+script = ExtResource("2_k3tmt")
+style = SubResource("Resource_qecp0")
+
+[node name="TurretSocket" type="Marker3D" parent="." unique_id=1491086018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.76, 0)

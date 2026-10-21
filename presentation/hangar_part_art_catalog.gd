@@ -7,8 +7,8 @@ const CHASSIS: Texture2D = preload("res://assets/generated/parts/chassis-atlas-v
 const ALIGNED_TURRETS: Dictionary = {
 	&"heavy_tracks": preload("res://assets/derived/mechanical-cards-v2/heavy_tracks.png"),
 	&"scout_wheels": preload("res://assets/derived/mechanical-cards-v2/scout_wheels.png"),
-	&"light_tracks": preload("res://assets/derived/soft-workshop-cards-v2/light_tracks.png"),
-	&"cannon": preload("res://assets/derived/soft-workshop-cards-v2/cannon.png"),
+	&"light_tracks": preload("res://assets/derived/classic-toy-cards-v1/light_tracks.png"),
+	&"cannon": preload("res://assets/derived/classic-toy-cards-v1/cannon.png"),
 	&"autocannon": preload("res://assets/derived/mechanical-cards-v2/autocannon.png"),
 	&"scatter": preload("res://assets/derived/mechanical-cards-v2/scatter.png"),
 	&"bubble_cannon": preload("res://assets/derived/bubble-armored-cards-v1/bubble_cannon.png"),

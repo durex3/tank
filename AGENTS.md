@@ -116,3 +116,5 @@
 133起主炮与轻履带先采用原创Blender柔和机械样板presentation/parts/soft_workshop_v1及assets/derived/soft-workshop-v1，其他部件保持原生产映射。模型与对应透明卡片同步，统一尺寸/权威挂点不变，轮带继续复用TrackRig；原105/108/109资源只读保留。样板着色只作用于显式标记部件，材质每实例独立；先验用户观感再推广全家族。
 
 134起主炮/轻履带样板映射soft_workshop_v2：炮塔上下装甲和圆弧转折精修，轻履带仅启用sculpted_wheels立体轮盖，原轮轴/轮径/履带路径与运动接口不变。133原样板只读保留；摄影参数独立Resource并验透明留白，未推广其他五件。
+
+135起主炮/轻履带样板映射presentation/parts/classic_toy_v1及classic-toy-cards-v1：采用第一版卡通机械方向的分片斜装甲、深色核心与分段炮管；134样板只读保留。尺寸/权威挂点不变，轮带继续复用原TrackRig及134轮盖，不声称全轮带Blender重建；其他五件未推广。

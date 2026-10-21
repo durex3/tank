@@ -1,0 +1,11 @@
+{
+  "source": "Godot renders of original classic-toy-v1 meshes; existing sculpted TrackRig wheels reused",
+  "tool": "tools/capture_classic_toy_135.gd",
+  "camera_resource": "content/presentation/classic_toy_cards_v1.tres",
+  "canvas": [
+    512,
+    512
+  ],
+  "transparent_background": true,
+  "reference_assets_copied": false
+}

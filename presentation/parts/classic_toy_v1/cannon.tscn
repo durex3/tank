@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/derived/classic-toy-v1/cannon.glb" id="1_qlqdk"]
+
+[node name="cannon" type="Node3D" unique_id=492295532]
+metadata/soft_workshop = true
+metadata/soft_workshop_style = "res://content/presentation/classic_toy_v1.tres"
+
+[node name="Geometry" type="Node3D" parent="." unique_id=1516254925 instance=ExtResource("1_qlqdk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+
+[node name="Muzzle" type="Marker3D" parent="." unique_id=2029401794]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -1.05)

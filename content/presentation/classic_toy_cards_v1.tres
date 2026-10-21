@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://presentation/part_card_render_style.gd" id="1"]
+[resource]
+script = ExtResource("1")
+camera_position = Vector3(-3, 2.10, -4)
+camera_target = Vector3(0, 0.50, -0.15)
+camera_size = 2.9
