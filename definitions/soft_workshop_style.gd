@@ -7,3 +7,4 @@ class_name SoftWorkshopStyle
 @export var top_bottom_strength: float = 0.12
 @export var highlight_strength: float = 0.10
 @export var key_strength: float = 0.80
+@export var exposure_shoulder: float = 0.0

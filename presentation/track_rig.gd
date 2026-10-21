@@ -69,6 +69,9 @@ func _build_side(side: int) -> void:
 		add_child(wheel)
 		_wheels.append(wheel)
 		_disc(wheel, style.wheel_radius, 0.245, 0.0, _rubber)
+		if style.sculpted_wheels:
+			preload("res://presentation/sculpted_track_wheel.gd").build(wheel,side,style,_gold,_face,_rubber)
+			continue
 		_disc(wheel, style.rim_radius, 0.018, side * 0.132, _gold)
 		_disc(wheel, style.face_radius, 0.012, side * 0.145, _face)
 		var slot := MeshInstance3D.new()

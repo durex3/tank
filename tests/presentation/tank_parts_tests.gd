@@ -12,6 +12,7 @@ func _run() -> void:
 	_test_mesh_integrity()
 	_test_finish_isolation()
 	_test_soft_finish()
+	_test_sculpted_wheels()
 	_test_rejected_content()
 	await _test_hangar()
 	await _test_navigation()
@@ -182,3 +183,19 @@ func _test_soft_finish() -> void:
 	TankSurfacePolish.clear(second)
 	first.free()
 	second.free()
+
+func _test_sculpted_wheels() -> void:
+	var part: Node3D = TankPartCatalog.CHASSIS[&"light_tracks"].instantiate()
+	root.add_child(part)
+	var rig: TrackRig = part.find_child("TrackRig",true,false)
+	check(rig.style.sculpted_wheels,"Sculpted wheel faces are enabled only by the sample style")
+	var face: MeshInstance3D = rig.find_child("RecessedFace",true,false)
+	check(face != null and face.get_aabb().size.x > 0.01,"Recessed wheel face has real axial depth")
+	var hub: MeshInstance3D = rig.find_child("HubCap",true,false)
+	check(hub != null and face.get_parent() == hub.get_parent(),"Wheel face and hub share one rigid rotating wheel")
+	rig.present_travel(Vector2(.3,.5))
+	var frozen: Transform3D = hub.global_transform
+	rig.present_travel(Vector2(.3,.5))
+	check(hub.global_transform.is_equal_approx(frozen),"Repeated travel cannot accumulate wheel motion")
+	check(absf(hub.global_basis.y.length()-hub.global_basis.z.length()) < 0.0002,"Detailed wheel stays round during rotation")
+	part.free()

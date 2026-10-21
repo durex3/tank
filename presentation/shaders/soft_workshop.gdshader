@@ -9,6 +9,7 @@ uniform float occlusion_strength = 0.65;
 uniform float top_bottom_strength = 0.12;
 uniform float highlight_strength = 0.10;
 uniform float key_strength = 0.80;
+uniform float exposure_shoulder = 0.0;
 varying float local_occlusion;
 varying float upward;
 void vertex() {
@@ -24,7 +25,9 @@ void fragment() {
 void light() {
 	float diffuse=clamp((dot(NORMAL,LIGHT)+wrap_amount)/(1.0+wrap_amount),0.0,1.0);
 	vec3 illumination=LIGHT_COLOR*ATTENUATION/3.141593;
-	DIFFUSE_LIGHT+=illumination*diffuse*key_strength;
+	vec3 contribution=illumination*diffuse*key_strength;
+	float peak=max(contribution.r,max(contribution.g,contribution.b));
+	DIFFUSE_LIGHT+=contribution/(1.0+exposure_shoulder*peak);
 	vec3 half_vector=normalize(LIGHT+VIEW);
 	float broad=pow(max(0.0,dot(NORMAL,half_vector)),mix(24.0,8.0,roughness_value));
 	SPECULAR_LIGHT+=illumination*broad*highlight_strength;

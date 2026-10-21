@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/derived/soft-workshop-v2/cannon.glb" id="1_p331p"]
+
+[node name="cannon" type="Node3D" unique_id=1760095391]
+metadata/soft_workshop = true
+metadata/soft_workshop_style = "res://content/presentation/soft_workshop_v2.tres"
+
+[node name="Geometry" type="Node3D" parent="." unique_id=2074196795 instance=ExtResource("1_p331p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+
+[node name="Muzzle" type="Marker3D" parent="." unique_id=1553993103]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -1.05)

@@ -1,0 +1,8 @@
+{
+  "source": "Godot renders of original soft-workshop-v2 meshes and sculpted TrackRig wheel faces",
+  "tool": "tools/capture_soft_workshop_134.gd",
+  "camera_resource": "content/presentation/soft_workshop_cards_v2.tres",
+  "canvas": [512, 512],
+  "transparent_background": true,
+  "reference_assets_copied": false
+}

@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/derived/soft-workshop-v2/light_tracks.glb" id="1_bt6gv"]
+[ext_resource type="Script" path="res://presentation/track_rig.gd" id="2_yx275"]
+[ext_resource type="Script" path="res://presentation/track_rig_style.gd" id="3_jtmxm"]
+
+[sub_resource type="Resource" id="Resource_etopj"]
+script = ExtResource("3_jtmxm")
+axle_x = 0.6819999980926513
+front_z = -0.6446047830581665
+rear_z = 0.6446047830581665
+face = Color(0.91, 0.925, 0.92, 1)
+sculpted_wheels = true
+
+[node name="light_tracks" type="Node3D" unique_id=1567856465]
+metadata/soft_workshop = true
+metadata/soft_workshop_style = "res://content/presentation/soft_workshop_v2.tres"
+
+[node name="Geometry" type="Node3D" parent="." unique_id=343446551 instance=ExtResource("1_bt6gv")]
+
+[node name="TrackRig" type="Node3D" parent="." unique_id=539194935]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0019999954, 0)
+script = ExtResource("2_yx275")
+style = SubResource("Resource_etopj")
+
+[node name="TurretSocket" type="Marker3D" parent="." unique_id=445218529]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.76, 0)

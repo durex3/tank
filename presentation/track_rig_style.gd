@@ -18,3 +18,5 @@ class_name TrackRigStyle
 @export var rubber: Color = Color("202930")
 @export var face: Color = Color("e8e9e3")
 @export var gold: Color = Color("c9a137")
+
+@export var sculpted_wheels: bool = false

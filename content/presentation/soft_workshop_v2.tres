@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://definitions/soft_workshop_style.gd" id="1"]
+[resource]
+script = ExtResource("1")
+ambient_strength = 0.32
+key_strength = 0.95
+wrap_amount = 0.40
+occlusion_strength = 0.50
+top_bottom_strength = 0.16
+highlight_strength = 0.07
+exposure_shoulder = 0.18
