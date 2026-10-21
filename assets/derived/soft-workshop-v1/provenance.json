@@ -1,0 +1,16 @@
+{
+  "tool": "tools/build_soft_workshop_133.py",
+  "reference": "MiniTanks resources inspected read-only for shape and shading principles; no mesh, shader, or texture copied",
+  "parts": {
+    "cannon": {
+      "construction_material_batches": 10,
+      "source": "Original Blender geometry and baked local AO",
+      "track_system": "Existing recoil/visual muzzle contract"
+    },
+    "light_tracks": {
+      "construction_material_batches": 6,
+      "source": "Original Blender geometry and baked local AO",
+      "track_system": "Existing TrackRig, not recreated in Blender"
+    }
+  }
+}

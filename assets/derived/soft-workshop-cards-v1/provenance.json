@@ -1,0 +1,10 @@
+{
+  "source": "Actual Godot Compatibility renders of original soft-workshop-v1 meshes",
+  "tool": "tools/capture_soft_workshop_133.gd",
+  "parts": ["cannon", "light_tracks"],
+  "canvas": [512, 512],
+  "transparent_background": true,
+  "camera": [-3, 2.2, -4],
+  "camera_size": 2.6,
+  "reference_assets_copied": false
+}

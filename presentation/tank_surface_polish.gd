@@ -6,6 +6,9 @@ const STYLE: TankSurfaceStyle = preload("res://content/presentation/tank_surface
 const SHADER: Shader = preload("res://presentation/shaders/clean_armor.gdshader")
 
 static func apply(part: Node3D, part_id: StringName) -> void:
+	if part.get_meta("soft_workshop",false):
+		preload("res://presentation/soft_workshop_finish.gd").apply(part)
+		return
 	if part_id not in [&"cannon", &"light_tracks", &"autocannon", &"scatter", &"bubble_cannon", &"scout_wheels", &"heavy_tracks"]:
 		return
 	var visual: Node = part.find_child("Visual", true, false)
@@ -34,6 +37,8 @@ static func apply(part: Node3D, part_id: StringName) -> void:
 			instance.set_surface_override_material(surface, finish)
 
 static func clear(part: Node) -> void:
+	if part is Node3D and part.get_meta("soft_workshop",false):
+		preload("res://presentation/soft_workshop_finish.gd").clear(part)
 	# Release overrides while the mesh still exists, before deferred renderer cleanup.
 	for node: Node in part.find_children("*", "MeshInstance3D", true, false):
 		var instance := node as MeshInstance3D
